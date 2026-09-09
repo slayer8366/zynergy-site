@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy for Forager — Zynergy Labs</title>
+<meta name="description" content="Privacy policy for Forager, a foraging journal for Android. Your journal stays on your phone.">
+<style>
+  :root {
+    --bg: #fbfbf9;
+    --fg: #1a1a18;
+    --muted: #6b6b64;
+    --rule: #e3e3dd;
+    --accent: #2f6f5e;
+    --code-bg: #eeeee8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121412;
+      --fg: #ececE6;
+      --muted: #9a9a92;
+      --rule: #2a2c2a;
+      --accent: #6fb69f;
+      --code-bg: #1e211e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 20px 80px;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.65 ui-sans-serif, -apple-system, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 40rem; margin: 0 auto; }
+  header { padding: 56px 0 0; }
+  .eyebrow {
+    font-size: .8rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 1.4rem;
+  }
+  .eyebrow a { color: var(--muted); text-decoration: none; }
+  .eyebrow a:hover { color: var(--accent); }
+  h1 {
+    margin: 0 0 .5rem;
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .updated { color: var(--muted); font-size: .9rem; margin: 0 0 2rem; }
+  h2 {
+    margin: 2.8rem 0 .8rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  p { margin: 0 0 1.1rem; }
+  ul { margin: 0 0 1.1rem; padding-left: 1.3rem; }
+  li { margin-bottom: .5rem; }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  code {
+    background: var(--code-bg);
+    padding: .12em .4em;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .87em;
+    word-break: break-all;
+  }
+  .lead { font-size: 1.05rem; }
+  .case { margin-top: 1.8rem; }
+  hr.top {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 2rem 0 0;
+  }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: .92rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
+  <h1>Privacy Policy for Forager</h1>
+  <p class="updated">Last updated: 9 September 2026</p>
+</header>
+
+<p class="lead">Forager is a foraging journal for Android. It records where you walk, marks places you want to remember, and keeps notes and photos of what you find.</p>
+
+<p class="lead">This policy explains what the app does with that information. The short version: <strong>your journal stays on your phone.</strong> Forager has no account system, no cloud sync, and no server that stores your journal.</p>
+
+<hr class="top">
+
+<h2>What Forager keeps on your device</h2>
+
+<p>When you use the app, it stores the following in a database on your phone:</p>
+
+<ul>
+  <li><strong>Location data.</strong> Precise GPS coordinates while you are recording a track, including timestamps, altitude, accuracy, and speed where your device provides it.</li>
+  <li><strong>Waypoints</strong> you create, with their coordinates, names and notes.</li>
+  <li><strong>Finds</strong> you log, with species notes, dates and locations.</li>
+  <li><strong>Photos</strong> you attach to entries.</li>
+  <li><strong>Offline map regions</strong> you choose to download.</li>
+</ul>
+
+<p>All of this stays on your device. It is not uploaded, not backed up to any server we run, and not visible to us or anyone else.</p>
+
+<p><strong>Uninstalling the app deletes it.</strong> There is no copy elsewhere. If you want to keep your data, export it before uninstalling.</p>
+
+<h2>Why Forager needs location access</h2>
+
+<p>The app requests precise location so it can record tracks and mark find locations, which is its core purpose. It requests background location so recording continues when your screen is off or you switch apps mid-walk. A recording that stopped when you pocketed your phone would not be useful.</p>
+
+<p>Location is used only while you are actively recording or viewing your position. <strong>You can revoke location permission at any time in Android Settings.</strong> Recording will not work without it, but the rest of the app will.</p>
+
+<h2>When data leaves your device</h2>
+
+<p>Three cases, all of them either your choice or necessary for the app to function:</p>
+
+<p class="case"><strong>1. When you export or share.</strong> Forager can export a track as a GPX file. What happens to that file afterwards is entirely up to you: where you send it, who you give it to. The app does not send it anywhere on its own.</p>
+
+<p>Note that an exported track contains precise coordinates. <strong>Sharing a track shares the locations in it</strong>, including places you may prefer to keep private.</p>
+
+<p>Photos are different. They are stored without embedded location metadata, so a photo you share does not carry the coordinates of where it was taken.</p>
+
+<p class="case"><strong>2. Map tiles.</strong> The maps in Forager are served from a map service we operate at <code>forager-pmtiles.brandonlee1-894.workers.dev</code>, built on OpenStreetMap and OpenTopoMap data. To draw a map, your device requests the tiles covering the area you are looking at. Downloading an offline map region does the same thing in bulk, requesting every tile in the area you selected.</p>
+
+<p>These requests reach our servers directly, so no third-party map provider receives your data. Each request includes your IP address and the coordinates of the tiles requested, which together indicate the approximate area you are viewing or have downloaded.</p>
+
+<p>We do not keep logs of these requests. The map service records nothing about who asked for which tiles. Cloudflare operates the infrastructure that serves the tiles and applies its own retention as the host. We never receive your recorded tracks, waypoints, finds or photos through this or any other channel.</p>
+
+<p class="case"><strong>3. Crash reports.</strong> If your device is set to share crash data with Google Play, Android may send us a crash report when the app fails. These reports contain technical information about the failure: device model, Android version, and where in the code the crash occurred. They do not contain your journal, your location history, or your photos. This is a Google Play feature you can control in your device settings.</p>
+
+<h2>What Forager does not do</h2>
+
+<ul>
+  <li>No account, no login, no email address required.</li>
+  <li>No advertising, and no advertising identifiers.</li>
+  <li>No analytics or usage tracking.</li>
+  <li>No selling or sharing of personal information with third parties.</li>
+  <li><strong>No journal data transmitted to us.</strong> Your tracks, waypoints, finds and photos never leave your device unless you export and send them yourself. Map tile requests are the one thing your device sends to us, and they are described above.</li>
+</ul>
+
+<h2>Beta testing</h2>
+
+<p>If you are using Forager as a closed beta tester, the above applies to you unchanged. We may ask you to answer questions about how the app behaved on your device, or to send us an exported track file so we can investigate a problem.</p>
+
+<p><strong>Anything you send us is voluntary and specific.</strong> A track file contains precise coordinates of where you walked, so consider whether that is something you want to share before sending it. Declining costs you nothing.</p>
+
+<h2>Children</h2>
+
+<p>Forager is not directed at children. We do not knowingly collect information from anyone under 13, or under the applicable age of digital consent where you live, which is 16 in some countries.</p>
+
+<h2>Your control over your data</h2>
+
+<p>Your journal is stored locally, so you control it directly:</p>
+
+<ul>
+  <li><strong>Delete individual entries</strong> in the app.</li>
+  <li><strong>Export</strong> what you want to keep, before uninstalling.</li>
+  <li><strong>Clear all data</strong> through Android Settings → Apps → Forager → Storage → Clear data.</li>
+  <li><strong>Uninstall</strong> to remove everything.</li>
+</ul>
+
+<p>We hold no copy of your journal, so there is nothing for us to delete on your behalf.</p>
+
+<p>We keep no logs of map tile requests either, so there is no record of your map activity for us to hold, produce or delete.</p>
+
+<h2>Changes to this policy</h2>
+
+<p>If this policy changes in a way that affects what happens to your data, the updated version will be posted here with a new date.</p>
+
+<h2>Contact</h2>
+
+<p>Questions about this policy or about Forager's handling of data:</p>
+
+<p><a href="mailto:privacy@zynergy-labs.com">privacy@zynergy-labs.com</a></p>
+
+<footer>
+  Zynergy Labs
+</footer>
+
+</div>
+</body>
+</html>
