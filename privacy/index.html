@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 9 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 9 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -166,12 +166,17 @@
 <h2>Permissions and what they are used for</h2>
 
 <ul>
-  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. Background location is what lets a recording continue when your screen is off.</li>
+  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. While the app is open it receives location updates continuously, not only while you are recording.</li>
   <li><strong>Camera</strong>: taking a photo for a journal entry.</li>
   <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes.</li>
   <li><strong>Notifications, vibrate, foreground service</strong>: the off-track alert and the recording notification.</li>
   <li><strong>Internet</strong>: the requests listed above.</li>
 </ul>
+
+<div class="note">
+  <p><strong>Forager does not ask for background location.</strong> The permission Android calls <code>ACCESS_BACKGROUND_LOCATION</code> is not requested and not declared. A recording keeps running with your screen off because it runs as a foreground service, with the ongoing notification you can see, not because the app can read your location in the background.</p>
+  <p>Outside those two states, app open or a recording running, Forager receives no location at all.</p>
+</div>
 
 <p>You can revoke location permission at any time in Android Settings. Recording will not work without it, but the rest of the app will.</p>
 
