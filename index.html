@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zynergy Labs</title>
+<meta name="description" content="Zynergy Labs">
+<style>
+  :root {
+    --bg: #fbfbf9;
+    --fg: #1a1a18;
+    --muted: #6b6b64;
+    --rule: #e3e3dd;
+    --accent: #2f6f5e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121412;
+      --fg: #ececE6;
+      --muted: #9a9a92;
+      --rule: #2a2c2a;
+      --accent: #6fb69f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    padding: 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { width: 100%; max-width: 34rem; }
+  h1 {
+    margin: 0 0 .4rem;
+    font-size: clamp(1.9rem, 6vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .rule {
+    width: 3rem;
+    height: 2px;
+    background: var(--accent);
+    margin: 1.4rem 0;
+    border: 0;
+  }
+  p { margin: 0 0 1rem; color: var(--muted); }
+  a { color: var(--accent); }
+  footer {
+    margin-top: 2.6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: .85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <h1>Zynergy Labs</h1>
+    <hr class="rule">
+    <p>Site under construction.</p>
+    <p>This is a placeholder page confirming that DNS, TLS, and the deployment pipeline are working end to end.</p>
+    <footer>
+      <span id="stamp"></span>
+    </footer>
+  </main>
+  <script>
+    document.getElementById('stamp').textContent =
+      'Served ' + new Date().toISOString().slice(0, 10);
+  </script>
+</body>
+</html>
