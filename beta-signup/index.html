@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forager beta · Zynergy Labs</title>
+<meta name="description" content="Join the closed beta for Forager, a private foraging companion for Android. Record your walks, log your finds, works offline.">
+<link rel="icon" href="/assets/forager-icon.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="/assets/forager-icon.png">
+<meta property="og:title" content="Forager beta · Zynergy Labs">
+<meta property="og:description" content="A private foraging companion. Record your walks, log your finds, works offline.">
+<meta property="og:image" content="https://zynergy-labs.com/assets/forager-banner.png">
+<meta property="og:url" content="https://zynergy-labs.com/beta-signup/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --forest: #2e5339;
+    --forest-mid: #4d6a51;
+    --cream: #ede3d0;
+    --rust: #c97b3d;
+    --tan: #d1a077;
+
+    --bg: #fbfbf9;
+    --surface: #ffffff;
+    --fg: #1a1a18;
+    --muted: #6b6b64;
+    --rule: #e3e3dd;
+    --accent: var(--forest);
+    --accent-fg: var(--cream);
+    --field-bg: #ffffff;
+    --ok-bg: #eef4ee;
+    --err-bg: #fbeee7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121412;
+      --surface: #191c19;
+      --fg: #ecece6;
+      --muted: #9a9a92;
+      --rule: #2a2c2a;
+      --accent: #6fb69f;
+      --accent-fg: #0e1a14;
+      --field-bg: #10130f;
+      --ok-bg: #16211a;
+      --err-bg: #241a14;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.65 ui-sans-serif, -apple-system, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--accent); }
+
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 20px 72px; }
+
+  /* Hero ------------------------------------------------------------------ */
+  /* Full-bleed. Centring the banner inside the text column instead leaves the
+     artwork's orange ground cut off against the page's own green, which reads as
+     a seam rather than as a horizon. */
+  .hero { background: var(--forest); margin-bottom: 2.6rem; }
+  .hero img {
+    width: 100%;
+    height: clamp(190px, 29vw, 300px);
+    object-fit: cover;
+    object-position: 50% 42%;
+  }
+
+  .eyebrow a { color: var(--muted); text-decoration: none; }
+  .eyebrow a:hover { color: var(--accent); }
+  .eyebrow {
+    font-size: .78rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 1.1rem;
+  }
+  h1 {
+    margin: 0 0 .6rem;
+    font-size: clamp(1.8rem, 5.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+  }
+  .lead { font-size: 1.08rem; margin: 0 0 1.6rem; }
+  p { margin: 0 0 1.1rem; }
+  h2 {
+    margin: 2.6rem 0 .9rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--rule);
+  }
+  ul { margin: 0 0 1.2rem; padding-left: 1.25rem; }
+  li { margin-bottom: .5rem; }
+
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    margin: 0 0 1.4rem;
+  }
+  .badge-row img { width: 56px; height: 56px; border-radius: 12px; }
+  .badge-row div { font-size: .93rem; color: var(--muted); line-height: 1.45; }
+
+  /* Form ------------------------------------------------------------------ */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.5rem 1.3rem;
+    margin: 1.6rem 0 0;
+  }
+  .field { margin-bottom: 1.1rem; }
+  label { display: block; font-size: .92rem; font-weight: 600; margin-bottom: .35rem; }
+  .hint { font-weight: 400; color: var(--muted); font-size: .86rem; display: block; margin-top: .2rem; }
+  input[type="email"], input[type="text"], textarea {
+    width: 100%;
+    padding: .62rem .7rem;
+    font: inherit;
+    font-size: .98rem;
+    color: var(--fg);
+    background: var(--field-bg);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+  }
+  input:focus-visible, textarea:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  textarea { min-height: 5.2rem; resize: vertical; }
+  .row { display: flex; gap: .9rem; flex-wrap: wrap; }
+  .row .field { flex: 1 1 12rem; }
+
+  .consent { display: flex; gap: .6rem; align-items: flex-start; margin-bottom: 1.3rem; }
+  .consent input { margin-top: .35rem; flex: none; width: 1rem; height: 1rem; }
+  .consent label { font-weight: 400; font-size: .92rem; margin: 0; }
+
+  /* Honeypot: off-screen rather than display:none, which some bots skip. */
+  .trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  button {
+    font: inherit;
+    font-weight: 600;
+    padding: .7rem 1.5rem;
+    color: var(--accent-fg);
+    background: var(--accent);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { background: var(--forest-mid); }
+  button:disabled { opacity: .55; cursor: default; }
+
+  .status { margin: 1.1rem 0 0; padding: .85rem 1rem; border-radius: 6px; font-size: .95rem; }
+  .status:empty { display: none; }
+  .status.ok  { background: var(--ok-bg);  border-left: 3px solid var(--accent); }
+  .status.err { background: var(--err-bg); border-left: 3px solid var(--rust); }
+
+  .invalid { border-color: var(--rust) !important; }
+
+  noscript p {
+    background: var(--err-bg);
+    border-left: 3px solid var(--rust);
+    padding: .85rem 1rem;
+    border-radius: 6px;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: .9rem;
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="/assets/forager-banner.png" width="1024" height="500"
+       alt="Forager, a private foraging companion. Record your walks, log your finds, works offline.">
+</div>
+
+<div class="wrap">
+  <main>
+    <p class="eyebrow"><a href="/">Zynergy Labs</a> · Closed beta</p>
+    <h1>Help us test Forager</h1>
+    <p class="lead">Forager is a foraging journal for Android: record a walk, log what you find, and keep the map working when the signal does not. We are opening a closed test and would like people who actually go out looking for things.</p>
+
+    <div class="badge-row">
+      <img src="/assets/forager-icon.png" width="512" height="512" alt="">
+      <div>Android phone or tablet.<br>Distributed through a Google Play closed test.</div>
+    </div>
+
+    <h2>Join the list</h2>
+    <p>Put your address in below. When a build is ready we will send you the Play opt-in link.</p>
+
+    <div class="card">
+      <form id="signup" novalidate>
+        <div class="field">
+          <label for="email">Email address <span aria-hidden="true">*</span>
+            <span class="hint">Use the Google account email on the phone you will test with. Google Play closed tests are opened per Google account, so an address that is not on the device cannot be let in.</span>
+          </label>
+          <input id="email" name="email" type="email" autocomplete="email"
+                 required inputmode="email" placeholder="you@example.com">
+        </div>
+
+        <div class="field">
+          <label for="name">Name <span class="hint">Optional. What we should call you.</span></label>
+          <input id="name" name="name" type="text" autocomplete="name" maxlength="120">
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="device">Device type <span class="hint">Optional, e.g. Pixel 7a</span></label>
+            <!--
+              Labelled "Phone" until a tester pointed out it reads as a request for a phone
+              number. autocomplete="off" for the same reason at a second layer: with the old
+              label, a browser or password manager could helpfully offer the actual number.
+            -->
+            <input id="device" name="device" type="text" maxlength="120" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="android_version">Android version <span class="hint">Optional, e.g. 14</span></label>
+            <input id="android_version" name="android_version" type="text" maxlength="40">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="note">Anything else <span class="hint">Optional. Where you forage, what you are hoping the app does, what has annoyed you about other ones.</span></label>
+          <textarea id="note" name="note" maxlength="2000"></textarea>
+        </div>
+
+        <!-- Honeypot. A person never reaches this; a form-filling bot usually does. -->
+        <div class="trap" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!--
+          Turnstile widget. Add it only together with the TURNSTILE_SECRET binding: the
+          signup function fails a submission that carries no token once that secret is set,
+          so a secret without this widget rejects every real person:
+
+          <div class="cf-turnstile" data-sitekey="YOUR_SITE_KEY"></div>
+          <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        -->
+
+        <div class="consent">
+          <input id="consent" name="consent" type="checkbox" required>
+          <label for="consent">Email me about the Forager beta. Nothing else, and no passing my address to anyone.</label>
+        </div>
+
+        <button type="submit" id="submit">Join the beta list</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <noscript>
+        <p>This form needs JavaScript to submit. If you would rather not turn it on, email
+           <a href="mailto:support@zynergy-labs.com?subject=Forager%20beta">support@zynergy-labs.com</a>
+           and we will add you by hand.</p>
+      </noscript>
+    </div>
+
+    <h2>What we do with your address</h2>
+    <ul>
+      <li>It is stored so we can send you the beta invite, and it reaches Zynergy Labs support. Nobody else.</li>
+      <li>No newsletter, no marketing list, no sale or transfer to a third party.</li>
+      <li>Ask us to remove you at any point and we will, at
+          <a href="mailto:support@zynergy-labs.com?subject=Remove%20me%20from%20the%20Forager%20beta%20list">support@zynergy-labs.com</a>.</li>
+      <li>This page is about the beta list. What the app itself does with data is in the
+          <a href="/privacy/">Forager privacy policy</a>, which is the document Google Play's
+          Data safety declaration points at.</li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>Zynergy Labs · <a href="/privacy/">Privacy policy</a> ·
+       <a href="mailto:support@zynergy-labs.com">support@zynergy-labs.com</a></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('signup');
+  var button = document.getElementById('submit');
+  var status = document.getElementById('status');
+  var email = document.getElementById('email');
+  var consent = document.getElementById('consent');
+
+  function show(kind, message) {
+    status.className = 'status ' + kind;
+    status.textContent = message;
+  }
+
+  function clearInvalid() {
+    email.classList.remove('invalid');
+    consent.classList.remove('invalid');
+  }
+
+  // Mirrors the server's check. The server is the one that decides; this only saves a
+  // round trip and puts the message next to the field.
+  var EMAIL_RE = /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]{2,}$/;
+
+  var MESSAGES = {
+    email_required:  ['email', 'Please enter an email address.'],
+    email_invalid:   ['email', 'That does not look like an email address. Please check it.'],
+    consent_required:['consent', 'Please tick the box so we know we may email you.'],
+    challenge_failed:[null, 'The bot check did not pass. Reload the page and try again.'],
+    rate_limited:    [null, 'That is a lot of signups from one connection. Please try again later.'],
+    signup_unavailable: [null, 'The signup list is not reachable right now. Please email support@zynergy-labs.com instead.'],
+    signup_failed:   [null, 'Something broke on our side and you were not added. Please email support@zynergy-labs.com.'],
+    bad_request:     [null, 'The form could not be read. Please reload the page and try again.']
+  };
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    clearInvalid();
+
+    var address = email.value.trim();
+    if (!address) { email.classList.add('invalid'); email.focus(); return show('err', MESSAGES.email_required[1]); }
+    if (!EMAIL_RE.test(address)) { email.classList.add('invalid'); email.focus(); return show('err', MESSAGES.email_invalid[1]); }
+    if (!consent.checked) { consent.classList.add('invalid'); consent.focus(); return show('err', MESSAGES.consent_required[1]); }
+
+    var payload = {
+      email: address,
+      name: document.getElementById('name').value.trim(),
+      device: document.getElementById('device').value.trim(),
+      android_version: document.getElementById('android_version').value.trim(),
+      note: document.getElementById('note').value.trim(),
+      website: document.getElementById('website').value,
+      consent: true
+    };
+
+    var token = form.querySelector('[name="cf-turnstile-response"]');
+    if (token) payload['cf-turnstile-response'] = token.value;
+
+    button.disabled = true;
+    show('ok', 'Sending…');
+
+    fetch('/api/beta-signup', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (response) {
+        return response.json().catch(function () { return { ok: false, error: 'bad_response' }; })
+          .then(function (data) { return { status: response.status, data: data }; });
+      })
+      .then(function (result) {
+        var data = result.data;
+
+        if (data && data.ok) {
+          form.querySelectorAll('input, textarea, button').forEach(function (el) { el.disabled = true; });
+          if (data.status === 'already_on_list') {
+            show('ok', 'You are already on the list. We have you down and will be in touch when there is a build.');
+          } else {
+            show('ok', 'You are on the list. We will email ' + address + ' when the beta opens.');
+          }
+          return;
+        }
+
+        button.disabled = false;
+        var known = data && MESSAGES[data.error];
+        if (known) {
+          if (known[0] === 'email') { email.classList.add('invalid'); email.focus(); }
+          if (known[0] === 'consent') { consent.classList.add('invalid'); consent.focus(); }
+          show('err', known[1]);
+        } else {
+          // Say what actually happened rather than inventing a friendlier cause for it.
+          show('err', 'That did not go through (error ' + result.status + '). Please try again, or email support@zynergy-labs.com.');
+        }
+      })
+      .catch(function (err) {
+        button.disabled = false;
+        show('err', 'Could not reach the server. Check your connection and try again, or email support@zynergy-labs.com.');
+        if (window.console) console.error('beta signup failed:', err);
+      });
+  });
+})();
+</script>
+</body>
+</html>

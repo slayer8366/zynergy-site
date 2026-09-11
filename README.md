@@ -4,7 +4,9 @@ Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functio
 run the Forager beta list.
 
 ```
-index.html                  the beta signup page
+index.html                  holding page for the business splash, and what every
+                              unmatched path on the site resolves to
+beta-signup/index.html      the beta signup page
 welcome/index.html          what testers see once they are in: things to try, known issues
 privacy/index.html          Forager privacy policy, the URL Play's Data safety points at
 assets/                     app icon and feature graphic
@@ -14,9 +16,28 @@ functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
 db/schema.sql               D1 schema for the `zynergy-site-beta` database
 ```
 
+## Where the pages live
+
+| URL | What it is |
+|-----|------------|
+| `/` | Holding page. Becomes the business splash. |
+| `/beta-signup/` | The signup form. |
+| `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
+| `/privacy/` | Forager privacy policy. |
+| `/forager` | Intended for the app page. Does not exist yet. |
+
+The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
+form is served from, so moving a page never breaks a submission.
+
+Cloudflare serves the root `index.html` for **every unmatched path**, with status 200 rather
+than 404. So `/anything/made/up` shows the holding page and looks like a hit. Two consequences:
+whatever sits at `/` is also the site's de facto not-found page, and any check against this
+site has to read the body or a header, never the status alone. A real 404 would need a
+`404.html`; it is a deliberate open item, not an oversight.
+
 ## How a signup travels
 
-1. The form on `/` POSTs JSON to `/api/beta-signup`.
+1. The form at `/beta-signup/` POSTs JSON to `/api/beta-signup`.
 2. The function validates, checks the honeypot, optionally checks Turnstile, and applies a
    per-caller rate limit of 5 signups an hour.
 3. **The row is written to D1 first.** Only then is the notification mailed to
@@ -98,7 +119,8 @@ honeypot, with the site key to fill in. Add both together or neither.
 ## The tester welcome page
 
 `https://zynergy-labs.com/welcome/` carries the greeting: what to try in this build and what
-is known to be broken. It is `noindex` and is not linked from the signup page, because it is
+is known to be broken. It is `noindex` and is not linked from the signup page or the holding
+page, because it is
 for people who are already in the test, not people deciding whether to join. Paste the URL
 into the Play closed-test instructions, or into the invite mail.
 
