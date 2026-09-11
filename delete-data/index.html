@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deleting your Forager data · Zynergy Labs</title>
+<meta name="description" content="How to delete data in Forager: item by item in the app, or by uninstalling. Nothing is held on a server, and how to have a beta signup record removed.">
+<link rel="icon" href="/assets/forager-icon.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="/assets/forager-icon.png">
+<style>
+  :root{--bg:#fbfbf9;--fg:#1a1a18;--muted:#6b6b64;--rule:#e3e3dd;--accent:#2e5339;--code-bg:#eeeee8;--note-bg:#f3f2ec}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121412;--fg:#ececE6;--muted:#9a9a92;--rule:#2a2c2a;--accent:#6fb69f;--code-bg:#1e211e;--note-bg:#1a1d1a}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:0 20px 80px;background:var(--bg);color:var(--fg);
+    font:17px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:42rem;margin:0 auto}
+  header{padding:56px 0 0}
+  .eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 1.4rem}
+  .eyebrow a{color:var(--muted);text-decoration:none}
+  .eyebrow a:hover{color:var(--accent)}
+  h1{margin:0 0 .5rem;font-size:clamp(1.7rem,5vw,2.3rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+  .updated{color:var(--muted);font-size:.9rem;margin:0 0 2rem}
+  h2{margin:2.8rem 0 .8rem;font-size:1.2rem;font-weight:600;letter-spacing:-.01em;padding-top:1.4rem;border-top:1px solid var(--rule)}
+  p{margin:0 0 1.1rem}
+  ul{margin:0 0 1.1rem;padding-left:1.3rem}
+  li{margin-bottom:.5rem}
+  strong{font-weight:600}
+  a{color:var(--accent)}
+  code{background:var(--code-bg);padding:.12em .4em;border-radius:4px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em;word-break:break-word}
+  .lead{font-size:1.05rem}
+  .note{background:var(--note-bg);border-left:3px solid var(--accent);padding:.9rem 1rem;margin:0 0 1.2rem;border-radius:0 4px 4px 0}
+  .note p:last-child{margin-bottom:0}
+  hr.top{border:0;border-top:1px solid var(--rule);margin:2rem 0 0}
+  footer{margin-top:3rem;padding-top:1.4rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.92rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
+  <h1>Deleting your Forager data</h1>
+  <p class="updated">Last updated: 11 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+</header>
+
+<p class="lead">Forager stores everything on your own device. There is no account, no server, and no copy of your data anywhere except the phone in your hand. That shapes what deletion means here: there is nothing to request, because there is no one holding a copy to ask.</p>
+
+<hr class="top">
+
+<h2>Delete individual items in the app</h2>
+
+<p>Anything you create can be deleted from inside Forager, item by item, and the deletion takes effect immediately:</p>
+
+<ul>
+  <li><strong>Journal entries</strong>, including any coordinate attached to a find.</li>
+  <li><strong>Photos</strong>, whether taken with your camera app or imported from your gallery. Deleting a photo removes the stored file, not just the reference to it.</li>
+  <li><strong>Recorded tracks</strong>, the track and every GPS point in it.</li>
+  <li><strong>Waypoints</strong>, including vehicle and origin markers.</li>
+  <li><strong>Downloaded offline map regions.</strong></li>
+  <li><strong>Planned trips.</strong></li>
+</ul>
+
+<h2>Uninstalling removes everything</h2>
+
+<p>Uninstalling Forager deletes all of it: the database, the photo files, downloaded map regions, saved preferences and any crash reports. Nothing is left behind on the device.</p>
+
+<p>Forager also sets <code>allowBackup="false"</code>, which means Android does <strong>not</strong> copy your Forager data into Google's automatic backup. There is no cloud copy to survive the uninstall and reappear on your next phone. That is a deliberate choice: it costs you the convenience of a restore, and it means uninstalling really is the end of the data.</p>
+
+<h2>There is nothing stored on a server</h2>
+
+<p>Forager has no account system and uploads nothing you create. Your entries, photos, tracks and waypoints never leave the device.</p>
+
+<p>What does leave the device, while you are online, is <strong>where you are looking</strong>: the coordinates a species or weather lookup runs on, and the map tiles for the area on screen. Those requests go to iNaturalist, Open-Meteo, the map tile providers and a Cloudflare Worker run by the developer, and they are logged by the services that receive them. They carry no name, no account and no device identifier, because Forager has none to send. Full detail, including exactly which fields each service receives, is in the <a href="/privacy/">privacy policy</a>.</p>
+
+<p>Because those requests are not stored by Forager and cannot be tied to you, there is no deletion request to make. If you want to stop them entirely, denying or revoking the location permission ends them; the app keeps working without it.</p>
+
+<h2>The beta signup list is separate</h2>
+
+<div class="note">
+  <p>Everything above is about the app. There is one piece of data Zynergy Labs does hold about a person, and it does not come from the app at all.</p>
+</div>
+
+<p>If you filled in the form at <a href="/beta-signup/">zynergy-labs.com/beta-signup</a>, that signup is stored: your email address, anything optional you chose to add, and a country code derived from your connection. Your IP address is not kept. It is described in full in <a href="/privacy/#beta-signup-list">the privacy policy</a>.</p>
+
+<p><strong>To have your signup record deleted, email <a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a></strong> and say which address to remove. It will be deleted from the list. This is a genuine request channel, unlike the app data above, because here there really is a copy held by someone other than you.</p>
+
+<p>Removing your signup does not affect anything on your phone, and deleting data on your phone does not remove your signup. They are separate, and each has to be asked for separately.</p>
+
+<h2>Questions</h2>
+
+<p><a href="mailto:privacy@zynergy-labs.com">privacy@zynergy-labs.com</a></p>
+
+<footer>
+  <p>Zynergy Labs · <a href="/privacy/">Privacy policy</a> · <a href="/">Home</a></p>
+</footer>
+
+</div>
+</body>
+</html>

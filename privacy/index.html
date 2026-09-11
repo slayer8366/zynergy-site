@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 9 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 11 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -166,7 +166,7 @@
 <h2>Permissions and what they are used for</h2>
 
 <ul>
-  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. While the app is open it receives location updates continuously, not only while you are recording.</li>
+  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. While the app is in the foreground it receives location updates continuously, not only while you are recording. When you leave the app, it releases its location subscription rather than relying on Android to withhold it.</li>
   <li><strong>Camera</strong>: taking a photo for a journal entry.</li>
   <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes.</li>
   <li><strong>Notifications, vibrate, foreground service</strong>: the off-track alert and the recording notification.</li>
@@ -190,6 +190,47 @@
 
 <p><strong>Anything you send us is voluntary and specific.</strong> Our beta templates deliberately do not ask where you were. Foragers mark spots they do not want found. They ask about terrain and sky instead. Declining any question costs you nothing.</p>
 
+<h2 id="beta-signup-list">The beta signup list</h2>
+
+<p>Separate from the app, and the one place Zynergy Labs holds personal data about you: if you fill
+in the form at <a href="/beta-signup/">zynergy-labs.com/beta-signup</a>, what you type is stored.
+This is website data, not app data. The app never sees it, and it is outside the scope of the Play
+Data safety declaration, which covers the app.</p>
+
+<p>What is stored:</p>
+
+<ul>
+  <li>Your <strong>email address</strong>, both as you typed it and lower-cased, the second so that
+      one person signing up twice is recognised as one person.</li>
+  <li>Optionally, a <strong>name</strong>, a <strong>device type</strong>, an <strong>Android
+      version</strong>, and whatever you write in the free-text box. All four can be left empty.</li>
+  <li>A two-letter <strong>country code</strong>, derived from your connection by Cloudflare rather
+      than asked for, and the <strong>date and time</strong> you signed up.</li>
+  <li>Whether the notification to us about your signup succeeded, and the error if it did not.</li>
+</ul>
+
+<div class="note">
+  <p><strong>Your IP address is not stored.</strong> To stop the form being flooded, a separate table
+  keeps a salted SHA-256 hash of the connecting address with a counter and a timestamp. That is
+  enough to recognise a repeat submission within the hour and not enough to recover the address it
+  came from.</p>
+</div>
+
+<p>The list lives in a Cloudflare D1 database we operate, on Cloudflare's infrastructure and under
+its privacy policy as our processor. When you sign up, a notification carrying what you entered is
+emailed to Zynergy Labs support through Resend, our mail provider, which processes it in order to
+deliver it. Nobody else receives it. It is not sold, not shared and not used for any mailing beyond
+the beta.</p>
+
+<p><strong>How long it is kept:</strong> until the beta ends or you ask for it to be removed,
+whichever comes first. We publish no figure beyond that because there is no automatic expiry that
+would produce one, and we will not state a retention period we cannot verify.</p>
+
+<p><strong>To have your signup removed</strong>, email
+<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
+Removing it deletes the record; it does not delete anything on your phone, which was never ours to
+begin with.</p>
+
 <h2>Children</h2>
 
 <p>Forager is not directed at children and collects nothing about anyone, including children, beyond what is described above.</p>
@@ -204,7 +245,18 @@
   <li><strong>Uninstall</strong> to remove everything. Because Android backup is switched off for this app, there is no copy in your Google account.</li>
 </ul>
 
-<p>We hold no copy of your journal, and no logs of your map tile requests, so there is nothing for us to produce or delete on your behalf.</p>
+<p>We hold no copy of your journal, and no logs of your map tile requests, so for the app's own
+data there is nothing for us to produce or delete on your behalf.</p>
+
+<p>The exception, and the only one, is the beta signup list. If you joined it, we hold the record
+described in <a href="#beta-signup-list">The beta signup list</a> and can delete it on request:
+<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
+Before the signup form existed this paragraph said we held nothing at all about you; that stopped
+being true the day the form went up, and this is the correction.</p>
+
+<p>Step-by-step detail on deleting everything is at
+<a href="/delete-data/">zynergy-labs.com/delete-data</a>, the page named in the Play Data safety
+declaration.</p>
 
 <h2>Changes to this policy</h2>
 
