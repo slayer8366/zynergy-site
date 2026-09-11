@@ -1,7 +1,8 @@
--- Schema for the Forager beta list (Cloudflare D1, database `zynergy-beta`).
+-- Schema for the Forager beta list (Cloudflare D1, database `zynergy-site-beta`,
+-- UUID 9cb6b148-62d3-402e-8527-5ddab4c0c1be. Identify it by UUID; two accounts are in play).
 --
 -- Apply with:
---   wrangler d1 execute zynergy-beta --remote --file=db/schema.sql
+--   wrangler d1 execute zynergy-site-beta --remote --file=db/schema.sql
 --
 -- Design notes, so the reasoning survives the commit:
 --
