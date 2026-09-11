@@ -2,7 +2,7 @@
 //
 // Cloudflare Pages Function. Bindings and variables it reads:
 //
-//   BETA_DB           (D1 binding, required)   database `zynergy-beta`, schema in db/schema.sql
+//   BETA_DB           (D1 binding, required)   database `zynergy-site-beta`, schema in db/schema.sql
 //   RESEND_API_KEY    (secret, required to mail)
 //   BETA_NOTIFY_TO    (var, optional)          default support@zynergy-labs.com
 //   BETA_NOTIFY_FROM  (var, optional)          default Forager Beta <beta@mail.zynergy-labs.com>
@@ -169,7 +169,7 @@ async function sendNotification(env, row) {
     row.note || '(none)',
     '',
     '---',
-    'Recorded in the zynergy-beta D1 database. The full list is at',
+    'Recorded in the zynergy-site-beta D1 database. The full list is at',
     'GET /api/beta-export with the export bearer token.',
   ];
 

@@ -11,7 +11,7 @@ assets/                     app icon and feature graphic
 functions/_middleware.js    blocks /functions/* and /db/*, sets the shared response headers
 functions/api/beta-signup.js  POST: records a signup, notifies support@
 functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
-db/schema.sql               D1 schema for the `zynergy-beta` database
+db/schema.sql               D1 schema for the `zynergy-site-beta` database
 ```
 
 ## How a signup travels
@@ -29,26 +29,42 @@ a notification rather than a signup, and the export says exactly which rows neve
 support@ instead of leaving it to be guessed. The page tells the person they are on the
 list because at that point they are, and nothing tells them a mail was sent when it was not.
 
-## What still needs doing in the Cloudflare dashboard
+## The database
 
-None of this can be set from the repository. Until steps 1 and 2 are done the endpoint
-returns `503 signup_unavailable` and the page says the list is unreachable, which is true.
+`BETA_DB` → **`zynergy-site-beta`**, UUID **`9cb6b148-62d3-402e-8527-5ddab4c0c1be`**, in
+Cloudflare account `aac482d6710c493a811ce9335792f145`. Bound on both Production and Preview,
+and confirmed working at runtime: a preview deployment accepted a POST, wrote the row,
+derived the country server-side, and honoured the `email_norm` UNIQUE constraint.
 
-**1. Bind the database.** Workers &amp; Pages → `zynergy-site` → Settings → Bindings, for
-**both** Production and Preview:
+Identify it by UUID, not by name. Two accounts are in play for this project, and D1's list
+endpoint reports `num_tables: 0` for databases that are in fact populated, so its failure mode
+reads as "empty database". Use the detail endpoint or query `sqlite_master` instead.
 
-| Variable name | D1 database  | Database ID                            |
-|---------------|--------------|----------------------------------------|
-| `BETA_DB`     | `zynergy-beta` | `71c395fc-66ea-421b-ab7c-5cbbba398ec9` |
+> **A second database exists and is not the one bound.** `zynergy-beta`,
+> `71c395fc-66ea-421b-ab7c-5cbbba398ec9`, was created in the *other* account
+> (`a6a899e01e2194ef8fff048c20130e14`, the one holding the `forager-pmtiles` Worker) before
+> the binding above was made, and this README named it until now. It is an orphan: nothing
+> points at it. As of 2026-09-11 a query against that UUID from that account returns
+> `7404 could not be found`, which suggests it has already been deleted, though that was not
+> confirmed by watching it happen. If it does still exist, delete it. A schema version, a
+> port, a database ID: any globally-unique claim made twice merges without conflict and
+> still produces a broken result.
 
-The database is created and the schema is already applied. To reapply or to check it:
+To reapply or check the schema, against the bound database:
 
 ```bash
-wrangler d1 execute zynergy-beta --remote --file=db/schema.sql
-wrangler d1 execute zynergy-beta --remote --command "SELECT count(*) FROM beta_signups"
+wrangler d1 execute zynergy-site-beta --remote --file=db/schema.sql
+wrangler d1 execute zynergy-site-beta --remote --command "SELECT count(*) FROM beta_signups"
 ```
 
-**2. Set the secrets**, same Settings page, as encrypted environment variables:
+## What still needs doing in the Cloudflare dashboard
+
+The binding above is done. The secrets are not, deliberately: a signup records without them,
+the row carries `notified: false` and `notify_error: "mailer_not_configured"`, and
+`/api/beta-export` returns 503 until `EXPORT_TOKEN` exists rather than serving the list.
+
+**Set the secrets** on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
+environment variables:
 
 | Name              | Required | What it is |
 |-------------------|----------|------------|
@@ -135,7 +151,7 @@ disagreed, so it is not done here.
 
 ```bash
 npm install wrangler@4
-wrangler d1 execute zynergy-beta --local --file=db/schema.sql
+wrangler d1 execute zynergy-site-beta --local --file=db/schema.sql
 wrangler pages dev
 ```
 
@@ -150,8 +166,8 @@ compatibility_date = "2026-09-01"
 
 [[d1_databases]]
 binding = "BETA_DB"
-database_name = "zynergy-beta"
-database_id = "71c395fc-66ea-421b-ab7c-5cbbba398ec9"
+database_name = "zynergy-site-beta"
+database_id = "9cb6b148-62d3-402e-8527-5ddab4c0c1be"
 
 [vars]
 EXPORT_TOKEN = "local-test-token"
