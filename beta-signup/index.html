@@ -227,8 +227,13 @@
 
         <div class="row">
           <div class="field">
-            <label for="device">Phone <span class="hint">Optional, e.g. Pixel 7a</span></label>
-            <input id="device" name="device" type="text" maxlength="120">
+            <label for="device">Device type <span class="hint">Optional, e.g. Pixel 7a</span></label>
+            <!--
+              Labelled "Phone" until a tester pointed out it reads as a request for a phone
+              number. autocomplete="off" for the same reason at a second layer: with the old
+              label, a browser or password manager could helpfully offer the actual number.
+            -->
+            <input id="device" name="device" type="text" maxlength="120" autocomplete="off">
           </div>
           <div class="field">
             <label for="android_version">Android version <span class="hint">Optional, e.g. 14</span></label>
