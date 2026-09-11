@@ -7,7 +7,7 @@
 //     root, so `functions/` and `db/` are candidates for being served as ordinary
 //     files. Whether they actually are depends on how Pages treats the functions
 //     directory for a given project, which is not something this repo can assert from
-//     the outside — so block the paths rather than depend on the answer. Verified
+//     the outside, so block the paths rather than depend on the answer. Verified
 //     locally: without this, GET /functions/api/beta-signup.js returned the source
 //     with content-type application/javascript.
 //

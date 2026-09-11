@@ -1,4 +1,4 @@
-// GET /api/beta-export — the whole beta list, for whoever holds the export token.
+// GET /api/beta-export: the whole beta list, for whoever holds the export token.
 //
 //   curl -H "authorization: Bearer $EXPORT_TOKEN" https://zynergy-labs.com/api/beta-export
 //   curl -H "authorization: Bearer $EXPORT_TOKEN" 'https://zynergy-labs.com/api/beta-export?format=json'
@@ -6,7 +6,7 @@
 // This exists because the mail to support@ is a notification and notifications are lost:
 // a provider outage, a spam filter, a mistyped forwarding rule. The database holds the
 // list either way, and this is how it comes back out. `notified_at` and `notify_error`
-// are in the output for the same reason — a row that never reached support@ is visible
+// are in the output for the same reason: a row that never reached support@ is visible
 // here as a row that never reached support@.
 //
 // Bindings and variables:

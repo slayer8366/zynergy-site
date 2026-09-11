@@ -1,4 +1,4 @@
-// POST /api/beta-signup — records one address on the Forager beta list and notifies support@.
+// POST /api/beta-signup: records one address on the Forager beta list and notifies support@.
 //
 // Cloudflare Pages Function. Bindings and variables it reads:
 //
@@ -159,16 +159,16 @@ async function sendNotification(env, row) {
 
   const lines = [
     `Email:    ${row.email}`,
-    `Name:     ${row.name || '—'}`,
-    `Device:   ${row.device || '—'}`,
-    `Android:  ${row.android_version || '—'}`,
-    `Country:  ${row.country || '—'}`,
+    `Name:     ${row.name || '(not given)'}`,
+    `Device:   ${row.device || '(not given)'}`,
+    `Android:  ${row.android_version || '(not given)'}`,
+    `Country:  ${row.country || '(not given)'}`,
     `Received: ${row.created_at}`,
     '',
     'Note:',
     row.note || '(none)',
     '',
-    '—',
+    '---',
     'Recorded in the zynergy-beta D1 database. The full list is at',
     'GET /api/beta-export with the export bearer token.',
   ];
