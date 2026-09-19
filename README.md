@@ -9,6 +9,9 @@ index.html                  holding page for the business splash, and what every
 beta-signup/index.html      the beta signup page
 welcome/index.html          what testers see once they are in: things to try, known issues
 privacy/index.html          Forager privacy policy, the URL Play's Data safety points at
+Forager/mushroom-forecast/  planning record for the mushroom fruiting forecast: spec,
+                              decisions, tasks, dispatches, evidence. Start at its
+                              docs/planning/START_HERE.md
 assets/                     app icon and feature graphic
 functions/_middleware.js    blocks /functions/* and /db/*, sets the shared response headers
 functions/api/beta-signup.js  POST: records a signup, notifies support@
@@ -25,6 +28,7 @@ db/schema.sql               D1 schema for the `zynergy-site-beta` database
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
 | `/forager` | Intended for the app page. Does not exist yet. |
+| `/Forager/mushroom-forecast/` | Planning record for the mushroom fruiting forecast, served as plain files. Start at `docs/planning/START_HERE.md` under it. |
 
 The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
 form is served from, so moving a page never breaks a submission.
