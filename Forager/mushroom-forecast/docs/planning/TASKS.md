@@ -6,7 +6,7 @@ T1 reports.
 
 | Task | Status | Dispatch |
 | --- | --- | --- |
-| T0. Repo bootstrap | Not started | docs/dispatch/2026-09-18-t0-repo-bootstrap.md |
+| T0. Repo bootstrap | Partly done 2026-09-18, see the START_HERE.md session log | docs/dispatch/2026-09-18-t0-repo-bootstrap.md |
 | T1. Calendar smoke test | Not started | docs/dispatch/2026-09-18-t1-calendar-smoke-test.md |
 | T2. Record audit | Not started | docs/dispatch/2026-09-18-t2-record-audit.md |
 | T3. Verify from-memory layers | Not started | docs/dispatch/2026-09-18-t3-verify-data-layers.md |

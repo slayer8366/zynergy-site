@@ -63,3 +63,4 @@ needs one of them to mean something else, the sentence is wrong.
 | Date | What was done | What is next |
 | --- | --- | --- |
 | 2026-09-18 | Evidence review, lag atlas published, North America data stack chosen, species order agreed, planning doc created, sighting chance named and confirmed (D12), planning pack exported for the repo (D13) | Code agents run T0, then T1 to T3 |
+| 2026-09-18 | Pack landed in the zynergy-site repo at Forager/mushroom-forecast/ with content unchanged (commit b707cbe, branch claude/forager-forecast-planning-pack), verified byte-identical to the export. Site README points here. T0 verify-first facts reported to the owner. Not done from T0: .gitignore and the project layout proposal, because zynergy-site is a static Cloudflare Pages site with JavaScript functions and no Python, so it cannot host T1 to T3. Where that code lives is open. | Owner merges the branch and names the repo for T1 to T3 |
