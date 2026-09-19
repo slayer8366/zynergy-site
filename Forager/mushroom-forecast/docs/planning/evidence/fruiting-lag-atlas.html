@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fruiting lag atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF0EA; --surface:#F8F9F5; --ink:#1D2921; --muted:#566258; --line:#CBD2C6; --zone:#E3E7DD;
+  --temp:#B87C05; --precip:#2F6A8E; --soil:#7A5236; --veg:#4A7A36; --mixed:#6D5585;
+  --ui:"Familjen Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Literata",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121813; --surface:#1A221C; --ink:#E4EADF; --muted:#9CA99D; --line:#2F3B32; --zone:#182019;
+    --temp:#E5B13C; --precip:#73ADD3; --soil:#C0916C; --veg:#8FBD74; --mixed:#AC95C8;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121813; --surface:#1A221C; --ink:#E4EADF; --muted:#9CA99D; --line:#2F3B32; --zone:#182019;
+  --temp:#E5B13C; --precip:#73ADD3; --soil:#C0916C; --veg:#8FBD74; --mixed:#AC95C8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.6}
+main{max-width:46rem;margin:0 auto;padding:1.5rem 1rem 4rem}
+h1,h2,h3,label,select,input,button,.ui{font-family:var(--ui)}
+h1{font-size:clamp(1.9rem,7vw,3rem);line-height:1.05;font-weight:700;letter-spacing:-.02em;margin:1rem 0 .75rem}
+h2{font-size:1.35rem;line-height:1.2;margin:2.75rem 0 .5rem;font-weight:700}
+h3{font-size:1.08rem;line-height:1.25;margin:0;font-weight:600}
+p{margin:.5rem 0}
+a{color:inherit;text-underline-offset:.18em}
+a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--precip);outline-offset:2px}
+.lede{font-size:1.06rem;max-width:36rem}
+.note{border-left:4px solid var(--temp);padding:.1rem 0 .1rem .9rem;margin:1.25rem 0;color:var(--ink)}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1.5rem 0 .5rem}
+.controls label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:.2rem}
+select,input[type=date]{width:100%;font-size:1rem;padding:.55rem .6rem;border:1.5px solid var(--ink);border-radius:2px;background:var(--surface);color:var(--ink)}
+.check{grid-column:1/-1;display:flex;gap:.5rem;align-items:center;font-family:var(--ui);font-size:.92rem}
+.check input{width:1.1rem;height:1.1rem;accent-color:var(--ink)}
+.count{font-family:var(--ui);font-weight:600;margin:1rem 0 .25rem}
+.chartwrap{overflow-x:auto;margin:.5rem -1rem 0;padding:0 1rem}
+svg text{font-family:var(--ui);fill:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;font-family:var(--ui);font-size:.82rem;color:var(--muted);margin:.5rem 0 0}
+.legend span{display:inline-flex;align-items:center;gap:.35rem}
+.sw{width:1.1rem;height:.55rem;display:inline-block;border-radius:1px}
+.small{font-size:.86rem;color:var(--muted)}
+.card{border-top:2px solid var(--ink);padding:1rem 0 1.25rem;scroll-margin-top:1rem}
+.card .place{font-family:var(--ui);font-size:.92rem;color:var(--muted);margin:.15rem 0 .6rem}
+.lag{display:grid;grid-template-columns:.6rem 1fr;gap:.6rem;margin:.55rem 0}
+.lag i{display:block;border-radius:1px;margin-top:.35rem;height:calc(100% - .5rem);min-height:1rem}
+.lag b{font-family:var(--ui);font-weight:600;display:block;line-height:1.3}
+.lag .when{font-family:var(--ui);font-size:.92rem}
+.meta{font-family:var(--ui);font-size:.85rem;color:var(--muted);margin-top:.6rem}
+.grade{display:inline-block;font-family:var(--ui);font-size:.8rem;font-weight:600;border:1.5px solid var(--ink);padding:.05rem .45rem;border-radius:2px;margin-right:.4rem}
+.grade.weak{border-style:dashed}
+.warn{background:var(--zone);padding:.5rem .7rem;margin-top:.6rem;font-size:.92rem;border-radius:2px}
+.empty{border:1.5px dashed var(--muted);padding:1rem;font-family:var(--ui)}
+ol.methods{padding-left:1.2rem}
+ol.methods li{margin:.8rem 0}
+ol.methods b{font-family:var(--ui)}
+</style>
+</head>
+<body>
+<main>
+  <h1>How far back does a mushroom remember the weather?</h1>
+  <p class="lede">Published estimates of the look-back window between weather and fruiting, gathered from field studies and searchable by region and date. Pick a place and a day to see only the studies that apply, with each window turned into calendar dates.</p>
+  <p class="note">These windows come from different methods, time steps and things measured (counts, yield, fruiting date). They are not interchangeable parameters. Each one is tied to the site where it was measured, so using it anywhere else is a hypothesis for your own data to test.</p>
+
+  <div class="controls">
+    <div><label for="region">Region</label><select id="region"></select></div>
+    <div><label for="date">Date</label><input type="date" id="date"></div>
+    <label class="check"><input type="checkbox" id="offseason"> Show studies outside their fruiting season</label>
+  </div>
+  <p class="count" id="count" aria-live="polite"></p>
+
+  <div class="chartwrap"><div id="chart"></div></div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="sw" style="background:var(--temp)"></i>Temperature</span>
+    <span><i class="sw" style="background:var(--precip)"></i>Rain or humidity</span>
+    <span><i class="sw" style="background:var(--soil)"></i>Soil</span>
+    <span><i class="sw" style="background:var(--veg)"></i>Tree growth (NDVI)</span>
+    <span><i class="sw" style="background:var(--mixed)"></i>Mixed features</span>
+  </div>
+  <p class="small">Solid bars are windows fitted on daily data. Faded bars with a dashed edge are monthly or seasonal effects, placed against a nominal mid-season date, so read their position as approximate. The axis is compressed beyond 90 days.</p>
+
+  <h2>Matching studies</h2>
+  <div id="cards"></div>
+
+  <h2>Ways to sharpen the tool</h2>
+  <p>Each item comes from a source you can check. The order is by how much honesty it buys per unit of effort.</p>
+  <ol class="methods">
+    <li><b>Test against the calendar.</b> A model scored against random dates looks good just by learning the season. The winter chanterelle model below reports AUC of 0.81 or more on held-out years, scored that way. Always report skill over a day-of-year baseline too.</li>
+    <li><b>Learn the windows, then try to break them.</b> Sliding-window searches (the climwin package) test every window and include randomisation checks for false positives, which matter when many windows are compared. <a href="https://doi.org/10.1371/journal.pone.0167980">Bailey and van de Pol 2016</a></li>
+    <li><b>Use temporal pseudo-absences and a benchmark taxon.</b> Same coordinates, random dates, plus a group with no visible season (pines) to estimate when observers are out. In that test the correction changed skill very little, so treat it as a check, not a cure. <a href="https://www.biorxiv.org/content/10.1101/2023.05.05.539567v1.full">bioRxiv preprint, 2023</a></li>
+    <li><b>Model detection apart from presence.</b> The Kyoto study fitted a zero-inflated model with a separate detection probability, so an empty survey is not read as an absent fungus. <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0049777">Sato et al. 2012</a></li>
+    <li><b>Combine messy records with structured plots.</b> Integrated distribution models do this, but simulation shows integration alone does not fix spatial bias. A bias covariate or a flexible spatial term is needed. <a href="https://nora.nerc.ac.uk/id/eprint/528191/1/N528191JA.pdf">Simmonds et al. 2020</a></li>
+    <li><b>Map the mycelium, not only the mushroom.</b> GlobalFungi holds soil DNA records from 57,184 geolocated samples (release 4, CC BY 4.0). It can say the fungus is present where nobody has photographed a fruit body. <a href="https://globalfungi.com">globalfungi.com</a></li>
+    <li><b>Add last year's tree growth and satellite soil moisture.</b> In Soria, previous-year NDVI and radar soil moisture lifted yield models to an adjusted R² of up to 0.63. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0168192320301179">Olano et al. 2020</a></li>
+    <li><b>Carry a memory of last year's crop.</b> In the Yukon, a big year was never followed by another, whatever the rain did. <a href="https://cdnsciencepub.com/doi/10.1139/B08-094">Krebs et al. 2008</a></li>
+    <li><b>Fit per species.</b> A verification study found species-level networks beat genus-level ones. <a href="https://www.nature.com/articles/s41598-023-50638-8">Scientific Reports 2024</a></li>
+    <li><b>Never draw finer than the evidence.</b> Post-fire morels clustered at scales under 7 m, far below any open weather or soil grid. <a href="https://www.researchgate.net/publication/305775164_Post-fire_morel_Morchella_mushroom_abundance_spatial_structure_and_harvest_sustainability">Larson et al. 2016</a></li>
+  </ol>
+  <p class="small">Compiled 18 September 2026 from abstracts, open full texts and two preprints. Season dates marked approximate are my placement for filtering, not the authors' numbers. Check the source before using any value in a model.</p>
+</main>
+
+<script>
+const REGIONS = [
+  ["all","All regions"],["eu-c","Europe, central"],["eu-m","Europe, Mediterranean"],["eu-n","Europe, northern"],
+  ["na-t","North America, temperate"],["na-b","North America, boreal"],["as-e","East Asia"]
+];
+const GRADES = {
+  plots:["Long-term plots, peer reviewed",false], records:["Museum and herbarium records, peer reviewed",false],
+  preprint:["Preprint, not peer reviewed",true], cs:["Citizen-science model, preprint",true],
+  abstract:["Abstract only seen",true], second:["Secondhand summary",true], pilot:["Pilot study, peer reviewed",true]
+};
+/* lag.kind: days{from,to} | month{offset} | fixed{m1,m2,yo} | text{when} ; chart:[farDays,nearDays,coarse] */
+const R = [
+{id:"porcini-bielefeld",sp:"Boletus edulis",cn:"porcini",regions:["eu-c"],place:"Beech woodland near Bielefeld, Germany (52.06 N, 8.45 E)",years:"2015 to 2024",
+ season:[8,5,11,21,false],measured:"Daily sporocarp counts, 15 to 29 sites visited 2 to 4 times a week",res:"Daily",grade:"preprint",
+ lags:[{v:"temp",t:"Mean air temperature over the prior 20 days",d:"Hump-shaped response with a peak near 13 °C (13.7 °C across all sites).",kind:"days",from:20,to:0,chart:[20,0,0]},
+       {v:"precip",t:"Rain summed over the prior 26 days",d:"Linear increase with no upper threshold found. Single sites gave 26 to 32 days.",kind:"days",from:26,to:0,chart:[26,0,0]}],
+ caveat:"One population, one grid cell of E-OBS weather. No sporocarps on 85.8% of days, and 2016 produced four in total.",
+ url:"https://www.biorxiv.org/content/10.64898/2025.12.12.693895.full.pdf",src:"Brejon Lamartinière and Hoffman, bioRxiv 2026"},
+{id:"pine-ne-spain",sp:"Mixed edible and marketed species",cn:"pine stand community",regions:["eu-m"],place:"Mediterranean pine stands, north-east Spain",years:"Long-term plots",
+ season:[9,1,12,15,true],measured:"Mushroom occurrence and yield",res:"Monthly",grade:"plots",
+ lags:[{v:"temp",t:"Temperature in the same month",d:"Heat limits yield early in the season and tends to help late in the season.",kind:"month",offset:0,chart:[30,0,1]},
+       {v:"soil",t:"Soil moisture in the same month",d:"Works as an alternative to precipitation in the models.",kind:"month",offset:0,chart:[30,0,1]},
+       {v:"precip",t:"Precipitation in the previous month",d:"The rain effect arrives with a one-month delay.",kind:"month",offset:1,chart:[60,30,1]}],
+ caveat:"Monthly time step, so a 26-day and a 45-day window would look the same here.",
+ url:"https://www.sciencedirect.com/science/article/abs/pii/S0168192317303441",src:"Karavani et al. 2018, Agricultural and Forest Meteorology"},
+{id:"soria-ndvi",sp:"Boletus edulis and Lactarius deliciosus",cn:"porcini and saffron milk cap",regions:["eu-m"],place:"Pinus sylvestris and P. pinaster forests, Soria, central Spain, 1000 to 1200 m",years:"22 and 24 year series",
+ season:[9,15,11,30,true],measured:"Annual yield by weight",res:"Annual and seasonal",grade:"plots",
+ lags:[{v:"veg",t:"NDVI of the previous year",d:"Correlation of 0.41 to 0.60 with yield. In the dry forest the signal held at one and two year lags.",kind:"text",when:y=>"Growing season of "+(y-1),chart:[540,365,1]},
+       {v:"soil",t:"Satellite soil moisture in the fruiting season",d:"Correlation of 0.63 to 0.72, a match for rain gauges.",kind:"text",when:y=>"Autumn "+y,chart:[90,0,1]},
+       {v:"precip",t:"Precipitation and temperature of the fruiting year",d:"Combined with remote sensing, models explained 55 to 75% of yield.",kind:"text",when:y=>"Autumn "+y,chart:[90,0,1]}],
+ caveat:"Annual totals. This tells you how good the year may be, not which week.",
+ url:"https://www.sciencedirect.com/science/article/abs/pii/S0168192320301179",src:"Olano et al. 2020, Agricultural and Forest Meteorology"},
+{id:"soria-lactarius-nn",sp:"Lactarius deliciosus",cn:"saffron milk cap",regions:["eu-m"],place:"17 Pinus pinaster plots, Soria, Spain",years:"Long-term plots",
+ season:[10,1,12,15,true],measured:"Yield class, neural network",res:"Monthly",grade:"plots",
+ lags:[{v:"precip",t:"January precipitation",d:"One of the most useful climate inputs, about nine months ahead of the crop.",kind:"fixed",m1:1,m2:1,yo:0,chart:[305,274,1]},
+       {v:"precip",t:"November humidity",d:"In-season moisture.",kind:"fixed",m1:11,m2:11,yo:0,chart:[30,0,1]},
+       {v:"veg",t:"Landsat EVI and GNDVI, with stand height, site index and basal area",d:"Forest structure and greenness inputs.",kind:"text",when:y=>"Static or yearly layers",chart:[365,0,1]}],
+ caveat:"Validation accuracy was 0.72 even with plot data. A useful ceiling to keep in mind.",
+ url:"https://doi.org/10.3390/su16135656",src:"Sustainability 2024, 16(13), 5656"},
+{id:"norway-83",sp:"83 autumn-fruiting species",cn:"community",regions:["eu-n"],place:"Norway, 47% of records from the south-east",years:"1940 to 2006",
+ season:[8,1,10,31,true],measured:"Fruiting date, not amount",res:"Monthly",grade:"records",
+ lags:[{v:"temp",t:"May and June temperature",d:"Warm early summer went with earlier fruiting.",kind:"fixed",m1:5,m2:6,yo:0,chart:[138,77,1]},
+       {v:"precip",t:"June precipitation",d:"Wet June went with earlier fruiting. Wet October did too.",kind:"fixed",m1:6,m2:6,yo:0,chart:[107,77,1]},
+       {v:"temp",t:"August temperature",d:"Warm August and October went with later fruiting, as did a warm February.",kind:"fixed",m1:8,m2:8,yo:0,chart:[45,15,1]},
+       {v:"temp",t:"Previous-year November temperature and July rain",d:"Both went with later fruiting the following year.",kind:"fixed",m1:7,m2:11,yo:-1,chart:[440,300,1]}],
+ caveat:"This predicts shifts in when fruiting happens. It says nothing about how much.",
+ url:"https://www.pnas.org/doi/full/10.1073/pnas.0709037105",src:"Kauserud et al. 2008, PNAS"},
+{id:"swiss-chaneaz",sp:"273 mycorrhizal species",cn:"community",regions:["eu-c"],place:"La Chanéaz forest reserve, Switzerland",years:"1975 to 2006, weekly counts",
+ season:[6,25,10,10,false],measured:"Weekly fruit body counts, 65,631 mushrooms",res:"Weekly",grade:"plots",
+ lags:[{v:"precip",t:"Cumulative precipitation from late June",d:"Production climbed from late June to early October in step with cumulative regional rain (as summarised by Sato et al. 2012).",kind:"text",when:y=>"25 Jun "+y+" to your date",chart:[95,0,1]},
+       {v:"temp",t:"Temperature means",d:"Warmer conditions went with later fruiting. Mean fruiting came 10 days later after 1991.",kind:"text",when:y=>"Summer "+y,chart:[60,0,1]}],
+ caveat:"I could confirm the direction of effects from abstracts, not the fitted window lengths. Peak was near the end of September in the earlier 21-year analysis.",
+ url:"https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/110064",src:"Büntgen et al. 2012, Frontiers in Ecology and the Environment"},
+{id:"kyoto-ecm",sp:"271 ectomycorrhizal species",cn:"community",regions:["as-e"],place:"Castanopsis oak forest, Kyoto, Japan (35.00 N, 135.78 E)",years:"1982 to 2011, monthly census",
+ season:[7,1,10,15,true],measured:"Number of fruiting species per survey",res:"Monthly",grade:"plots",
+ lags:[{v:"temp",t:"Mean temperature in the same month",d:"Positive, and consistent across seven genera.",kind:"month",offset:0,chart:[30,0,1]},
+       {v:"precip",t:"Rain accumulated in the same month",d:"Positive.",kind:"month",offset:0,chart:[30,0,1]},
+       {v:"precip",t:"Rain in the prior week",d:"Slightly negative, which hints that the useful rain falls earlier than the last few days.",kind:"days",from:7,to:0,chart:[7,0,0]}],
+ caveat:"The paper gives the season as mid-summer to early autumn with a July peak. Saprotrophs did not share these drivers.",
+ url:"https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0049777",src:"Sato, Morimoto and Hattori 2012, PLOS ONE"},
+{id:"matsutake-yunnan",sp:"Tricholoma matsutake",cn:"matsutake",regions:["as-e"],place:"West Yunnan, China",years:"2000 to 2010",
+ season:[7,1,10,31,true],measured:"Fruiting date and productivity",res:"Monthly",grade:"plots",
+ lags:[{v:"precip",t:"May and June rain and temperature",d:"Less rain and more heat went with later fruiting.",kind:"fixed",m1:5,m2:6,yo:0,chart:[123,62,1]},
+       {v:"precip",t:"August rain and temperature",d:"A warm, wet August went with good production.",kind:"fixed",m1:8,m2:8,yo:0,chart:[31,1,1]}],
+ caveat:"Eleven years of data, analysed with latent-structure regression.",
+ url:"https://www.researchgate.net/publication/234063498_Climate_change_effects_fruiting_of_the_prize_matsutake_mushroom_in_China",src:"Yang et al. 2012"},
+{id:"matsutake-japan",sp:"Tricholoma matsutake",cn:"matsutake",regions:["as-e"],place:"Japan (site not confirmed here)",years:"Published 2025",
+ season:[9,1,10,31,true],measured:"Occurrence of fruit bodies",res:"Daily",grade:"second",
+ lags:[{v:"precip",t:"Cumulative rain over less than two weeks",d:"Window length as summarised by the porcini preprint, which notes temperature was left out of that model and that this tends to shorten the rain window.",kind:"days",from:14,to:0,chart:[14,0,0]}],
+ caveat:"I have not read the paper itself. Treat the number as a pointer to the source.",
+ url:"https://doi.org/10.1016/j.funeco.2025.101415",src:"Tsunoda et al. 2025, Fungal Ecology"},
+{id:"matsutake-finland",sp:"Tricholoma matsutake",cn:"matsutake",regions:["eu-n"],place:"Southern Finland",years:"2008 to 2013",
+ season:[7,15,9,15,false],measured:"Yield, duration and onset",res:"Seasonal",grade:"pilot",
+ lags:[],nullResult:"No clear, simple link between fruiting and rainfall was found. Air and soil temperature, degree days and precipitation were all examined.",
+ caveat:"A null result is data too. It is a warning against assuming every species carries a tidy rain window.",
+ url:"https://www.tandfonline.com/doi/full/10.1080/02827581.2015.1006246",src:"Scandinavian Journal of Forest Research 2015"},
+{id:"morel-missouri",sp:"Morchella esculenta group",cn:"yellow morel",regions:["na-t"],place:"Wooded 0.5 ha site, New Franklin, Missouri, plus three test sites",years:"2001 to 2014",
+ season:[4,1,5,20,true],measured:"First appearance and abundance",res:"Daily",grade:"plots",
+ lags:[{v:"soil",t:"Accumulated mean soil temperature above 32 °F over the prior 20 days",d:"Best predictor of first appearance. An extension summary puts the threshold near 410 °F of accumulated warming. After warm winters, morels came later than predicted.",kind:"days",from:20,to:0,chart:[20,0,0]},
+       {v:"precip",t:"Rain events over 10 mm in the prior 30 days",d:"Linked to abundance, not onset. The two biggest years had the shortest seasons, 6 to 7 days.",kind:"days",from:30,to:0,chart:[30,0,0]}],
+ caveat:"Onset and abundance have different drivers here. One window will not serve both.",
+ url:"https://pubmed.ncbi.nlm.nih.gov/17363234/",src:"Mihail et al. 2007, and Mihail 2014 in McIlvainea"},
+{id:"chanterelle-sask",sp:"Cantharellus cibarius group",cn:"chanterelle",regions:["na-b"],place:"Jack pine stands, northern Saskatchewan",years:"4 to 5 years of buyer records",
+ season:[7,15,9,15,true],measured:"Weekly purchase volumes as a yield proxy",res:"Weekly",grade:"abstract",
+ lags:[{v:"temp",t:"Growing degree days (base 5 °C) 6 to 13 weeks before first appearance",d:"Minimum of about 500 ± 70 degree days, together with soil temperature.",kind:"days",from:91,to:42,chart:[91,42,0]},
+       {v:"precip",t:"Cumulative rain or soil moisture of 50 to 100 mm in the same window",d:"Either moisture measure worked.",kind:"days",from:91,to:42,chart:[91,42,0]}],
+ caveat:"Buyer records mix weather with picker effort and prices. I saw only the abstract.",
+ url:"https://scholar.google.com/scholar?q=Characterization+of+Chanterelle+and+Pine+Mushrooms+in+Northern+Saskatchewan",src:"Characterization of chanterelle and pine mushrooms in northern Saskatchewan"},
+{id:"yukon-kluane",sp:"All epigeous mushrooms",cn:"species not identified",regions:["na-b"],place:"13 areas along 210 km, Kluane region, Yukon",years:"1993 to 2007",
+ season:[7,20,8,31,true],measured:"Standing crop by weight",res:"Monthly",grade:"plots",
+ lags:[{v:"precip",t:"June rainfall of the same year",d:"With the term below, explained 85% of year-to-year variation.",kind:"fixed",m1:6,m2:6,yo:0,chart:[68,38,1]},
+       {v:"precip",t:"May rainfall of the previous year",d:"A lag of about 15 months.",kind:"fixed",m1:5,m2:5,yo:-1,chart:[463,433,1]}],
+ caveat:"Single crop peaking in the first two weeks of August. A high year was never followed by another high year, whatever the rain.",
+ url:"https://cdnsciencepub.com/doi/10.1139/B08-094",src:"Krebs et al. 2008, Botany"},
+{id:"winter-chanterelle",sp:"Craterellus tubaeformis",cn:"winter chanterelle",regions:["eu-c","eu-n","eu-m","na-t","na-b"],place:"Europe and North America, 3,057 photo-verified records",years:"2015 to 2021",
+ season:[7,15,12,31,false],measured:"Probability that conditions match observed fruiting",res:"Daily, 0.1° weather grid",grade:"cs",
+ lags:[{v:"mixed",t:"67 weather features, from a few days to a full year back",d:"No single window is reported. Tree ensembles learn the mix. AUC averaged 0.85 on held-out years, and correlation with Danish records was 0.67 or higher.",kind:"days",from:365,to:0,chart:[365,0,1]}],
+ caveat:"Scored against random dates, which any seasonal calendar would also beat. Skill over a day-of-year baseline is not reported.",
+ url:"https://www.biorxiv.org/content/10.1101/2023.05.05.539567v1.full",src:"bioRxiv preprint, 2023"},
+{id:"europe-optima",sp:"127 common European taxa",cn:"fruiting optima",regions:["eu-c","eu-n","eu-m"],place:"Europe-wide records",years:"Published 2025",
+ season:[1,1,12,31,false],measured:"Optimal climate and weather for recorded fruiting",res:"Daily",grade:"records",
+ lags:[{v:"temp",t:"Mean temperature on the recording day",d:"Species optima are available per taxon. 39% of species look sensitive to further warming, mostly boreal and tundra.",kind:"days",from:0,to:0,chart:[3,0,0]}],
+ caveat:"Same-day weather only. Useful for species temperature optima, not for look-back length.",
+ url:"https://www.sciencedirect.com/science/article/pii/S1754504825000066",src:"Andrew 2025, Fungal Ecology"}
+];
+
+const LOC = {"porcini-bielefeld":"Bielefeld, Germany","pine-ne-spain":"NE Spain","soria-ndvi":"Soria, Spain","soria-lactarius-nn":"Soria, Spain","norway-83":"Norway","swiss-chaneaz":"La Chanéaz, Switzerland","kyoto-ecm":"Kyoto, Japan","matsutake-yunnan":"Yunnan, China","matsutake-japan":"Japan","matsutake-finland":"S Finland","morel-missouri":"Missouri, USA","chanterelle-sask":"Saskatchewan, Canada","yukon-kluane":"Yukon, Canada","winter-chanterelle":"Europe and N America","europe-optima":"Europe"};
+const $ = id => document.getElementById(id);
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const fmt = d => d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+const doy = (m,d) => Math.floor((Date.UTC(2025,m-1,d)-Date.UTC(2025,0,0))/864e5);
+function inSeason(r,date){
+  const [m1,d1,m2,d2] = r.season, a = doy(m1,d1), b = doy(m2,d2), x = doy(date.getMonth()+1,date.getDate());
+  return a<=b ? (x>=a && x<=b) : (x>=a || x<=b);
+}
+function seasonText(r){
+  const [m1,d1,m2,d2,approx] = r.season;
+  if(m1===1&&d1===1&&m2===12&&d2===31) return "All year";
+  return d1+" "+MONTHS[m1-1].slice(0,3)+" to "+d2+" "+MONTHS[m2-1].slice(0,3)+(approx?" (approximate)":"");
+}
+function when(l,date){
+  const y = date.getFullYear();
+  if(l.kind==="days"){
+    if(l.from===0) return fmt(date);
+    const a = new Date(date); a.setDate(a.getDate()-l.from);
+    const b = new Date(date); b.setDate(b.getDate()-l.to);
+    return fmt(a)+" to "+fmt(b);
+  }
+  if(l.kind==="month"){ const m = new Date(y,date.getMonth()-l.offset,1); return MONTHS[m.getMonth()]+" "+m.getFullYear(); }
+  if(l.kind==="fixed"){ const yy = y+l.yo; return l.m1===l.m2 ? MONTHS[l.m1-1]+" "+yy : MONTHS[l.m1-1]+" to "+MONTHS[l.m2-1]+" "+yy; }
+  return l.when(y);
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function xmap(d,W){ // days back -> fraction from the right edge
+  let f; if(d<=90) f = d/90*0.62; else if(d<=365) f = 0.62+(d-90)/275*0.22; else f = 0.84+Math.min(d-365,175)/175*0.16;
+  return W - f*W;
+}
+function drawChart(list){
+  const W = Math.max(340, Math.min(720, $("chart").clientWidth||340)), padL=4, padR=10, iw=W-padL-padR;
+  let y = 34, rows = "";
+  list.forEach(r=>{
+    rows += `<a href="#${r.id}"><text x="${padL}" y="${y}" font-size="12.5" font-weight="600" text-decoration="underline">${esc(r.cn.charAt(0).toUpperCase()+r.cn.slice(1))}, ${esc(LOC[r.id])}</text></a>`;
+    y += 7;
+    if(!r.lags.length){ rows += `<text x="${padL}" y="${y+9}" font-size="11.5" fill-opacity=".7">No clear window found</text>`; y+=12; }
+    r.lags.forEach(l=>{
+      const x1 = padL+xmap(l.chart[0],iw), x2 = padL+xmap(l.chart[1],iw), w = Math.max(x2-x1,4);
+      rows += `<rect x="${x1.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="8" rx="1" fill="var(--${l.v})" ${l.chart[2]?'fill-opacity=".38" stroke="var(--'+l.v+')" stroke-dasharray="3 2"':''}><title>${esc(l.t)}</title></rect>`;
+      y += 12;
+    });
+    y += 12;
+  });
+  const H = y+4, ticks = [[0,"fruiting"],[30,"30 d"],[60,"60 d"],[90,"90 d"],[180,"6 mo"],[365,"1 yr"]];
+  const zb = padL+xmap(365,iw), za = padL+xmap(90,iw);
+  let grid = `<rect x="${padL}" y="18" width="${(za-padL).toFixed(1)}" height="${H-18}" fill="var(--zone)"/>`;
+  ticks.forEach(([d,lab])=>{ const x = padL+xmap(d,iw);
+    grid += `<line x1="${x}" x2="${x}" y1="18" y2="${H}" stroke="var(--line)" stroke-width="1"/><text x="${x}" y="12" font-size="11" text-anchor="${d===0?"end":"middle"}" fill-opacity=".75">${lab}</text>`; });
+  grid += `<text x="${padL+2}" y="12" font-size="11" fill-opacity=".75">earlier</text>`;
+  $("chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Look-back windows for ${list.length} studies, drawn as bars ending at the fruiting date. Full details are in the list below.">${grid}${rows}</svg>`;
+}
+function render(){
+  const reg = $("region").value || "all", date = $("date").valueAsDate ? new Date($("date").value+"T12:00:00") : new Date(), off = $("offseason").checked;
+  const list = R.filter(r => (reg==="all"||r.regions.includes(reg)) && (off||inSeason(r,date)));
+  const regName = REGIONS.find(x=>x[0]===reg)[1];
+  $("count").textContent = list.length+(list.length===1?" study matches ":" studies match ")+regName+" on "+fmt(date)+".";
+  if(!list.length){
+    $("chart").innerHTML = "";
+    $("cards").innerHTML = `<p class="empty">No study in this set covers ${esc(regName)} on ${fmt(date)}. That is a gap in the evidence, not a forecast of nothing. Tick "Show studies outside their fruiting season" or choose All regions.</p>`;
+  } else {
+    drawChart(list);
+    $("cards").innerHTML = list.map(r=>{
+      const g = GRADES[r.grade], ins = inSeason(r,date);
+      const lags = r.lags.map(l=>`<div class="lag"><i style="background:var(--${l.v})"></i><div><b>${esc(l.t)}</b><span class="when">For your date, look at: ${esc(when(l,date))}</span><br>${esc(l.d)}</div></div>`).join("");
+      return `<article class="card" id="${r.id}"><h3><em>${esc(r.sp)}</em></h3><p class="place">${esc(r.cn)}. ${esc(r.place)}. ${esc(r.years)}.</p>
+      ${lags}${r.nullResult?`<p>${esc(r.nullResult)}</p>`:""}
+      <p class="warn">${esc(r.caveat)}${reg!=="all"?" Measured at this one site, so using it elsewhere in "+esc(regName)+" is a hypothesis to test.":""}</p>
+      <p class="meta"><span class="grade${g[1]?" weak":""}">${g[0]}</span>Fruiting season: ${seasonText(r)}${ins?"":" (your date is outside it)"}. Measured: ${esc(r.measured)}. Time step: ${esc(r.res)}.<br><a href="${r.url}" target="_blank" rel="noopener">Read the source: ${esc(r.src)}</a></p></article>`;
+    }).join("");
+  }
+  try{ localStorage.setItem("lagatlas-region",reg); }catch(e){}
+}
+(function init(){
+  $("region").innerHTML = REGIONS.map(([v,n])=>`<option value="${v}">${n}</option>`).join("");
+  try{ const s = localStorage.getItem("lagatlas-region"); if(s && REGIONS.some(x=>x[0]===s)) $("region").value = s; }catch(e){}
+  const t = new Date(); $("date").value = t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+  ["region","date","offseason"].forEach(id=>$(id).addEventListener("change",render));
+  let rt; window.addEventListener("resize",()=>{clearTimeout(rt); rt=setTimeout(render,150);});
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+{
+ "Morels (Morchella)": {
+  "rg": 19686,
+  "verifiable": 46230,
+  "hidden": 5134,
+  "hidden_pct": 26.1,
+  "top3_months": [
+   3,
+   4,
+   5
+  ],
+  "top3_share": 89
+ },
+ "Chanterelles (Cantharellus)": {
+  "rg": 25888,
+  "verifiable": 104668,
+  "hidden": 4470,
+  "hidden_pct": 17.3,
+  "top3_months": [
+   7,
+   8,
+   9
+  ],
+  "top3_share": 59
+ },
+ "Chicken of the woods (Laetiporus)": {
+  "rg": 62144,
+  "verifiable": 101830,
+  "hidden": 5011,
+  "hidden_pct": 8.1,
+  "top3_months": [
+   8,
+   9,
+   10
+  ],
+  "top3_share": 66
+ },
+ "Hen of the woods (Grifola frondosa)": {
+  "rg": 10915,
+  "verifiable": 13326,
+  "hidden": 1447,
+  "hidden_pct": 13.3,
+  "top3_months": [
+   9,
+   10,
+   11
+  ],
+  "top3_share": 96
+ },
+ "King bolete (Boletus edulis s.s. label)": {
+  "rg": 7441,
+  "verifiable": 10835,
+  "hidden": 1723,
+  "hidden_pct": 23.2,
+  "top3_months": [
+   8,
+   9,
+   10
+  ],
+  "top3_share": 61
+ },
+ "Boletus genus": {
+  "rg": 17923,
+  "verifiable": 38918,
+  "hidden": 3561,
+  "hidden_pct": 19.9,
+  "top3_months": [
+   7,
+   8,
+   10
+  ],
+  "top3_share": 56
+ },
+ "Craterellus (trumpets, winter chanterelle)": {
+  "rg": 15760,
+  "verifiable": 29582,
+  "hidden": 2411,
+  "hidden_pct": 15.3,
+  "top3_months": [
+   7,
+   8,
+   9
+  ],
+  "top3_share": 54
+ },
+ "Hedgehogs (Hydnum)": {
+  "rg": 1850,
+  "verifiable": 12831,
+  "hidden": 288,
+  "hidden_pct": 15.6,
+  "top3_months": [
+   8,
+   9,
+   10
+  ],
+  "top3_share": 50
+ },
+ "Lobster (Hypomyces lactifluorum)": {
+  "rg": 17754,
+  "verifiable": 18269,
+  "hidden": 1755,
+  "hidden_pct": 9.9,
+  "top3_months": [
+   7,
+   8,
+   9
+  ],
+  "top3_share": 78
+ },
+ "Oysters (Pleurotus)": {
+  "rg": 43829,
+  "verifiable": 140387,
+  "hidden": 3260,
+  "hidden_pct": 7.4,
+  "top3_months": [
+   5,
+   6,
+   8
+  ],
+  "top3_share": 45
+ },
+ "Lions mane group (Hericium)": {
+  "rg": 25353,
+  "verifiable": 40727,
+  "hidden": 2722,
+  "hidden_pct": 10.7,
+  "top3_months": [
+   9,
+   10,
+   11
+  ],
+  "top3_share": 67
+ },
+ "Matsutake (T. murrillianum + magnivelare)": {
+  "rg": 1722,
+  "verifiable": 1982,
+  "hidden": 590,
+  "hidden_pct": 34.3,
+  "top3_months": [
+   10,
+   11,
+   12
+  ],
+  "top3_share": 77
+ },
+ "Cauliflower (Sparassis)": {
+  "rg": 8269,
+  "verifiable": 12877,
+  "hidden": 950,
+  "hidden_pct": 11.5,
+  "top3_months": [
+   8,
+   9,
+   10
+  ],
+  "top3_share": 68
+ }
+}
