@@ -28,7 +28,7 @@ db/schema.sql               D1 schema for the `zynergy-site-beta` database
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
 | `/forager` | Intended for the app page. Does not exist yet. |
-| `/Forager/mushroom-forecast/` | Planning record for the mushroom fruiting forecast, served as plain files. Start at `docs/planning/START_HERE.md` under it. |
+| `/Forager/mushroom-forecast/` | Planning record for the mushroom fruiting forecast, served as plain files. Start at `docs/planning/START_HERE.md` under it. Pages paths are case-sensitive: `/forager/mushroom-forecast/...` returns the holding page, not the file (checked on the preview build of `851b96d`, 2026-09-18), so this path and `/forager` above are two different paths. |
 
 The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
 form is served from, so moving a page never breaks a submission.
