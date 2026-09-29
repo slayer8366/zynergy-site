@@ -41,39 +41,63 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Deleting your Forager data</h1>
-  <p class="updated">Last updated: 11 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 29 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
-<p class="lead">Forager stores everything on your own device. There is no account, no server, and no copy of your data anywhere except the phone in your hand. That shapes what deletion means here: there is nothing to request, because there is no one holding a copy to ask.</p>
+<p class="lead">Forager stores everything on your own device. There is no account and no server, and the only copies of your data outside the app are ones you sent out yourself. That shapes what deletion means here: there is nothing to request, because there is no one holding a copy to ask.</p>
 
 <hr class="top">
 
 <h2>Delete individual items in the app</h2>
 
-<p>Anything you create can be deleted from inside Forager, item by item, and the deletion takes effect immediately:</p>
+<p>Most of what you create can be deleted from inside Forager, one item at a time. The deletion takes effect immediately; some deletions ask you to confirm first.</p>
 
 <ul>
-  <li><strong>Journal entries</strong>, including any coordinate attached to a find.</li>
-  <li><strong>Photos</strong>, whether taken with your camera app or imported from your gallery. Deleting a photo removes the stored file, not just the reference to it.</li>
-  <li><strong>Recorded tracks</strong>, the track and every GPS point in it.</li>
-  <li><strong>Waypoints</strong>, including vehicle and origin markers.</li>
-  <li><strong>Downloaded offline map regions.</strong></li>
+  <li><strong>Journal entries and finds</strong>, including any coordinate attached to a find. Deleting a find does not delete its photos; delete those from the app's photo gallery. Deleting a journal entry also removes the copies it kept, described below.</li>
+  <li><strong>Photos</strong>, whether taken with Forager's camera or imported from your gallery. Deleting a photo from the app's photo gallery removes the stored file, not just the reference to it.</li>
+  <li><strong>Waypoints.</strong> This does not remove the copy a journal entry kept of the waypoint; see below.</li>
+  <li><strong>Downloaded offline map regions.</strong> This does not remove the copy a journal entry kept of the region; see below.</li>
   <li><strong>Planned trips.</strong></li>
 </ul>
 
-<h2>Uninstalling removes everything</h2>
+<p><strong>Not yet deletable one by one.</strong> The current version of the app has no delete button for these:</p>
 
-<p>Uninstalling Forager deletes all of it: the database, the photo files, downloaded map regions, saved preferences and any crash reports. Nothing is left behind on the device.</p>
+<ul>
+  <li><strong>Recorded tracks</strong>, and every GPS point in them.</li>
+  <li><strong>Crash traces.</strong> Forager keeps the newest ten and removes older ones itself.</li>
+  <li><strong>Your last five searches</strong>: the place, radius, month and filter of each, with the species list it returned, kept so that a search you have run before still shows an answer with no signal. A new search replaces the one used least recently.</li>
+  <li><strong>The cached copy of an exported track.</strong> When you export a track as a GPX file, Forager writes the file to its own cache folder and hands that copy to the share sheet. It stays there; exporting the same track again replaces it. Clearing the app's cache removes it.</li>
+</ul>
+
+<p>Clearing Forager's data (Android Settings → Apps → Forager → Storage → Clear data) or uninstalling removes all of these.</p>
+
+<h2>Copies that stay until you delete the entry</h2>
+
+<p><strong>A journal entry keeps its own copy of what it noted about the waypoints, offline map regions, tracks, finds and photos it lists.</strong> Deleting the waypoint, region, find or photo does not remove that copy; delete the entry to remove it. What an entry keeps:</p>
+
+<ul>
+  <li>a <strong>waypoint</strong>: its name and its position;</li>
+  <li>an <strong>offline map region</strong>: its name, the position of its centre and its radius;</li>
+  <li>a <strong>track</strong>: its name, distance, duration and number of points;</li>
+  <li>a <strong>find</strong>: its date and your own identification of it;</li>
+  <li>a <strong>photo</strong>: the date you attached it.</li>
+</ul>
+
+<h2>Uninstalling removes what Forager stores</h2>
+
+<p>Uninstalling Forager deletes everything in its own storage: the database, the photo files, downloaded map regions, saved preferences, the cache and any crash reports. It does not delete a GPX file you already sent to another app; that copy belongs to the other app, outside Forager's control.</p>
 
 <p>Forager also sets <code>allowBackup="false"</code>, which means Android does <strong>not</strong> copy your Forager data into Google's automatic backup. There is no cloud copy to survive the uninstall and reappear on your next phone. That is a deliberate choice: it costs you the convenience of a restore, and it means uninstalling really is the end of the data.</p>
 
 <h2>There is nothing stored on a server</h2>
 
-<p>Forager has no account system and uploads nothing you create. Your entries, photos, tracks and waypoints never leave the device.</p>
+<p>Forager has no account system and uploads nothing you create. Your entries, photos, tracks and waypoints leave the device only when you send them yourself: a track you export as a GPX file, with its waypoints, or a planned trip or waypoint you open in a maps app with Directions.</p>
 
-<p>What does leave the device, while you are online, is <strong>where you are looking</strong>: the coordinates a species or weather lookup runs on, and the map tiles for the area on screen. Those requests go to iNaturalist, Open-Meteo, the map tile providers and a Cloudflare Worker run by the developer, and they are logged by the services that receive them. They carry no name, no account and no device identifier, because Forager has none to send. Full detail, including exactly which fields each service receives, is in the <a href="/privacy/">privacy policy</a>.</p>
+<p>What does leave the device, while you are online, is <strong>where you are looking</strong>: the coordinates a species or weather lookup runs on, and the map tiles for the area on screen. Those requests go to iNaturalist, Open-Meteo, the map tile providers and a Cloudflare Worker run by the developer, and the services that receive them may log them. They carry no name, no account and no device identifier, because Forager has none to send. Full detail, including exactly which fields each service receives, is in the <a href="/privacy/">privacy policy</a>.</p>
 
-<p>Because those requests are not stored by Forager and cannot be tied to you, there is no deletion request to make. If you want to stop them entirely, denying or revoking the location permission ends them; the app keeps working without it.</p>
+<p>Forager keeps no account and no record of these requests on any server of ours (the Worker keeps no request logs, as the privacy policy explains), and on the phone only the list of your last five searches records them, so there is no deletion request to make to us. The other services may keep their own logs, under their own policies.</p>
+
+<p>Denying or revoking the location permission stops Forager reading your position, and the app keeps working without it, but it does not stop these requests: a search on coordinates you type in, and a map you move, still send them.</p>
 
 <h2>The beta signup list is separate</h2>
 
