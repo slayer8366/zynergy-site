@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 11 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 29 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -56,7 +56,9 @@
 
 <p>Forager has no account, no sign-in, no sync and no analytics. Nothing you record, meaning tracks, journal entries, photos, offline map regions and settings, is uploaded to us or to anyone else.</p>
 
-<p>What is transmitted, while your phone is online, is <strong>where you are looking</strong>: the coordinates a search runs on, and the map tiles for the area on screen. Those go to iNaturalist, Open-Meteo, the map tile providers, and a Cloudflare Worker we operate. They carry a location and your IP address, and they are logged by the services that receive them.</p>
+<p>You can choose to save copies outside the app: a backup of your journal, a track as a GPX file, or a photo into your Gallery. Each of those is a file you place yourself, and Forager never sends one anywhere on its own. Once saved, a copy is outside Forager's control and outlives uninstalling it.</p>
+
+<p>What is transmitted, while your phone is online, is <strong>where you are looking</strong>: the coordinates a search runs on, and the map tiles for the area on screen. Those go to iNaturalist, Open-Meteo, the map tile providers, and a Cloudflare Worker we operate. They carry a location and your IP address, and the services that receive them may log them.</p>
 
 <div class="note">
   <p>Because location leaves the device and reaches third parties, the Play Data safety declaration for this app states that location is <strong>collected and shared</strong>. That is the accurate description, not a conservative one.</p>
@@ -67,25 +69,38 @@
 <p>Stored in the app's own private storage, readable by no other app:</p>
 
 <ul>
-  <li>Recorded tracks and their individual GPS points: latitude, longitude, timestamp, elevation, accuracy, speed.</li>
-  <li>Journal and log entries, including any coordinate attached to a find.</li>
-  <li>Photos taken in the app or imported from your gallery.</li>
-  <li>Downloaded offline map regions.</li>
-  <li>Preferences such as units and map mode.</li>
-  <li>Crash traces, written locally when the app crashes. They stay on the phone and are shared only if you choose to send one from the app's crash screen.</li>
+  <li>Recorded tracks, with their names and start and end times, and their individual GPS points: latitude, longitude, timestamp, elevation, accuracy, speed and speed accuracy.</li>
+  <li>Waypoints: position, altitude, name, note and time.</li>
+  <li>Planned trips: a name, a place and a date.</li>
+  <li>Journal and log entries, including any coordinate attached to a find. An entry also keeps a copy of what it noted about each track, waypoint, offline map region, find and photo it lists, and that copy stays when the item itself is deleted; see <a href="#deleting">Deleting your data</a>.</li>
+  <li>Photos taken in the app or imported from your gallery, with the place and time on record for each (see <a href="#photos">Photos and location metadata</a>).</li>
+  <li>Downloaded offline map regions, with each region's name, centre and radius.</li>
+  <li>Your last five searches: the place searched (latitude, longitude and radius), the month, the filter, and the species list iNaturalist returned, so that a search you have run before still shows an answer with no signal. A new search replaces the one used least recently, and the app has no button to clear the list.</li>
+  <li>Preferences such as units, map display settings, and the centre and radius you last chose for an offline region.</li>
+  <li>The file made when you share a track as GPX. Forager writes it to its own cache folder first and hands that copy to the share sheet, then deletes it once it is more than an hour old, before your next export or when the app next starts.</li>
 </ul>
 
-<p>None of this is transmitted by the app. It is deleted when you uninstall Forager or clear its data.</p>
+<p>The app uploads none of this. Something leaves the phone only when you send it yourself: a copy you save (below), a crash trace you share, or a trip or waypoint you open in a maps app. All of it is deleted when you uninstall Forager or clear its data, <strong>except for copies you have saved outside the app</strong>, described in the next section.</p>
+
+<p><strong>Crash traces are the one exception to "private".</strong> When the app crashes it writes a plain-text trace (the time, the thread's name, the Android version number and the stack trace) to a folder of its own inside the phone's shared storage, on purpose so that the phone's file manager can reach it; on older Android versions, other apps allowed to read shared storage can open it too. It keeps the newest ten. A trace leaves the phone only if you share it from Settings → Crash Logs. Android removes that folder when you uninstall.</p>
 
 <h3>Android's own backup is switched off</h3>
 
 <p>The app sets <code>android:allowBackup="false"</code>, which turns off both Android Auto Backup and the device-to-device transfer that runs during a new phone's setup. Your phone therefore does not copy Forager's data to your Google account, and does not hand it to another device on your behalf.</p>
 
-<p>This is a permanent decision rather than a setting for the closed test. Moving your data belongs to the app, not to the operating system.</p>
+<p>This is a permanent decision rather than a setting for the closed test. Moving your data belongs to the app rather than to the operating system, through the backup described below.</p>
 
-<div class="note">
-  <p><strong>There is no export or import feature yet.</strong> As of the date at the top of this document, data recorded in Forager stays on the device that recorded it until you have an app version that can export it. This policy will not describe that feature as if it already existed.</p>
-</div>
+<h2>Copies you save outside the app</h2>
+
+<p>Each of these happens only when you ask for it, and each writes an ordinary file that Forager does not control afterwards. Uninstalling Forager or clearing its data does <strong>not</strong> remove them.</p>
+
+<ul>
+  <li><strong>Journal backup.</strong> One <code>.zip</code> file, saved where you choose through Android's file picker: the phone, an SD card, or a cloud folder if you pick one. It holds your journal entries and finds with their coordinates, your photos, your recorded tracks with every GPS point, your waypoints, your planned trips, and the details of your offline map regions (their name and area, not the map tiles). It does not include your recent searches or your settings. <strong>The backup file is not encrypted</strong>, so anyone who has the file can read what is in it; keep it somewhere you trust. If you save it to a cloud folder, that service stores a copy under its own terms; Forager does not upload it and has no copy.</li>
+  <li><strong>Scheduled backups</strong> write the same kind of file on a schedule you set (daily, weekly or monthly; weekly until you change it) into a folder you choose. They are <strong>off unless you turn them on</strong>, and turning them on does not run one straight away: the first backup runs after one full interval. <strong>Forager keeps the newest five files a scheduled backup made and deletes the older ones it made itself.</strong> It knows which files those are from a list it keeps in its own storage, so it never deletes a backup you made by hand or any other file in that folder. That has two limits. If the list is lost, because you clear the app's data or reinstall, files made before then are no longer known to Forager and stay until you delete them. And if Android refuses a delete, the file stays: the failure is logged on the phone and not retried. A backup you start from a failed scheduled backup's "Try again" counts as one of the scheduled ones.</li>
+  <li><strong>Restore</strong> reads a backup file you pick and, each time you ask, either replaces the journal on the phone or merges it in. It does not add an offline map region the phone already has, meaning one with the same name and radius and a centre within one metre. Nothing is fetched from anywhere else.</li>
+  <li><strong>Track export.</strong> A recorded track can be exported as a GPX file through Android's share sheet, to wherever you send it. The file contains the track's coordinates, times and elevations, the waypoints dropped while it recorded (with their names and notes), and every point Forager stored for the track, including the ones the app leaves out of the track it shows, each marked as kept or excluded. Forager's own copy in its cache folder is deleted once it is an hour old, as described above.</li>
+  <li><strong>Save to Gallery.</strong> A photo can be saved from the photo viewer into the phone's Gallery, in a "Forager" album, on Android 10 and later; on Android 8 and 9 the control reads "Save to folder" and writes to a place and name you choose with Android's file picker. A copy in the Gallery is visible to other apps that can read your photos, because Forager adds it to Android's shared photo library. What a saved copy carries is described under <a href="#photos">Photos and location metadata</a>.</li>
+</ul>
 
 <h2>What is transmitted, to whom, and why</h2>
 
@@ -135,42 +150,52 @@
 
 <p>One thing the app does not request itself: tapping an observation to open it on iNaturalist hands a link to your browser or to the iNaturalist app. From that point it is an ordinary web visit made by that other app, under its own terms, not a request Forager makes.</p>
 
-<p>Downloading an offline region issues a large number of tile requests in a short time, covering the whole region. That is the download. Once a region is downloaded, viewing the map inside it makes no tile requests at all. Searching still does.</p>
+<p>The same goes for <strong>Directions</strong> on a planned trip or a waypoint: Forager hands its name and coordinates to the maps app you pick, and what happens next is that app's request, not Forager's.</p>
+
+<p>Downloading an offline region issues a large number of tile requests to our map tile service in a short time, covering the whole region. That is the download. Having a region downloaded does not stop the Maps tab loading its map tiles online, inside the region too, and searching sends its lookups as described in the table above whether or not a region has been downloaded.</p>
 
 <h2>The map tile service we operate</h2>
 
-<p>The <code>forager-pmtiles.brandonlee1-894.workers.dev</code> endpoint is operated by us on Cloudflare's platform, serving tiles out of a Cloudflare R2 bucket. Because we run it ourselves, no third-party tile vendor sees the requests your device makes to it.</p>
+<p>The <code>forager-pmtiles.brandonlee1-894.workers.dev</code> endpoint is operated by us on Cloudflare's platform, serving tiles out of a Cloudflare R2 bucket. Your device's requests go to the Worker, not to a tile vendor.</p>
 
-<p><strong>We keep no logs of these requests.</strong> The Worker's own code writes no log lines, and request logging is explicitly disabled in its configuration rather than left to a platform default. We also hold no plan that would let us export or retrieve per-request logs from Cloudflare.</p>
+<p>One level of detail is not in our own archive. When a tile at that level (zoom 15) is asked for and we do not have it yet, the Worker fetches it from Protomaps' public map build (<code>build.protomaps.com</code>) and keeps a copy in the R2 bucket. That fetch is made by the Worker, from Cloudflare, and carries nothing from your device's request, so Protomaps learns that the tile was wanted but not who wanted it.</p>
+
+<p><strong>We keep no logs of these requests.</strong> The Worker's own code writes no log lines, and request logging is explicitly disabled in its configuration rather than left to a platform default. That is deliberate: a request log would record each request's address, and this Worker's addresses are tile coordinates, so a log there would be a record of which areas people looked at. Two things are kept that are not logs: Cloudflare caches the tiles it serves, keyed by the tile's address, and the zoom 15 tiles fetched from Protomaps stay in the R2 bucket. Neither records who asked for a tile.</p>
 
 <p>Cloudflare operates the infrastructure and, as the host, processes these requests on our behalf under its own privacy policy. We state no retention period here because there is no setting of ours that produces one, and we will not publish a figure we cannot verify.</p>
 
 <p>Nothing about these requests is linked to an account, because the app has none. Nothing is sold, shared for advertising, or used for profiling.</p>
 
-<h2>Photos and location metadata</h2>
+<h2 id="photos">Photos and location metadata</h2>
 
-<p>Photos stay on your phone. The app never transmits one. What the app does with the location metadata embedded in a photo file is narrower than it may sound, and is stated here as it actually is:</p>
+<p>Photos stay on your phone unless you save one yourself; the app never transmits one. What happens to the metadata inside a photo file depends on how the photo got into Forager:</p>
 
 <ul>
-  <li>Forager does <strong>not</strong> run an EXIF-stripping step over the photo it stores.</li>
-  <li>For a <strong>gallery import</strong> on Android 10 and later, the platform itself redacts GPS tags from the copy the app reads. On Android 9 and earlier, which the app still supports, there is no such redaction, and an imported photo's copy can keep its embedded GPS tags.</li>
-  <li>For a <strong>photo taken inside Forager</strong>, the camera app writes into a file in Forager's own directory. The platform redaction above does not apply, so whatever GPS tags the camera app wrote are in the stored file.</li>
+  <li><strong>Photos taken with Forager's camera.</strong> Forager has its own camera screen, not a separate camera app, and it never writes a location into the photo file. Each photo it takes is stripped of embedded metadata when it is stored: location, camera details, timestamps, thumbnails, and every other tag. What is kept is only what the picture needs to display correctly: its orientation, its colour profile and two small technical headers (pixel density and colour transform). The strip keeps an allowlist rather than removing a list of known tags, so a tag nobody thought of is removed too. If the strip cannot complete, the photo is stored as it was and the failure is logged on the phone, rather than losing the photo.</li>
+  <li><strong>Photos imported from your gallery</strong> are not stripped by Forager: it stores the file exactly as Android hands it over. On Android 10 and later Android normally withholds a photo's GPS tags from an app that has not asked for the original, and Forager does not ask for the original for that copy, so the stored copy normally has none; other metadata, such as the camera model and the time, can remain. On Android 8 and 9 there is no such step, and an imported photo's copy can keep its GPS tags.</li>
+  <li><strong>Saving to the Gallery.</strong> A saved copy is an exact copy of the photo as Forager stored it. A photo taken with Forager's camera therefore has no location in it. An imported photo is saved as it was imported: if it carried a location or other details, so does the copy. Our position, in the owner's words: "Imported photos taken outside the app are not within our scope. They can use a scrubbing app to remove it if they want it removed. All photos taken inside the app are scrubbed either way and that's our scope". Forager writes the time it has on record for the photo as the copy's "date taken" (for a photo from Forager's camera, when it was taken; for an import, the capture time read from the file when Android allows it, otherwise the moment it was imported), and only when the app has one; it never writes a location. The copy's file name carries the same time.</li>
 </ul>
 
-<div class="note">
-  <p>This matters if you export or share a photo yourself. Depending on your Android version and how the photo got into the app, it may carry the coordinates of where it was taken. Treat a shared photo the way you would treat a shared track.</p>
-</div>
+<p>The place and time of a photo are kept in the app's own database instead:</p>
 
-<p>A find's coordinate, when the app records one, is stored in the app's own database rather than read out of a camera capture's EXIF.</p>
+<ul>
+  <li>For a photo taken with Forager's camera, your position when you took it, if <strong>Automatically Save Location to Photos</strong> is on in Settings. It starts on. Switching it off stops Forager saving your position with photos and finds on its own; a place you set yourself is still kept.</li>
+  <li>For an imported photo, on Android 10 and later, the date and location Forager reads from the original file, using the <code>ACCESS_MEDIA_LOCATION</code> permission below, so a find can be dated and placed. That reading goes into the database only; the stored copy is not changed.</li>
+</ul>
 
 <h2>Permissions and what they are used for</h2>
 
+<p>This list matches the permissions the built app declares, including those its libraries add: <code>INTERNET</code>, <code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>CAMERA</code>, <code>ACCESS_MEDIA_LOCATION</code>, <code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_LOCATION</code>, <code>POST_NOTIFICATIONS</code>, <code>VIBRATE</code>, <code>ACCESS_NETWORK_STATE</code>, <code>ACCESS_WIFI_STATE</code>, <code>WAKE_LOCK</code>, <code>RECEIVE_BOOT_COMPLETED</code>, and one permission internal to the app, added by a support library and held by no other app.</p>
+
 <ul>
-  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. While the app is in the foreground it receives location updates continuously, not only while you are recording. When you leave the app, it releases its location subscription rather than relying on Android to withhold it.</li>
-  <li><strong>Camera</strong>: taking a photo for a journal entry.</li>
-  <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes.</li>
-  <li><strong>Notifications, vibrate, foreground service</strong>: the off-track alert, the sundown alerts (a turnaround warning and one at sunset, while a track is recording), and the recording notification. The sundown alerts are computed on the device from the clock and your position; nothing is sent anywhere to produce them.</li>
-  <li><strong>Internet</strong>: the requests listed above.</li>
+  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, the coordinates a species or weather lookup searches on, and, while Automatically Save Location to Photos is on, the place a photo or find was made. Forager uses Android's GPS and network location providers, whichever are switched on. Location is not confined to recording: while the app is on screen it listens for your position on every tab, at most once a second, and on a phone-sized window it asks for a fix once as the Maps screen opens. When you leave the app, it releases that subscription rather than relying on Android to withhold it.</li>
+  <li><strong>Camera</strong> (<code>CAMERA</code>): taking a photo for a journal entry with Forager's own camera. Photos can also be chosen from your gallery, which needs no permission.</li>
+  <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes, and asked for when you start an import, not at launch, within Android's own limits on repeat requests.</li>
+  <li><strong>Notifications, vibrate, foreground service</strong> (<code>POST_NOTIFICATIONS</code>, <code>VIBRATE</code>, <code>FOREGROUND_SERVICE</code>): the off-track alert (a notification and a vibration, only while you are navigating back), the sundown alerts (a turnaround warning and one at sunset, while a track is recording), the ongoing recording notification, and the backup notifications below. The sundown alerts are computed on the device from the clock and your position; nothing is sent anywhere to produce any of them. On Android 13 and later Forager asks for the notification permission when you start a recording, and once when you first turn scheduled backups on.</li>
+  <li><strong>Notifications, for backups</strong>, in a channel named "Backups". A scheduled backup posts a notification only when it could not finish ("Scheduled backup didn't finish", with a "Try again" button) or when it saved but had to leave some photos out ("Scheduled backup saved. N photos couldn't be backed up."). A backup that goes cleanly posts nothing. Tapping a notification opens the Backup settings. <strong>The permission is asked once</strong> (on Android 13 and later, where notifications need permission): the first time you turn scheduled backups on with a folder chosen, and never again for backups. If you decline, or notifications are off, the schedule still runs; when a scheduled backup then has one of those two things to report, the same words are shown in the app, once, the next time you open it.</li>
+  <li><strong>Internet</strong> (<code>INTERNET</code>): the requests listed above.</li>
+  <li><strong>Network and Wi-Fi state</strong> (<code>ACCESS_NETWORK_STATE</code>, <code>ACCESS_WIFI_STATE</code>): added by MapLibre, the library Forager draws its maps with, to know whether the phone is online; other bundled libraries, including WorkManager below, also declare network state. They read connection state only; nothing is sent because of them.</li>
+  <li><strong>Run at startup and keep awake</strong> (<code>RECEIVE_BOOT_COMPLETED</code>, <code>WAKE_LOCK</code>): declared by Android's WorkManager library, not by Forager's own manifest, and not used by Forager's own code. Forager uses WorkManager only to run scheduled backups and a "Try again" backup. With scheduled backups off, Forager has no scheduled job.</li>
 </ul>
 
 <div class="note">
@@ -178,11 +203,11 @@
   <p>Outside those two states, app open or a recording running, Forager receives no location at all.</p>
 </div>
 
-<p>You can revoke location permission at any time in Android Settings. Recording will not work without it, but the rest of the app will.</p>
+<p>You can revoke location permission at any time in Android Settings. Recording will not work without it, but the rest of the app will. Revoking it stops Forager reading your position; it does not stop the requests listed above, because a search on coordinates you type in, and the map you move, still send them.</p>
 
 <h2>No analytics, no ads, no tracking</h2>
 
-<p>The app bundles no analytics, crash-reporting or advertising SDK. There is no telemetry of any kind: no usage events, no session data, no device fingerprint, no third-party identifier. Nothing about your use of the app is reported to us unless you write it in a message and send it yourself.</p>
+<p>The app bundles no analytics, crash-reporting or advertising SDK. There is no telemetry of any kind: no usage events, no session data, no device fingerprint, no third-party identifier. Beyond the map requests our tile service receives (above), nothing about your use of the app reaches us unless you write it in a message and send it yourself.</p>
 
 <h2>Beta testing</h2>
 
@@ -212,8 +237,8 @@ Data safety declaration, which covers the app.</p>
 <div class="note">
   <p><strong>Your IP address is not stored.</strong> To stop the form being flooded, a separate table
   keeps a salted SHA-256 hash of the connecting address with a counter and a timestamp. That is
-  enough to recognise a repeat submission within the hour and not enough to recover the address it
-  came from.</p>
+  enough to recognise a repeat submission within the hour. Those rows are not deleted
+  automatically.</p>
 </div>
 
 <p>The list lives in a Cloudflare D1 database we operate, on Cloudflare's infrastructure and under
@@ -235,15 +260,30 @@ begin with.</p>
 
 <p>Forager is not directed at children and collects nothing about anyone, including children, beyond what is described above.</p>
 
-<h2>Your control over your data</h2>
+<h2 id="deleting">Deleting your data</h2>
 
-<p>Your journal is stored locally, so you control it directly:</p>
+<p>Your journal is stored locally, so you control it directly. Almost everything you create in Forager can be deleted from inside the app, one item at a time: journal entries, finds, photos, recorded tracks, waypoints, offline map regions and planned trips. Deleting a waypoint, track, offline map region, journal entry, find or photo shows an Undo for a few seconds first, and the item is removed when the Undo closes; a planned trip is deleted at once. A recorded track is deleted with a swipe on its row in Records, or with Delete on its details; a track that is still recording cannot be deleted. Deleting a find does not delete its photos; delete those from the app's photo gallery.</p>
+
+<p>Two things have no delete button: the list of your last five searches, which a newer search replaces, and crash traces, of which Forager keeps the newest ten and removes older ones itself.</p>
+
+<p><strong>Deleting an item does not always remove every copy of it.</strong> A journal entry keeps a copy of what it noted about each track, waypoint, offline map region, find and photo it lists, and that copy stays when the item is deleted. Deleting a track, waypoint or offline map region does not remove the copy a journal entry kept; delete the entry to remove it. What an entry keeps, by kind:</p>
 
 <ul>
-  <li><strong>Delete individual entries</strong> in the app.</li>
-  <li><strong>Clear all data</strong> through Android Settings → Apps → Forager → Storage → Clear data.</li>
-  <li><strong>Uninstall</strong> to remove everything. Because Android backup is switched off for this app, there is no copy in your Google account.</li>
+  <li>a <strong>waypoint</strong>: its name and its position;</li>
+  <li>an <strong>offline map region</strong>: its name, the position of its centre and its radius;</li>
+  <li>a <strong>track</strong>: its name, distance, duration and number of points; and, once the track is deleted, its <strong>path</strong>, meaning the latitude and longitude of each point, in order, without times, saved into every journal entry that has recorded a decision about the track, including an entry where you chose to leave it out;</li>
+  <li>a <strong>find</strong>: its date and your own identification of it;</li>
+  <li>a <strong>photo</strong>: the date you attached it.</li>
 </ul>
+
+<p>The copies go when you delete the entry, or when you take that item out of the entry while editing it. They are also in the backups you make.</p>
+
+<ul>
+  <li><strong>Clear all data</strong> through Android Settings → Apps → Forager → Storage → Clear data.</li>
+  <li><strong>Uninstall</strong> to remove everything Forager stores in its own storage, including the database, the photo files and any crash reports. Because Android backup is switched off for this app, there is no copy in your Google account to survive and reappear.</li>
+</ul>
+
+<p><strong>Files you saved outside the app are not removed by uninstalling</strong>: backup files, exported GPX tracks, and photos saved to your Gallery. Delete those yourself in your Files or Gallery app. In the folder a scheduled backup writes to, Forager keeps the newest five files it made and deletes older ones it made itself; anything else there is yours to remove, including your own backups and any scheduled backup that Forager no longer knows about or could not delete.</p>
 
 <p>We hold no copy of your journal, and no logs of your map tile requests, so for the app's own
 data there is nothing for us to produce or delete on your behalf.</p>
