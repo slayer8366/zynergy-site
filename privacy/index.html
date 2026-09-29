@@ -76,7 +76,7 @@
   <li>Photos taken in the app or imported from your gallery, with the place and time on record for each (see <a href="#photos">Photos and location metadata</a>).</li>
   <li>Downloaded offline map regions, with each region's name, centre and radius.</li>
   <li>Your last five searches: the place searched (latitude, longitude and radius), the month, the filter, and the species list iNaturalist returned, so that a search you have run before still shows an answer with no signal. A new search replaces the one used least recently, and the app has no button to clear the list.</li>
-  <li>Preferences such as units, and the centre and radius you last chose for an offline region.</li>
+  <li>Preferences such as units, map display settings, and the centre and radius you last chose for an offline region.</li>
   <li>The file made when you share a track as GPX. Forager writes it to its own cache folder first and hands that copy to the share sheet, then deletes it once it is more than an hour old, before your next export or when the app next starts.</li>
 </ul>
 
@@ -179,7 +179,7 @@
 <p>The place and time of a photo are kept in the app's own database instead:</p>
 
 <ul>
-  <li>For a photo taken with Forager's camera, your position when you took it, if <strong>Automatically Save Location to Photos</strong> is on in Settings. It starts on. Switching it off stops every automatic position capture, for photos and for finds alike; a place you set yourself is still kept.</li>
+  <li>For a photo taken with Forager's camera, your position when you took it, if <strong>Automatically Save Location to Photos</strong> is on in Settings. It starts on. Switching it off stops Forager saving your position with photos and finds on its own; a place you set yourself is still kept.</li>
   <li>For an imported photo, on Android 10 and later, the date and location Forager reads from the original file, using the <code>ACCESS_MEDIA_LOCATION</code> permission below, so a find can be dated and placed. That reading goes into the database only; the stored copy is not changed.</li>
 </ul>
 
@@ -188,7 +188,7 @@
 <p>This list matches the permissions the built app declares, including those its libraries add: <code>INTERNET</code>, <code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>CAMERA</code>, <code>ACCESS_MEDIA_LOCATION</code>, <code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_LOCATION</code>, <code>POST_NOTIFICATIONS</code>, <code>VIBRATE</code>, <code>ACCESS_NETWORK_STATE</code>, <code>ACCESS_WIFI_STATE</code>, <code>WAKE_LOCK</code>, <code>RECEIVE_BOOT_COMPLETED</code>, and one permission internal to the app, added by a support library and held by no other app.</p>
 
 <ul>
-  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, the coordinates a species or weather lookup searches on, and, while Automatically Save Location to Photos is on, the place a photo or find was made. Forager asks Android for both GPS and network-based positions. Location is not confined to recording: while the app is on screen it listens for your position on every tab, at most once a second, and on a phone-sized window it asks for a fix once as the Maps screen opens. When you leave the app, it releases that subscription rather than relying on Android to withhold it.</li>
+  <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, the coordinates a species or weather lookup searches on, and, while Automatically Save Location to Photos is on, the place a photo or find was made. Forager uses Android's GPS and network location providers, whichever are switched on. Location is not confined to recording: while the app is on screen it listens for your position on every tab, at most once a second, and on a phone-sized window it asks for a fix once as the Maps screen opens. When you leave the app, it releases that subscription rather than relying on Android to withhold it.</li>
   <li><strong>Camera</strong> (<code>CAMERA</code>): taking a photo for a journal entry with Forager's own camera. Photos can also be chosen from your gallery, which needs no permission.</li>
   <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes, and asked for when you start an import, not at launch, within Android's own limits on repeat requests.</li>
   <li><strong>Notifications, vibrate, foreground service</strong> (<code>POST_NOTIFICATIONS</code>, <code>VIBRATE</code>, <code>FOREGROUND_SERVICE</code>): the off-track alert (a notification and a vibration, only while you are navigating back), the sundown alerts (a turnaround warning and one at sunset, while a track is recording), the ongoing recording notification, and the backup notifications below. The sundown alerts are computed on the device from the clock and your position; nothing is sent anywhere to produce any of them. On Android 13 and later Forager asks for the notification permission when you start a recording, and once when you first turn scheduled backups on.</li>
@@ -276,7 +276,7 @@ begin with.</p>
   <li>a <strong>photo</strong>: the date you attached it.</li>
 </ul>
 
-<p>The copies go when you delete the entry itself, and only then. They are also in the backups you make.</p>
+<p>The copies go when you delete the entry, or when you take that item out of the entry while editing it. They are also in the backups you make.</p>
 
 <ul>
   <li><strong>Clear all data</strong> through Android Settings → Apps → Forager → Storage → Clear data.</li>
