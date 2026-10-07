@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 11 September 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 7 October 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -152,9 +152,8 @@
 <p>Photos stay on your phone. The app never transmits one. What the app does with the location metadata embedded in a photo file is narrower than it may sound, and is stated here as it actually is:</p>
 
 <ul>
-  <li>Forager does <strong>not</strong> run an EXIF-stripping step over the photo it stores.</li>
-  <li>For a <strong>gallery import</strong> on Android 10 and later, the platform itself redacts GPS tags from the copy the app reads. On Android 9 and earlier, which the app still supports, there is no such redaction, and an imported photo's copy can keep its embedded GPS tags.</li>
-  <li>For a <strong>photo taken inside Forager</strong>, the camera app writes into a file in Forager's own directory. The platform redaction above does not apply, so whatever GPS tags the camera app wrote are in the stored file.</li>
+  <li>For a <strong>photo taken inside Forager</strong>, the app's own camera writes it into Forager's private storage and attaches no location to it. Before the photo is stored, Forager removes its embedded metadata, including GPS tags, timestamps, camera make and model, and thumbnails, keeping only its orientation, its colour profile and what is needed to display it. If that step cannot complete, the photo is stored as it was, with its metadata, rather than lost.</li>
+  <li>For a <strong>gallery import</strong>, Forager does <strong>not</strong> run a metadata-stripping step over the copy it stores. On Android 10 and later, the platform itself redacts GPS tags from the copy the app reads. On Android 9 and earlier, which the app still supports, there is no such redaction, and an imported photo's copy can keep its embedded GPS tags.</li>
 </ul>
 
 <div class="note">
@@ -167,7 +166,7 @@
 
 <ul>
   <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>, <code>FOREGROUND_SERVICE_LOCATION</code>): showing your position, recording a track, navigating back, and the coordinates a species or weather lookup searches on. While the app is in the foreground it receives location updates continuously, not only while you are recording. When you leave the app, it releases its location subscription rather than relying on Android to withhold it.</li>
-  <li><strong>Camera</strong>: taking a photo for a journal entry.</li>
+  <li><strong>Camera</strong> (<code>CAMERA</code>): Forager's own camera, for taking photos to attach to a journal entry. The app asks for it when you first open the camera, not at launch; if you decline, the camera does not open, and you can still attach photos from your gallery. Photos it takes are stored on your device, as described under "Photos and location metadata" above. Choosing a photo from your gallery needs no permission: it uses Android's photo picker.</li>
   <li><strong><code>ACCESS_MEDIA_LOCATION</code></strong>: reading the capture date and coordinate of a photo you import, so a find can be dated and placed. Read separately from the stored copy's bytes.</li>
   <li><strong>Notifications, vibrate, foreground service</strong>: the off-track alert, the sundown alerts (a turnaround warning and one at sunset, while a track is recording), and the recording notification. The sundown alerts are computed on the device from the clock and your position; nothing is sent anywhere to produce them.</li>
   <li><strong>Internet</strong>: the requests listed above.</li>
