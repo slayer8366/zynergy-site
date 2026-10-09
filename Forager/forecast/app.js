@@ -22,7 +22,8 @@ const LAYERS = {
 };
 const VIRIDIS = [[68, 1, 84], [71, 44, 122], [59, 81, 139], [44, 113, 142], [33, 144, 141],
   [39, 173, 129], [92, 200, 99], [170, 220, 50], [253, 231, 37]];
-const PENDING = [190, 190, 190];
+const PENDING = [190, 190, 190]; // grey 255: Canada, waits for SCANFI
+const MISSING = [120, 120, 120]; // grey 254: a tile not computed yet
 const PLACES = [['Seattle', -122.332, 47.606], ['Portland', -122.679, 45.515], ['Spokane', -117.426, 47.659],
   ['Boise', -116.202, 43.615], ['Eugene', -123.087, 44.052], ['Bend', -121.315, 44.058],
   ['Redding', -122.392, 40.587], ['Missoula', -113.994, 46.872], ['Medford', -122.875, 42.327],
@@ -61,7 +62,8 @@ maplibregl.addProtocol('pnw', async (params) => {
     const grey = d[i], alpha = d[i + 3];
     if (alpha === 0) continue;
     let rgb;
-    if (spec.pending && grey > 200) rgb = PENDING; // 255 = pending; 201 to 254 only where overviews blend it
+    if (spec.pending && grey === 254) rgb = MISSING;
+    else if (spec.pending && grey > 200) rgb = PENDING; // 255; 201 to 253 only where overviews blend
     else rgb = colour((spec.decode(grey) - spec.lo) / (spec.hi - spec.lo));
     d[i] = rgb[0]; d[i + 1] = rgb[1]; d[i + 2] = rgb[2];
   }
@@ -114,6 +116,7 @@ function show(name) {
   document.getElementById('hi').textContent = spec.hi;
   document.getElementById('unit').textContent = spec.unit;
   document.getElementById('key-pending').hidden = !spec.pending;
+  document.getElementById('key-missing').hidden = !spec.pending;
   document.getElementById('key-thin').hidden = !spec.thin;
   document.getElementById('about').textContent = spec.about;
   document.getElementById('readout').textContent = 'Tap the map to read the value at a spot.';
@@ -140,7 +143,8 @@ map.on('click', async (e) => {
   const v = await valueAt(e.lngLat);
   const where = `${e.lngLat.lat.toFixed(3)} N, ${(-e.lngLat.lng).toFixed(3)} W`;
   if (!v || v.alpha === 0) out.textContent = `No data here (${where}).`;
-  else if (spec.pending && v.grey === 255) out.textContent = `Canada: not computed yet (${where}).`;
+  else if (spec.pending && v.grey === 255) out.textContent = `Canada: not computed yet, waits for the Canadian tree data (${where}).`;
+  else if (spec.pending && v.grey === 254) out.textContent = `Not computed yet: a border tile held back by a coastline question (${where}).`;
   else out.textContent = `${spec.fmt(spec.decode(v.grey))} (${where}).`;
 });
 
