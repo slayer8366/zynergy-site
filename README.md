@@ -166,6 +166,15 @@ because it is coarse and "where is the interest coming from" is worth being able
 The failed-notification log line deliberately omits the address too. Which signup failed is
 answerable from the export, and a request log is the wrong place to accumulate addresses.
 
+**`functions/_middleware.js` serves byte ranges for `/Forager/forecast/data/*.pmtiles`.** A
+PMTiles reader asks for small byte ranges. On the preview of 2026-10-09 the static asset server
+answered `Range: bytes=0-126` on these archives with the whole file and `200`, which the reader
+rejects, so the middleware cuts the requested range out of the asset's stream and answers `206`
+with `Content-Range` (or `416`). Only that folder's `.pmtiles` files take this path; every other
+response is unchanged. Rejected: fetching each whole archive in the browser (8 to 18 MB a layer on
+a phone), and pre-cut `z/x/y.png` folders (tens of thousands of files, against the PMTiles
+delivery the forecast plans to use).
+
 **`functions/_middleware.js` blocks `/functions/*` and `/db/*`.** Pages publishes the build
 output directory, which for this project is the repository root. Whether the functions
 directory is also uploaded as static files depends on how Pages treats a given project, and
