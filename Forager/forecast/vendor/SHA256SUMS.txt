@@ -1,8 +1,7 @@
 # Vendored, served from this site because the site CSP allows scripts from 'self' only.
 # maplibre-gl 6.13.0, npm tarball sha512-ELXk4h+xl0URFQEnVbAN6MGn61P6jq4amUWHiskLVsvHCaKdf1Zq6G8UNOD0AQ3UaXoL5ECc8ovz8yqYEBGPKw== (matches the registry), files from package/dist and package/LICENSE.txt, BSD-3-Clause
-# pmtiles 4.5.0, npm tarball sha512-CBeD4SoUluFziGdy/8k7FOjQxQy486n+929W/tWophauvMICpkZ26vGBWhDt/6b1FZQWNaf4jFdT/5+q0Wii5w== (matches the registry), package/dist/pmtiles.js, BSD-3-Clause (package.json; the tarball carries no licence file)
+# pmtiles 4.5.0 was vendored until 2026-10-09 and is no longer used: the map reads static tiles.
 ee5fc05a0677eaf69601d2c7db0d9ecd6cc27c3abc1d0733bc9ed34707cf8ef2  maplibre-gl-LICENSE.txt
 20fc3054e6c769ae9502ec5c7ea46dae05b544fdc4fca2108553fb8c07265bf3  maplibre-gl.css
 389731e8581cc59d484e867b051db73ae034a76f0691d2890a2a1a7d2495bdf3  maplibre-gl.mjs
 53a2dd60f76c7b9201a3cc007b755d98ce4b52403843fef5c90c41780fe62e91  maplibre-gl-worker.mjs
-caf981bc46f6327ee7e65d5dc964d89d38a69f60edca2bd4c5c890c21b554c6c  pmtiles.js

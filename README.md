@@ -14,10 +14,13 @@ functions/_middleware.js    blocks /functions/* and /db/*, sets the shared respo
 functions/api/beta-signup.js  POST: records a signup, notifies support@
 functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
 db/schema.sql               D1 schema for the `zynergy-site-beta` database
-Forager/forecast/           forecast test area: index.html, app.js, data/ (PMTiles, lines),
-                              vendor/ (MapLibre GL JS 6.13.0 and PMTiles 4.5.0, self-hosted
-                              because the CSP allows scripts from 'self' only; SHA256SUMS.txt)
+Forager/forecast/           forecast test area: index.html, app.js, data/ (static map tiles
+                              data/<layer>/{z}/{x}/{y}.png, zooms 5 to 9, and lines.geojson),
+                              vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
+                              allows scripts from 'self' only; SHA256SUMS.txt)
 _redirects                  lowercase /forager/forecast to /Forager/forecast/
+_routes.json                keeps the Function off /Forager/forecast/data/*
+_headers                    cache headers for /Forager/forecast/data/*
 ```
 
 ## Where the pages live
@@ -166,14 +169,15 @@ because it is coarse and "where is the interest coming from" is worth being able
 The failed-notification log line deliberately omits the address too. Which signup failed is
 answerable from the export, and a request log is the wrong place to accumulate addresses.
 
-**`functions/_middleware.js` serves byte ranges for `/Forager/forecast/data/*.pmtiles`.** A
-PMTiles reader asks for small byte ranges. On the preview of 2026-10-09 the static asset server
-answered `Range: bytes=0-126` on these archives with the whole file and `200`, which the reader
-rejects, so the middleware cuts the requested range out of the asset's stream and answers `206`
-with `Content-Range` (or `416`). Only that folder's `.pmtiles` files take this path; every other
-response is unchanged. Rejected: fetching each whole archive in the browser (8 to 18 MB a layer on
-a phone), and pre-cut `z/x/y.png` folders (tens of thousands of files, against the PMTiles
-delivery the forecast plans to use).
+**The forecast test area's map is static tiles.** Each layer is a folder of 256-pixel PNG tiles,
+`Forager/forecast/data/<layer>/{z}/{x}/{y}.png`, zooms 5 to 9, about 570 a layer and 2,280 in
+all (Pages allows 20,000 files a deployment and 25 MiB a file). Each pixel carries the layer's
+value as a grey byte with an alpha byte for no data, and `app.js` colours it and reads the tapped
+pixel from the same tile. Every tile inside the layer's bounds exists, even an empty one, because
+a missing path here returns the home page with status 200. `_routes.json` keeps the Function off
+these paths, so a tile is a plain static file; `_headers` gives them a one-hour cache. The owner
+chose this over PMTiles archives (Forager RECORD -786, "A: Pre-cut tiles, go live"): an archive
+needs HTTP Range requests, which the asset server behind this site's Function did not answer.
 
 **`functions/_middleware.js` blocks `/functions/*` and `/db/*`.** Pages publishes the build
 output directory, which for this project is the repository root. Whether the functions
