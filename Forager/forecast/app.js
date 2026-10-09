@@ -155,5 +155,10 @@ map.on('load', () => {
 document.getElementById('layers').addEventListener('change', (e) => {
   show(e.target.value);
 });
-map.on('error', (e) => { console.error('map error', e && e.error ? e.error.message : e); });
+window.pnwErrors = [];
+map.on('error', (e) => {
+  const msg = e && e.error ? e.error.message : String(e);
+  window.pnwErrors.push(msg);
+  console.error('map error', msg);
+});
 window.pnwMap = map; // for checks
