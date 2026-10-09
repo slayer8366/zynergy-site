@@ -1,0 +1,4 @@
+# Lowercase paths to the forecast test area (owner, Forager RECORD -776). Scoped to
+# /forager/forecast only: /forager itself is reserved for the app page (README).
+/forager/forecast   /Forager/forecast/   301
+/forager/forecast/  /Forager/forecast/   301

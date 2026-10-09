@@ -1,0 +1,8 @@
+# Static map tiles of the forecast test area (Forager/forecast/data/). Served without the
+# Function (_routes.json), so the middleware's headers do not reach them; these do.
+/Forager/forecast/data/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  X-Content-Type-Options: nosniff
+  Access-Control-Allow-Origin: *
+  Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+  X-Frame-Options: DENY
