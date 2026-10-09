@@ -79,23 +79,33 @@ function sliceStream(body, start, end) {
 async function servePmtilesRange(context) {
   const range = context.request.headers.get('range');
   const response = await context.next();
-  const size = Number(response.headers.get('content-length'));
-  if (!range || response.status !== 200 || !response.body || !Number.isFinite(size)) {
-    return response;
+  if (!range || response.status !== 200 || !response.body) return response;
+  // The asset response inside a Function carries no Content-Length (seen on the preview), so
+  // the archive is read once to learn its size; known, the range is streamed instead.
+  const declared = response.headers.get('content-length');
+  let bytes = null;
+  let size = declared === null ? NaN : Number(declared);
+  if (!Number.isFinite(size) || size <= 0) {
+    bytes = new Uint8Array(await response.arrayBuffer());
+    size = bytes.length;
   }
   const r = parseRange(range, size);
-  if (r === null) return response;
   const headers = new Headers(response.headers);
   headers.set('accept-ranges', 'bytes');
+  if (r === null) {
+    return bytes ? new Response(bytes, { status: 200, headers }) : response;
+  }
   if (r === 'unsatisfiable') {
-    response.body.cancel();
+    if (!bytes) response.body.cancel();
     headers.set('content-range', `bytes */${size}`);
     headers.delete('content-length');
     return new Response(null, { status: 416, headers });
   }
   headers.set('content-range', `bytes ${r.start}-${r.end}/${size}`);
   headers.set('content-length', String(r.end - r.start + 1));
-  return new Response(sliceStream(response.body, r.start, r.end), { status: 206, headers });
+  const body = bytes ? bytes.slice(r.start, r.end + 1)
+    : sliceStream(response.body, r.start, r.end);
+  return new Response(body, { status: 206, headers });
 }
 
 export async function onRequest(context) {
