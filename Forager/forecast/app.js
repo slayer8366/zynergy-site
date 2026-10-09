@@ -124,6 +124,10 @@ function show(name) {
   document.getElementById('key-pending').hidden = !spec.pending;
   document.getElementById('key-thin').hidden = !spec.thin;
   document.getElementById('about').textContent = spec.about;
+  // The guide shows the entry for the layer on screen first.
+  const entries = document.getElementById('guide-entries');
+  for (const el of entries.querySelectorAll('.guide-entry')) el.classList.toggle('active', el.dataset.layer === name);
+  entries.prepend(entries.querySelector(`.guide-entry[data-layer="${name}"]`));
   document.getElementById('readout').textContent = 'Tap the map to read the value at a spot.';
   document.body.dataset.layer = name;
 }

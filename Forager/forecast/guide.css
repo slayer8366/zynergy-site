@@ -1,0 +1,15 @@
+/* The "How to read these layers" guide (Forager RECORD -790). In its own file, so it needs no
+   inline style. Collapsed by default, inside the side panel: it never covers the map. */
+.guide { margin: 12px 0; border: 1px solid #d8d8d0; border-radius: 4px; background: #fff; }
+.guide > summary { padding: 10px 12px; font-weight: 600; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.guide[open] > summary { border-bottom: 1px solid #d8d8d0; }
+.guide-rule { margin: 10px 12px; padding: 8px 10px; background: #fff4cc; color: #5c4400; border-radius: 4px; font-size: .85rem; }
+.guide-entry { margin: 0 12px 12px; padding-top: 8px; border-top: 1px solid #eee; font-size: .85rem; }
+.guide-entry:first-of-type { border-top: 0; }
+.guide-entry h3 { font-size: .95rem; margin: 4px 0; }
+.guide-entry.active h3::after { content: " (shown now)"; font-weight: 400; color: #555; }
+.guide-entry dl { margin: 0; }
+.guide-entry dt { font-weight: 600; margin-top: 6px; }
+.guide-entry dd { margin: 2px 0 0; }
+.guide-entry ul { margin: 2px 0 0; padding-left: 18px; }
+.guide-sources { margin: 0 12px 12px; font-size: .78rem; color: #555; }

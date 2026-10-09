@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Forager forecast test area</title>
 <link rel="stylesheet" href="vendor/maplibre-gl.css">
+<link rel="stylesheet" href="guide.css">
 <style>
   :root { --ink: #1d1d1b; --muted: #555; --line: #d8d8d0; --paper: #fbfbf7; --warn: #fff4cc; --warn-ink: #5c4400; }
   * { box-sizing: border-box; }
@@ -63,6 +64,94 @@
     <div class="key" id="key-thin"><span class="sw" style="background:transparent"></span>Shares are blank where canopy cover is under 10%</div>
     <div id="readout">Tap the map to read the value at a spot.</div>
     <p id="about"></p>
+    <details class="guide" id="guide">
+      <summary>How to read these layers</summary>
+      <p class="guide-rule">Read each layer on its own. They are not added up into a score or a hot spot, and a strong colour on any of them is not a place to go.</p>
+      <div id="guide-entries">
+      <section class="guide-entry" data-layer="soil-ph">
+        <h3>Soil pH, top 30 cm</h3>
+        <dl>
+          <dt>What it shows</dt>
+          <dd>How acid or alkaline the top 30 cm of soil is. Lower numbers are more acid.</dd>
+          <dt>Why a forager might care</dt>
+          <dd><ul>
+            <li>Chanterelles: no source in the project yet links soil pH to them.</li>
+            <li>Chicken of the woods: no source in the project yet links soil pH to it.</li>
+            <li>It is here because the habitat model will test it.</li>
+          </ul></dd>
+          <dt>Limits</dt>
+          <dd><ul>
+          <li>A prediction from SoilGrids 2.0 (published 2021), not a soil test.</li>
+          <li>Each square is 250 m and shows the average over it, not any one spot in it.</li>
+          <li>A model input, not a forecast. It says nothing about this week.</li>
+          <li>Public land and access are not shown, and access isn't permission to harvest.</li>
+          </ul></dd>
+        </dl>
+      </section>
+      <section class="guide-entry" data-layer="tree-cover">
+        <h3>Tree canopy cover</h3>
+        <dl>
+          <dt>What it shows</dt>
+          <dd>How much of each square is under live tree canopy, in percent.</dd>
+          <dt>Why a forager might care</dt>
+          <dd><ul>
+            <li>Chanterelles: in the Pacific Northwest they "generally associate with Douglas-fir, hemlock, spruce, fir, and pine" (Pilz et al. 2003, p. 19).</li>
+            <li>Chicken of the woods: in the West one species grows on conifers and another on hardwoods, mainly oak and eucalyptus (Burdsall and Banik 2001).</li>
+            <li>Cover alone does not say which trees. The two share layers do, for Douglas-fir and hemlock.</li>
+          </ul></dd>
+          <dt>Limits</dt>
+          <dd><ul>
+          <li>From TreeMap 2023, itself "a tree-level model of the forests" of the United States "circa 2023".</li>
+          <li>Lakes and sea are blank. Canada is not computed yet.</li>
+          <li>Each square is 250 m and shows the average over it, not any one spot in it.</li>
+          <li>A model input, not a forecast. It says nothing about this week.</li>
+          <li>Public land and access are not shown, and access isn't permission to harvest.</li>
+          </ul></dd>
+        </dl>
+      </section>
+      <section class="guide-entry" data-layer="douglas-fir">
+        <h3>Douglas-fir share of canopy</h3>
+        <dl>
+          <dt>What it shows</dt>
+          <dd>Of the tree canopy in each square, the part that is Douglas-fir.</dd>
+          <dt>Why a forager might care</dt>
+          <dd><ul>
+            <li>Chanterelles: Douglas-fir is the first tree Pilz et al. (2003) name among their Pacific Northwest associates.</li>
+            <li>Chicken of the woods: Douglas-fir is a conifer, and the western conifer species occurs "on mature and over mature living and dead conifers" (Burdsall and Banik 2001).</li>
+          </ul></dd>
+          <dt>Limits</dt>
+          <dd><ul>
+          <li>A share, not an amount: half of a thin canopy is fewer trees than half of a dense forest. Look at tree cover beside it; the map does not combine them.</li>
+          <li>Blank where canopy cover is under 10%. From TreeMap 2023 (circa 2023). Canada is not computed yet.</li>
+          <li>Each square is 250 m and shows the average over it, not any one spot in it.</li>
+          <li>A model input, not a forecast. It says nothing about this week.</li>
+          <li>Public land and access are not shown, and access isn't permission to harvest.</li>
+          </ul></dd>
+        </dl>
+      </section>
+      <section class="guide-entry" data-layer="hemlock">
+        <h3>Hemlock share of canopy</h3>
+        <dl>
+          <dt>What it shows</dt>
+          <dd>Of the tree canopy in each square, the part that is hemlock.</dd>
+          <dt>Why a forager might care</dt>
+          <dd><ul>
+            <li>Chanterelles: hemlock is among the Pacific Northwest associates Pilz et al. (2003) name, and the Pacific golden chanterelle occurs "under hemlock, Douglas-fir, and spruce".</li>
+            <li>Chicken of the woods: hemlock is a conifer, and the western conifer species occurs "on mature and over mature living and dead conifers" (Burdsall and Banik 2001).</li>
+          </ul></dd>
+          <dt>Limits</dt>
+          <dd><ul>
+          <li>A share, not an amount: half of a thin canopy is fewer trees than half of a dense forest. Look at tree cover beside it; the map does not combine them.</li>
+          <li>Blank where canopy cover is under 10%. From TreeMap 2023 (circa 2023). Canada is not computed yet.</li>
+          <li>Each square is 250 m and shows the average over it, not any one spot in it.</li>
+          <li>A model input, not a forecast. It says nothing about this week.</li>
+          <li>Public land and access are not shown, and access isn't permission to harvest.</li>
+          </ul></dd>
+        </dl>
+      </section>
+      </div>
+      <p class="guide-sources">Sources for this guide: Pilz, D., Norvell, L., Danell, E. and Molina, R. 2003. Ecology and management of commercially harvested chanterelle mushrooms. USDA Forest Service, PNW-GTR-576. Burdsall, H. H. Jr. and Banik, M. T. 2001. The genus Laetiporus in North America. Harvard Papers in Botany 6(1): 43-55. Both as cited in the forecast project's host-tree report (forager-forecast, docs/audits/2026-10-06-t5-verify-report.md, section 3).</p>
+    </details>
     <details>
       <summary>What this is, and what it is not</summary>
       <p>These are two of the inputs a forecast will use: the soil's acidity and the trees mushrooms grow with. Each square is 250 m. They are shown here so they can be looked at and questioned. They say nothing about this week, and nothing about whether mushrooms are there.</p>
