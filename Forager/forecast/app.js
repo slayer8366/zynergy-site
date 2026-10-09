@@ -157,6 +157,7 @@ map.on('click', async (e) => {
     out.textContent = 'Could not read the value here. Try again in a moment.';
     return;
   }
+  window.pnwLastTap = { layer: current, lng: e.lngLat.lng, lat: e.lngLat.lat, grey: v ? v.grey : null, alpha: v ? v.alpha : null }; // for checks
   const where = `${e.lngLat.lat.toFixed(3)} N, ${(-e.lngLat.lng).toFixed(3)} W`;
   if (!v || v.alpha === 0) out.textContent = `No data here (${where}).`;
   else if (spec.pending && v.grey === 255) out.textContent = `Canada: not computed yet, waits for the Canadian tree data (${where}).`;
