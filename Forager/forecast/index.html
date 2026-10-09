@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Forager forecast test area</title>
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<style>
+  :root { --ink: #1d1d1b; --muted: #555; --line: #d8d8d0; --paper: #fbfbf7; --warn: #fff4cc; --warn-ink: #5c4400; }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--paper); display: flex; flex-direction: column; }
+  header { padding: 12px 16px 8px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: 1.15rem; margin: 0 0 2px; }
+  .sub { color: var(--muted); font-size: .9rem; margin: 0; }
+  .label { margin: 8px 0 0; padding: 8px 10px; background: var(--warn); color: var(--warn-ink); border: 1px solid #b58900; border-radius: 4px; font-weight: 600; font-size: .95rem; }
+  main { flex: 1; display: flex; min-height: 0; }
+  #map { flex: 1; min-height: 360px; background: #eef0ea; }
+  aside { width: 320px; overflow-y: auto; padding: 12px 16px; border-left: 1px solid var(--line); font-size: .9rem; }
+  fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+  legend { font-weight: 600; margin-bottom: 6px; }
+  label.layer { display: block; padding: 6px 0; cursor: pointer; }
+  .bar { height: 14px; border: 1px solid #888; margin: 6px 0 2px; }
+  .ends { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
+  .key { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .sw { width: 18px; height: 14px; border: 1px solid #888; flex: none; }
+  #readout { min-height: 2.6em; margin: 10px 0; padding: 6px 8px; background: #fff; border: 1px solid var(--line); border-radius: 4px; }
+  details { margin-top: 12px; }
+  details p, details li { font-size: .8rem; color: var(--muted); }
+  .place { font-size: 12px; font-weight: 600; color: #111; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; pointer-events: none; }
+  .place::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #111; margin-right: 4px; vertical-align: middle; }
+  @media (max-width: 760px) {
+    main { flex-direction: column; }
+    #map { min-height: 55vh; }
+    aside { width: auto; border-left: 0; border-top: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Forager forecast: test area</h1>
+  <p class="sub">A test area for the forecast in progress. The finished forecast will live at /Forager/mushroom-forecast/.</p>
+  <p class="label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast. Not yet reviewed.</p>
+</header>
+<main>
+  <div id="map" role="img" aria-label="Map of the Pacific Northwest showing the chosen model input"></div>
+  <aside>
+    <fieldset id="layers">
+      <legend>Show</legend>
+      <label class="layer"><input type="radio" name="layer" value="soil-ph" checked> Soil pH, top 30 cm</label>
+      <label class="layer"><input type="radio" name="layer" value="tree-cover"> Tree canopy cover</label>
+      <label class="layer"><input type="radio" name="layer" value="douglas-fir"> Douglas-fir share of canopy</label>
+      <label class="layer"><input type="radio" name="layer" value="hemlock"> Hemlock share of canopy</label>
+    </fieldset>
+    <div id="scale">
+      <div class="bar" id="bar"></div>
+      <div class="ends"><span id="lo"></span><span id="unit"></span><span id="hi"></span></div>
+    </div>
+    <div class="key"><span class="sw" style="background:transparent"></span>No data, water, or outside the area</div>
+    <div class="key" id="key-pending"><span class="sw" style="background:rgb(190,190,190)"></span>Canada: not computed yet, waits for the Canadian tree data</div>
+    <div class="key" id="key-thin"><span class="sw" style="background:transparent"></span>Shares are blank where canopy cover is under 10%</div>
+    <div id="readout">Tap the map to read the value at a spot.</div>
+    <p id="about"></p>
+    <details>
+      <summary>What this is, and what it is not</summary>
+      <p>These are two of the inputs a forecast will use: the soil's acidity and the trees mushrooms grow with. Each square is 250 m. They are shown here so they can be looked at and questioned. They say nothing about this week, and nothing about whether mushrooms are there.</p>
+      <p>The forecast itself does not exist yet. It will be a weekly sighting chance per mushroom group and weather cell, shown for a region only once it beats a seasonal calendar on years it was not fitted to.</p>
+      <p>Box: 40 to 49 N, 111 to 125 W. Tree data stops at the border for now: the Canadian side waits for its own source.</p>
+    </details>
+    <details>
+      <summary>Sources and licence</summary>
+      <ul>
+        <li>Soil pH: SoilGrids 2.0, ISRIC - World Soil Information, CC BY 4.0. Poggio, L., de Sousa, L. M., Batjes, N. H., Heuvelink, G. B. M., Kempen, B., Ribeiro, E., and Rossiter, D.: SoilGrids 2.0: producing soil information for the globe with quantified spatial uncertainty, SOIL, 7, 217-240, 2021.</li>
+        <li>Host trees (US): Zimmer, S. N.; Houtman, R. M.; Leatherman, L. S. T.; Shaw, J. D.; Housman, I. W.; Shrestha, A.; Borja Arboleda, M. O.; Grenfell, I. C.; Finney, M. A.; Riley, K. L. 2026. TreeMap 2023 CONUS: A tree-level model of the forests of the conterminous United States circa 2023. Forest Service Research Data Archive. <a href="https://doi.org/10.2737/RDS-2026-0038">doi:10.2737/RDS-2026-0038</a>. CC BY.</li>
+        <li>Derived data, not the original data publication: genus shares of canopy cover computed by forager-forecast from TreeMap 2023. The source's authors did not produce or review these values.</li>
+        <li>Water mask: Commission for Environmental Cooperation (CEC). 2024. North American Environmental Atlas - Land Cover 2020 30m. Ed. 2.0. CC BY 4.0.</li>
+        <li>Study area, borders and lines: CEC. 2022. North American Environmental Atlas - Political Boundaries. Ed. 3.0. CC BY 4.0. CEC. North American Environmental Atlas - Terrestrial Ecoregions, level III. Ed. 2.0. CC BY 4.0.</li>
+        <li>The layers compiled by forager-forecast are published under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Each source keeps its own licence. Code: <a href="https://github.com/slayer8366/forager-forecast">forager-forecast</a>, AGPL-3.0.</li>
+        <li>Map software: MapLibre GL JS 6.13.0 (BSD-3-Clause), served from this site.</li>
+      </ul>
+    </details>
+  </aside>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
