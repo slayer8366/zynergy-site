@@ -69,7 +69,7 @@ maplibregl.addProtocol('pnw', async (params) => {
     if (alpha === 0) continue;
     let rgb;
     if (spec.pending && grey === 254) rgb = MISSING;
-    else if (spec.pending && grey > 200) rgb = PENDING; // 255; 201 to 253 only where overviews blend
+    else if (spec.pending && grey > 200) rgb = PENDING; // 255 is pending; tiles take the nearest cell, so nothing blends into 201 to 253
     else rgb = colour((spec.decode(grey) - spec.lo) / (spec.hi - spec.lo));
     d[i] = rgb[0]; d[i + 1] = rgb[1]; d[i + 2] = rgb[2];
   }
