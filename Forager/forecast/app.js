@@ -116,7 +116,6 @@ function show(name) {
   document.getElementById('hi').textContent = spec.hi;
   document.getElementById('unit').textContent = spec.unit;
   document.getElementById('key-pending').hidden = !spec.pending;
-  document.getElementById('key-missing').hidden = !spec.pending;
   document.getElementById('key-thin').hidden = !spec.thin;
   document.getElementById('about').textContent = spec.about;
   document.getElementById('readout').textContent = 'Tap the map to read the value at a spot.';
