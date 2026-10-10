@@ -43,10 +43,11 @@
 <header>
   <h1>Forager forecast: test area</h1>
   <p class="sub">A test area for the forecast in progress. The finished forecast will live at /Forager/mushroom-forecast/.</p>
-  <p class="label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast. Not yet reviewed.</p>
+  <p class="label" id="inputs-label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast. Not yet reviewed.</p>
+  <div class="label pilot-banner" id="pilot-banner" role="status" hidden></div>
 </header>
 <main>
-  <div id="map" role="img" aria-label="Map of the Pacific Northwest showing the chosen model input"></div>
+  <div id="map" role="img" aria-label="Map of the Pacific Northwest showing the chosen layer"></div>
   <aside>
     <fieldset id="layers">
       <legend>Show</legend>
@@ -54,7 +55,9 @@
       <label class="layer"><input type="radio" name="layer" value="tree-cover"> Tree canopy cover</label>
       <label class="layer"><input type="radio" name="layer" value="douglas-fir"> Douglas-fir share of canopy</label>
       <label class="layer"><input type="radio" name="layer" value="hemlock"> Hemlock share of canopy</label>
+      <label class="layer"><input type="radio" name="layer" value="pilot"> Sighting chance (pilot)</label>
     </fieldset>
+    <div id="inputs-panel">
     <div id="scale">
       <div class="bar" id="bar"></div>
       <div class="ends"><span id="lo"></span><span id="unit"></span><span id="hi"></span></div>
@@ -62,6 +65,12 @@
     <div class="key"><span class="sw" style="background:transparent"></span>No data, water, or outside the area</div>
     <div class="key" id="key-pending"><span class="sw" style="background:rgb(190,190,190)"></span>Canada: not computed yet, waits for the Canadian tree data</div>
     <div class="key" id="key-thin"><span class="sw" style="background:transparent"></span>Shares are blank where canopy cover is under 10%</div>
+    </div>
+    <div id="pilot-legend" hidden>
+      <div class="pilot-legend-title">Chanterelle sighting chance, this week</div>
+      <div id="pilot-classes"></div>
+      <div class="key"><span class="sw sw-none"></span>No forecast here: not scored, or the model does not apply</div>
+    </div>
     <div id="readout">Tap the map to read the value at a spot.</div>
     <p id="about"></p>
     <details class="guide" id="guide">
@@ -149,6 +158,28 @@
           </ul></dd>
         </dl>
       </section>
+      <section class="guide-entry" data-layer="pilot">
+        <h3>Sighting chance (pilot)</h3>
+        <dl>
+          <dt>What it shows</dt>
+          <dd>For each 0.1 degree weather cell (about 11 km north to south and 8 km east to west), a pilot model's sighting chance for chanterelles this week: the chance chanterelles are reported in this cell this week, given someone reported any fungus here.</dd>
+          <dt>Why a forager might care</dt>
+          <dd><ul>
+            <li>Chanterelles: it is the first number that reads this week's weather, not only soil and trees.</li>
+            <li>Chicken of the woods: not in the pilot.</li>
+            <li>It is here so the pilot can be looked at and questioned before the full model is built.</li>
+          </ul></dd>
+          <dt>Limits</dt>
+          <dd><ul>
+          <li>A pilot. Not validated and not reviewed; the banner above the map says whether it beat the seasonal calendar on years it was not fitted to. It is shown even if it did not.</li>
+          <li>It counts reports, not mushrooms. A cell where few people look or post can read low whatever is growing there.</li>
+          <li>A cell with no colour has no forecast: it was not scored, or the model does not apply there. It is not a low chance.</li>
+          <li>One number per cell, for the whole cell. It says nothing about any one spot in it, and it is not shaded by the soil and tree layers on this page.</li>
+          <li>The Pacific Northwest strip only, 42 to 49.5 N, 121 to 125 W.</li>
+          <li>Public land and access are not shown, and access isn't permission to harvest.</li>
+          </ul></dd>
+        </dl>
+      </section>
       </div>
       <p class="guide-sources">Sources for this guide: Pilz, D., Norvell, L., Danell, E. and Molina, R. 2003. Ecology and management of commercially harvested chanterelle mushrooms. USDA Forest Service, PNW-GTR-576. Burdsall, H. H. Jr. and Banik, M. T. 2001. The genus Laetiporus in North America. Harvard Papers in Botany 6(1): 43-55. Both as cited in the forecast project's host-tree report (forager-forecast, docs/audits/2026-10-06-t5-verify-report.md, section 3).</p>
     </details>
@@ -156,6 +187,7 @@
       <summary>What this is, and what it is not</summary>
       <p>These are two of the inputs a forecast will use: the soil's acidity and the trees mushrooms grow with. Each square is 250 m. They are shown here so they can be looked at and questioned. They say nothing about this week, and nothing about whether mushrooms are there.</p>
       <p>The forecast itself does not exist yet. It will be a weekly sighting chance per mushroom group and weather cell, shown for a region only once it beats a seasonal calendar on years it was not fitted to.</p>
+      <p>One layer, Sighting chance (pilot), is an early run of that number for chanterelles in the Pacific Northwest strip. It is shown before that test is passed or reviewed, labelled as such, so it can be looked at and questioned.</p>
       <p>Box: 40 to 49 N, 111 to 125 W. Tree data stops at the border for now: the Canadian side waits for its own source.</p>
     </details>
     <details>
@@ -167,6 +199,7 @@
         <li>Water mask: Commission for Environmental Cooperation (CEC). 2024. North American Environmental Atlas - Land Cover 2020 30m. Ed. 2.0. CC BY 4.0.</li>
         <li>Study area, borders and lines: CEC. 2022. North American Environmental Atlas - Political Boundaries. Ed. 3.0. CC BY 4.0. CEC. North American Environmental Atlas - Terrestrial Ecoregions, level III. Ed. 2.0. CC BY 4.0.</li>
         <li>The layers compiled by forager-forecast are published under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Each source keeps its own licence. Code: <a href="https://github.com/slayer8366/forager-forecast">forager-forecast</a>, AGPL-3.0.</li>
+        <li>Sighting chance (pilot): computed by forager-forecast. Its weather sources and their attribution are shown in the banner while the layer is on, as published with the data.</li>
         <li>Map software: MapLibre GL JS 6.13.0 (BSD-3-Clause), served from this site.</li>
       </ul>
     </details>

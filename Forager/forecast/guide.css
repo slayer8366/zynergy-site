@@ -13,3 +13,14 @@
 .guide-entry dd { margin: 2px 0 0; }
 .guide-entry ul { margin: 2px 0 0; padding-left: 18px; }
 .guide-sources { margin: 0 12px 12px; font-size: .78rem; color: #555; }
+
+/* The sighting-chance pilot layer (Forager RECORD -814): its banner, legend and readout. */
+.pilot-banner p { margin: 2px 0; }
+.pilot-banner .pilot-head { font-weight: 700; }
+.pilot-banner .pilot-meta, .pilot-banner .pilot-attr { font-weight: 400; font-size: .82rem; }
+.pilot-legend-title { font-weight: 600; margin: 6px 0; }
+.sw-none { background: transparent; border-style: dashed; }
+#readout p { margin: 2px 0; }
+#readout ul { margin: 2px 0; padding-left: 18px; }
+#readout .pilot-chance { font-weight: 700; font-size: 1rem; }
+#readout .pilot-where { color: #555; font-size: .8rem; }

@@ -179,6 +179,23 @@ these paths, so a tile is a plain static file; `_headers` gives them a one-hour 
 chose this over PMTiles archives (Forager RECORD -786, "A: Pre-cut tiles, go live"): an archive
 needs HTTP Range requests, which the asset server behind this site's Function did not answer.
 
+**The forecast test area's "Sighting chance (pilot)" layer is two plain files**, not tiles
+(Forager RECORD -814): `Forager/forecast/data/pnw-pilot/current/manifest.json` and
+`Forager/forecast/data/pnw-pilot/current/cantharellus.geojson`, in the shape forager-forecast
+D55/D56 fixes (one 0.1 degree weather cell per feature), drawn and read by `pilot.js`. About
+3,000 cells is about 1.4 MB uncompressed, small enough for one file; the per-block files the
+scoring step also writes are for the app and are not copied here. The scoring step writes a
+week folder, `pnw-pilot/<week>/`; its two files are copied into `current/` so the page never
+needs to know the week, and the week it shows comes from the manifest. The banner over the
+map is built from the manifest alone and says "not stated" for a missing field rather than
+assuming one. The page fetches both files with `cache: 'no-cache'`, so a new week is not
+hidden behind `_headers`' hour-long cache. To drop in a week (from the root of this repo):
+
+```bash
+W=<path to the scoring output>/pnw-pilot/<week>
+cp "$W/manifest.json" "$W/cantharellus.geojson" Forager/forecast/data/pnw-pilot/current/
+```
+
 **`functions/_middleware.js` blocks `/functions/*` and `/db/*`.** Pages publishes the build
 output directory, which for this project is the repository root. Whether the functions
 directory is also uploaded as static files depends on how Pages treats a given project, and

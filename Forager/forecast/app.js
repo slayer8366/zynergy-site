@@ -1,5 +1,6 @@
 // Forager forecast test area: PNW model inputs (forager-forecast, Forager RECORD -772 to -777).
-// Each layer is a folder of static z/x/y grey+alpha PNG tiles, zooms 5 to 9, every zoom taking
+// The sighting-chance pilot layer is GeoJSON, drawn by pilot.js.
+// Each raster layer is a folder of static z/x/y grey+alpha PNG tiles, zooms 5 to 9, every zoom taking
 // the 250 m cell under each pixel's centre (nothing blended). The grey byte is decoded here
 // and coloured in the browser:
 //   soil:  grey = floor(pH * 10 + 0.5)
@@ -7,6 +8,7 @@
 //          grey 254 with alpha 255 = a US tile not computed yet (none today)
 // Alpha 0 is no data and stays transparent.
 import * as maplibregl from './vendor/maplibre-gl.mjs';
+import { createPilot, CLASSES } from './pilot.js';
 
 const LAYERS = {
   'soil-ph': { dir: 'data/soil-ph', lo: 4.5, hi: 8.0, unit: 'pH', decode: (g) => g / 10,
@@ -106,12 +108,49 @@ for (const [name, lon, lat] of PLACES) {
   new maplibregl.Marker({ element: el, anchor: 'left' }).setLngLat([lon, lat]).addTo(map);
 }
 
+// The guide's entries, in the layer list's order: the raster layers, then the pilot.
+const ALL_LAYERS = [...Object.keys(LAYERS), 'pilot'];
+let pilot = null;
+
+// The pilot layer's legend: its fixed classes, built once from pilot.js's table.
+for (const c of CLASSES) {
+  const row = document.createElement('div');
+  row.className = 'key';
+  const sw = document.createElement('span');
+  sw.className = 'sw';
+  sw.style.background = c.rgb;
+  row.append(sw, document.createTextNode(c.label));
+  document.getElementById('pilot-classes').append(row);
+}
+
+// The guide shows the entry for the layer on screen first.
+function orderGuide(name) {
+  const entries = document.getElementById('guide-entries');
+  for (const el of entries.querySelectorAll('.guide-entry')) el.classList.toggle('active', el.dataset.layer === name);
+  for (const key of [name, ...ALL_LAYERS.filter((k) => k !== name)]) {
+    entries.append(entries.querySelector(`.guide-entry[data-layer="${key}"]`));
+  }
+}
+
 let current = 'soil-ph';
 function show(name) {
   current = name;
-  const spec = LAYERS[name];
+  if (!pilot) return; // before the map loads; the load handler shows the current layer
   if (map.getLayer('data')) map.removeLayer('data');
   if (map.getSource('data')) map.removeSource('data');
+  const isPilot = name === 'pilot';
+  document.getElementById('inputs-panel').hidden = isPilot;
+  document.getElementById('pilot-legend').hidden = !isPilot;
+  document.getElementById('inputs-label').hidden = isPilot;
+  document.body.dataset.layer = name;
+  if (isPilot) {
+    pilot.show();
+    document.getElementById('about').textContent = 'A sighting chance per 0.1 degree weather cell, from a pilot model of chanterelle reports in the Pacific Northwest strip.';
+    orderGuide(name);
+    return;
+  }
+  pilot.hide();
+  const spec = LAYERS[name];
   map.addSource('data', { type: 'raster', tiles: [`pnw://${name}/{z}/{x}/{y}`], tileSize: 256,
     minzoom: 5, maxzoom: 9, bounds: [-125, 40, -111, 49] });
   map.addLayer({ id: 'data', type: 'raster', source: 'data',
@@ -124,14 +163,8 @@ function show(name) {
   document.getElementById('key-pending').hidden = !spec.pending;
   document.getElementById('key-thin').hidden = !spec.thin;
   document.getElementById('about').textContent = spec.about;
-  // The guide shows the entry for the layer on screen first.
-  const entries = document.getElementById('guide-entries');
-  for (const el of entries.querySelectorAll('.guide-entry')) el.classList.toggle('active', el.dataset.layer === name);
-  for (const key of [name, ...Object.keys(LAYERS).filter((k) => k !== name)]) {
-    entries.append(entries.querySelector(`.guide-entry[data-layer="${key}"]`));
-  }
+  orderGuide(name);
   document.getElementById('readout').textContent = 'Tap the map to read the value at a spot.';
-  document.body.dataset.layer = name;
 }
 
 // The value under a tap: the zoom-9 pixel's grey byte, decoded.
@@ -152,6 +185,7 @@ async function valueAt(lngLat) {
 }
 
 map.on('click', async (e) => {
+  if (current === 'pilot') return; // pilot.js reads its own cells
   const out = document.getElementById('readout');
   const spec = LAYERS[current];
   let v;
@@ -172,6 +206,7 @@ map.on('click', async (e) => {
 });
 
 map.on('load', () => {
+  pilot = createPilot(map, maplibregl);
   show(current);
   map.once('idle', () => { document.body.dataset.ready = '1'; });
 });
