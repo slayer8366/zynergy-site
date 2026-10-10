@@ -189,7 +189,9 @@ week folder, `pnw-pilot/<week>/`; its two files are copied into `current/` so th
 needs to know the week, and the week it shows comes from the manifest. The banner over the
 map is built from the manifest alone and says "not stated" for a missing field rather than
 assuming one. The page fetches both files with `cache: 'no-cache'`, so a new week is not
-hidden behind `_headers`' hour-long cache. To drop in a week (from the root of this repo):
+hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring coder's synthetic sample (forager-forecast
+`pnw-pilot-scoring` f53fa2f, `samples/pnw-pilot/2026-10-05/`; its manifest says so in the
+banner). To drop in a week (from the root of this repo):
 
 ```bash
 W=<path to the scoring output>/pnw-pilot/<week>

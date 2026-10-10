@@ -87,6 +87,20 @@ function calendarLine(v) {
   return 'Whether it beats the seasonal calendar: not stated in the manifest.';
 }
 
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+  'October', 'November', 'December'];
+// "2026-10-05" as "5 October 2026", read from the string itself (no Date, so no time zone shift).
+export function longDate(iso) {
+  const m = typeof iso === 'string' && iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? `${+m[3]} ${MONTHS[+m[2] - 1]} ${m[1]}` : String(iso);
+}
+
+// The week the cells are for, in words. The page never says "this week": the data can be a week
+// or more behind the calendar, and the manifest says which week it is.
+function weekWords(week) {
+  return week ? `the week of ${longDate(week)}` : 'the week the manifest does not state';
+}
+
 function asText(v) {
   if (v == null) return null;
   return typeof v === 'string' ? v : JSON.stringify(v);
@@ -125,19 +139,31 @@ export function createPilot(map, maplibregl) {
     ].join(' ');
     banner.append(el('p', head, 'pilot-head'));
     banner.append(el('p', calendarLine(m.beats_calendar)));
-    const meta = [];
-    meta.push(m.week ? `Week of ${m.week}.` : 'Week: not stated in the manifest.');
-    const versions = new Set(state.versions || []);
-    if (versions.size) meta.push(`Model: ${[...versions].join(', ')}.`);
-    if (m.published_at) meta.push(`Published ${m.published_at}.`);
-    banner.append(el('p', meta.join(' '), 'pilot-meta'));
+    // What kind of model made the numbers. A calendar-only model reads no weather at all.
+    if (m.model_kind === 'calendar') banner.append(el('p', 'Calendar only, no weather.', 'pilot-head'));
+    if (m.model_kind_note) banner.append(el('p', asText(m.model_kind_note), 'pilot-head'));
+    else if (m.model_kind && m.model_kind !== 'calendar') banner.append(el('p', `Model kind: ${asText(m.model_kind)}.`, 'pilot-meta'));
+    const line = [m.week ? `Week of ${longDate(m.week)}${m.iso_week ? ` (${m.iso_week})` : ''}.` : 'Week: not stated in the manifest.'];
+    const c = m.cells;
+    if (c && typeof c.scored === 'number' && typeof c.in_box === 'number') {
+      line.push(`${c.scored.toLocaleString('en')} of ${c.in_box.toLocaleString('en')} cells scored; the rest are drawn as nothing.`);
+    }
+    banner.append(el('p', line.join(' '), 'pilot-meta'));
     if (state.weekMismatch) {
       banner.append(el('p', `${state.weekMismatch} cells carry a week other than the manifest's.`, 'pilot-meta'));
     }
+    // The rest of the run's record, behind a disclosure so the map keeps its room on a phone.
+    const more = el('details', null, 'pilot-more');
+    more.append(el('summary', 'About this run'));
     const t1 = asText(m.t1_result);
-    if (t1) banner.append(el('p', `Test result: ${t1}`, 'pilot-meta'));
+    more.append(el('p', t1 ? `Test result: ${t1}` : 'Test result against the calendar: none yet.'));
+    if (m.weather_through) more.append(el('p', `Weather through ${longDate(m.weather_through)}.`));
     const wb = asText(m.weather_bridge);
-    if (wb) banner.append(el('p', `Weather: ${wb}`, 'pilot-meta'));
+    if (wb) more.append(el('p', `Weather: ${wb}`));
+    const versions = new Set(state.versions || []);
+    if (versions.size) more.append(el('p', `Model: ${[...versions].join(', ')}.`));
+    if (m.published_at) more.append(el('p', `Published ${m.published_at}.`));
+    banner.append(more);
     const attr = Array.isArray(m.attribution) ? m.attribution : (m.attribution ? [m.attribution] : []);
     if (attr.length) {
       const p = el('p', null, 'pilot-attr');
@@ -146,6 +172,15 @@ export function createPilot(map, maplibregl) {
       banner.append(p);
     } else {
       banner.append(el('p', 'Attribution: not stated in the manifest.', 'pilot-attr'));
+    }
+    // The full citations, one per dataset, behind a disclosure so the banner stays short.
+    if (Array.isArray(m.attribution_details) && m.attribution_details.length) {
+      const d = el('details', null, 'pilot-attr-details');
+      d.append(el('summary', 'Attribution details'));
+      const ul = el('ul');
+      for (const line of m.attribution_details) ul.append(el('li', asText(line)));
+      d.append(ul);
+      banner.append(d);
     }
   }
 
@@ -177,6 +212,9 @@ export function createPilot(map, maplibregl) {
       (window.pnwErrors || []).push(state.error);
     }
     renderBanner();
+    if (state.manifest && state.manifest.week) {
+      document.getElementById('pilot-legend-title').textContent = `Chanterelle sighting chance, week of ${longDate(state.manifest.week)}`;
+    }
     if (state.on) setVisible(true);
   }
 
@@ -196,13 +234,13 @@ export function createPilot(map, maplibregl) {
     readout.replaceChildren();
     const name = groupName(p.group);
     readout.append(el('p', `Sighting chance: ${pct(p.chance)}`, 'pilot-chance'));
-    readout.append(el('p', `The chance ${name.toLowerCase()} are reported in this cell this week, given someone reported any fungus here.`));
+    readout.append(el('p', `The chance ${name.toLowerCase()} are reported in this cell in ${weekWords(p.week)}, given someone reported any fungus here that week.`));
     const lo = p.uncertainty_low, hi = p.uncertainty_high;
     if (typeof lo === 'number' && typeof hi === 'number') readout.append(el('p', `Uncertainty: ${pct(lo)} to ${pct(hi)}.`));
     else readout.append(el('p', 'Uncertainty: not given for this cell.'));
-    readout.append(el('p', p.weather_through ? `Weather through ${p.weather_through}.` : 'Weather date: not given for this cell.'));
+    readout.append(el('p', p.weather_through ? `Weather through ${longDate(p.weather_through)}.` : 'Weather date: not given for this cell.'));
     if (Array.isArray(p.drivers) && p.drivers.length) {
-      readout.append(el('p', 'What moved it, largest first:'));
+      readout.append(el('p', 'What moved it most, largest first:'));
       const ul = el('ul');
       for (const d of p.drivers) ul.append(el('li', `${asText(d.label)}: ${asText(d.value)}`));
       readout.append(ul);

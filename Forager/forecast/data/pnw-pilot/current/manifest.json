@@ -1,34 +1,150 @@
 {
-  "published_at": "2026-10-10T19:00:00Z",
-  "groups": [
-    {
-      "key": "cantharellus",
-      "display_name": "Chanterelles",
-      "gbif_taxon_key": 8257011,
-      "inaturalist_taxon_id": 47347,
-      "rank": "genus"
-    }
+ "published_at": "2026-10-10T18:30:57+00:00",
+ "pilot": true,
+ "validated": false,
+ "reviewed": false,
+ "status_label": "Unvalidated pilot. Unreviewed. Shown whether or not it beats the calendar.",
+ "model_kind": "synthetic",
+ "model_kind_note": "SYNTHETIC SAMPLE: a tiny model on random numbers, for drawing only. The chances mean nothing.",
+ "beats_calendar": null,
+ "t1_result": null,
+ "sighting_chance_meaning": "Sighting chance: the chance chanterelles are reported in this weather cell this week, given at least one fungal observation of any kind there that week (D12). It is not the chance mushrooms are present, and not the chance you will find them.",
+ "groups": [
+  {
+   "key": "cantharellus",
+   "display_name": "Chanterelles",
+   "gbif_taxon_key": 9623860,
+   "inaturalist_taxon_id": 47348,
+   "rank": "genus"
+  }
+ ],
+ "week": "2026-10-05",
+ "iso_week": "2026-W41",
+ "regions_published": [],
+ "regions_note": "No ecoregion is published under D5 (published only after beating the calendar on held-out years). The owner asked for this pilot to be shown regardless (Forager RECORD -814).",
+ "attribution": "Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Weather data by Open-Meteo.com (https://open-meteo.com/), CC BY 4.0.",
+ "attribution_details": [
+  "ERA5-Land (scoring weather, via Open-Meteo): Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J. (2019): ERA5-Land hourly data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/cds.e2161bac",
+  "ERA5 single levels (scoring rain, via Open-Meteo): Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H. et al. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47",
+  "ERA5-Land daily statistics (training weather): Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J., Comyn-Platt, E., Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2024): ERA5-land post-processed daily-statistics from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.e9c9c792",
+  "ERA5 single levels daily statistics (training rain): Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Comyn-Platt, E., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2023): ERA5 post-processed daily-statistics on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.4991cf48",
+  "Weather served through Open-Meteo.com, CC BY 4.0."
+ ],
+ "layers": [
+  {
+   "kind": "cells_combined",
+   "group": "cantharellus",
+   "path": "pnw-pilot/2026-10-05/cantharellus.geojson"
+  },
+  {
+   "kind": "cell_blocks",
+   "group": "cantharellus",
+   "prefix": "pnw-pilot/2026-10-05/cantharellus/",
+   "blocks": [
+    "n43w123",
+    "n43w125",
+    "n44w123",
+    "n44w124",
+    "n44w125",
+    "n45w122",
+    "n45w123",
+    "n45w124",
+    "n46w122",
+    "n46w123",
+    "n46w124",
+    "n46w125",
+    "n47w122",
+    "n47w123",
+    "n47w124",
+    "n47w125",
+    "n48w122",
+    "n48w123",
+    "n48w124",
+    "n48w125",
+    "n49w122",
+    "n49w123",
+    "n49w124",
+    "n49w125"
+   ],
+   "block_naming": "south-west corner of the 1 degree square holding the cell centre, e.g. n47w123 holds centres 47 to 48 N, 123 to 122 W"
+  }
+ ],
+ "layers_note": "No raster PMTiles and no vector PMTiles exist for the pilot.",
+ "uncertainty_note": "uncertainty_low and uncertainty_high are null: the pilot model gives no interval.",
+ "drivers_note": "Up to three weather windows that moved this cell's score most (LightGBM contributions), largest first, each with its own value. Empty for the calendar model, which reads no weather.",
+ "applicable_note": "Cells are listed only when scored. A cell is left out when Open-Meteo gave no ERA5-Land value (sea) or any of its 90 days is missing. No area-of-applicability or training-range check (R7) has been run.",
+ "cells": {
+  "in_box": 3116,
+  "scored": 250,
+  "omitted": {
+   "not_fetched_yet": 2866,
+   "incomplete_weather_window": 0
+  },
+  "chance_min": 0.1313,
+  "chance_median": 0.1313,
+  "chance_max": 0.1313
+ },
+ "weather_through": "2026-10-04",
+ "weather": {
+  "source": "Open-Meteo historical archive, models=era5_seamless, elevation=nan, cell_selection=nearest, timezone=UTC (D19, D21, D25)",
+  "days": [
+   "2026-07-07",
+   "2026-10-04"
   ],
-  "week": "2026-10-12",
-  "regions_published": [],
-  "attribution": [
-    "SYNTHETIC SAMPLE: made-up numbers in the contract's shape, not model output.",
-    "Placeholder for the Copernicus (D53) and Open-Meteo attribution strings the real manifest carries."
-  ],
-  "layers": [
-    {
-      "kind": "cells-combined",
-      "path": "pnw-pilot/2026-10-12/cantharellus.geojson"
-    },
-    {
-      "kind": "cells-blocks",
-      "prefix": "pnw-pilot/2026-10-12/cantharellus/"
-    }
-  ],
-  "pilot": true,
-  "validated": false,
-  "reviewed": false,
-  "beats_calendar": null,
-  "t1_result": "Synthetic sample: no T1 result yet.",
-  "weather_bridge": "Synthetic sample: no weather was read."
+  "batches": 5,
+  "api_calls_by_pricing_rule": 1617.1428571428573
+ },
+ "weather_bridge": "None needed for 2026-W41: on 2026-10-10 18:23 UTC the archive held every day through 2026-10-04, the last day the week's windows read. The forecast endpoint returns null for models=era5_seamless, so no bridge with the same pin exists.",
+ "model": {
+  "version": "pnw-pilot-t1-synthetic-1cbe08ab21a8",
+  "model_txt_sha256": "1cbe08ab21a874e673a451131368aae709da98a421fa0ced6d762657645e9157",
+  "model_json": {
+   "features": [
+    "doy_sin",
+    "doy_cos",
+    "latitude",
+    "longitude",
+    "temperature_mean_3d",
+    "precipitation_sum_3d",
+    "soil_temperature_mean_3d",
+    "soil_moisture_mean_3d",
+    "temperature_mean_7d",
+    "precipitation_sum_7d",
+    "soil_temperature_mean_7d",
+    "soil_moisture_mean_7d",
+    "temperature_mean_14d",
+    "precipitation_sum_14d",
+    "soil_temperature_mean_14d",
+    "soil_moisture_mean_14d",
+    "temperature_mean_21d",
+    "precipitation_sum_21d",
+    "soil_temperature_mean_21d",
+    "soil_moisture_mean_21d",
+    "temperature_mean_28d",
+    "precipitation_sum_28d",
+    "soil_temperature_mean_28d",
+    "soil_moisture_mean_28d",
+    "temperature_mean_42d",
+    "precipitation_sum_42d",
+    "soil_temperature_mean_42d",
+    "soil_moisture_mean_42d",
+    "temperature_mean_56d",
+    "precipitation_sum_56d",
+    "soil_temperature_mean_56d",
+    "soil_moisture_mean_56d",
+    "temperature_mean_90d",
+    "precipitation_sum_90d",
+    "soil_temperature_mean_90d",
+    "soil_moisture_mean_90d"
+   ],
+   "synthetic": true
+  }
+ },
+ "box": {
+  "name": "pnw",
+  "south": 42.0,
+  "north": 49.5,
+  "west": -125.0,
+  "east": -121.0
+ }
 }
