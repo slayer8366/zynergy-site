@@ -1,5 +1,5 @@
 {
- "published_at": "2026-10-10T18:43:26+00:00",
+ "published_at": "2026-10-10T18:51:46+00:00",
  "pilot": true,
  "validated": false,
  "reviewed": false,
@@ -22,13 +22,12 @@
  "iso_week": "2026-W41",
  "regions_published": [],
  "regions_note": "No ecoregion is published under D5 (published only after beating the calendar on held-out years). The owner asked for this pilot to be shown regardless (Forager RECORD -814).",
- "attribution": "Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Weather data by Open-Meteo.com (https://open-meteo.com/), CC BY 4.0.",
+ "attribution": "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb.",
  "attribution_details": [
-  "ERA5-Land (scoring weather, via Open-Meteo): Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J. (2019): ERA5-Land hourly data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/cds.e2161bac",
-  "ERA5 single levels (scoring rain, via Open-Meteo): Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H. et al. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47",
-  "ERA5-Land daily statistics (training weather): Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J., Comyn-Platt, E., Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2024): ERA5-land post-processed daily-statistics from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.e9c9c792",
-  "ERA5 single levels daily statistics (training rain): Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Comyn-Platt, E., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2023): ERA5 post-processed daily-statistics on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.4991cf48",
-  "Weather served through Open-Meteo.com, CC BY 4.0."
+  "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Occurrence records from 26 datasets, under CC0 1.0, CC BY 4.0 and CC BY-NC 4.0 (D29, D61); each dataset with its licence is listed in docs/pulls/gbif-fungi-us-canada-2015-2025.datasets.json of slayer8366/forager-forecast. The download is provisional (test account) and will be superseded by the business account's identical request (docs/pulls/gbif-fungi-us-canada-2015-2025.doi.json)."
+ ],
+ "attribution_sources": [
+  "gbif_download"
  ],
  "layers": [
   {
