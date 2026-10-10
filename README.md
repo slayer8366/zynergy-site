@@ -194,9 +194,9 @@ attribution string D55 asks for "on the map" is in MapLibre's attribution contro
 map 640 px wide or less starts collapsed to its (i) button: one tap away on the map, so it does
 not cover the map before the first pan. It is also in the banner, with the full citations under
 "Attribution details". Both follow the owner's rule that nothing fully obstructs the map. The page fetches both files with `cache: 'no-cache'`, so a new week is not
-hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring coder's synthetic sample (forager-forecast
-`pnw-pilot-scoring` f53fa2f, `samples/pnw-pilot/2026-10-05/`; its manifest says so in the
-banner). To drop in a week (from the root of this repo):
+hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring coder's calendar-only output (forager-forecast
+`pnw-pilot-scoring` e0d1079, `samples/pnw-pilot/2026-10-05/`: 2,387 cells, no weather read;
+combined file sha256 c74ee7f0..., manifest af683970...). To drop in a week (from the root of this repo):
 
 ```bash
 W=<path to the scoring output>/pnw-pilot/<week>
