@@ -131,26 +131,48 @@ export function createPilot(map, maplibregl) {
       return;
     }
     const m = state.manifest;
+    // On a narrow screen the banner is one line, tap to expand (owner: nothing fully obstructs the
+    // map). The line keeps the three labels; the calendar line is the first thing the expansion
+    // shows. On a wide screen the line is hidden and the full banner always shows (guide.css).
+    const shortWeek = m.week ? `Week of ${longDate(m.week).replace(/ \d{4}$/, '')}.` : 'Week not stated.';
+    const compact = el('button', null, 'pilot-compact');
+    compact.type = 'button';
+    compact.setAttribute('aria-expanded', banner.classList.contains('expanded') ? 'true' : 'false');
+    compact.append(el('span', [
+      yesNo(m.pilot, 'Pilot model.', 'Not a pilot.', 'Pilot'),
+      yesNo(m.validated, 'Validated.', 'Not validated.', 'Validated'),
+      yesNo(m.reviewed, 'Reviewed.', 'Not reviewed.', 'Reviewed'),
+      m.model_kind === 'calendar' ? 'Calendar only, no weather.' : null,
+      shortWeek,
+    ].filter(Boolean).join(' ')));
+    compact.append(el('span', banner.classList.contains('expanded') ? 'Less' : 'More', 'pilot-compact-more'));
+    compact.addEventListener('click', () => {
+      const open = banner.classList.toggle('expanded');
+      compact.setAttribute('aria-expanded', open ? 'true' : 'false');
+      compact.querySelector('.pilot-compact-more').textContent = open ? 'Less' : 'More';
+    });
+    const full = el('div', null, 'pilot-full');
+    banner.append(compact, full);
     const head = [
       yesNo(m.pilot, 'Pilot model.', 'The manifest says this is not a pilot.', 'Pilot'),
       yesNo(m.validated, 'Validated.', 'Not validated.', 'Validated'),
       yesNo(m.reviewed, 'Reviewed.', 'Not reviewed.', 'Reviewed'),
       'Not the forecast.',
     ].join(' ');
-    banner.append(el('p', head, 'pilot-head'));
-    banner.append(el('p', calendarLine(m.beats_calendar)));
+    full.append(el('p', head, 'pilot-head'));
+    full.append(el('p', calendarLine(m.beats_calendar)));
     // What kind of model made the numbers. A calendar-only model reads no weather at all.
-    if (m.model_kind === 'calendar') banner.append(el('p', 'Calendar only, no weather.', 'pilot-head'));
-    if (m.model_kind_note) banner.append(el('p', asText(m.model_kind_note), 'pilot-head'));
-    else if (m.model_kind && m.model_kind !== 'calendar') banner.append(el('p', `Model kind: ${asText(m.model_kind)}.`, 'pilot-meta'));
+    if (m.model_kind === 'calendar') full.append(el('p', 'Calendar only, no weather.', 'pilot-head'));
+    if (m.model_kind_note) full.append(el('p', asText(m.model_kind_note), 'pilot-head'));
+    else if (m.model_kind && m.model_kind !== 'calendar') full.append(el('p', `Model kind: ${asText(m.model_kind)}.`, 'pilot-meta'));
     const line = [m.week ? `Week of ${longDate(m.week)}${m.iso_week ? ` (${m.iso_week})` : ''}.` : 'Week: not stated in the manifest.'];
     const c = m.cells;
     if (c && typeof c.scored === 'number' && typeof c.in_box === 'number') {
       line.push(`${c.scored.toLocaleString('en')} of ${c.in_box.toLocaleString('en')} cells scored; the rest are drawn as nothing.`);
     }
-    banner.append(el('p', line.join(' '), 'pilot-meta'));
+    full.append(el('p', line.join(' '), 'pilot-meta'));
     if (state.weekMismatch) {
-      banner.append(el('p', `${state.weekMismatch} cells carry a week other than the manifest's.`, 'pilot-meta'));
+      full.append(el('p', `${state.weekMismatch} cells carry a week other than the manifest's.`, 'pilot-meta'));
     }
     // The rest of the run's record, behind a disclosure so the map keeps its room on a phone.
     const more = el('details', null, 'pilot-more');
@@ -163,15 +185,15 @@ export function createPilot(map, maplibregl) {
     const versions = new Set(state.versions || []);
     if (versions.size) more.append(el('p', `Model: ${[...versions].join(', ')}.`));
     if (m.published_at) more.append(el('p', `Published ${m.published_at}.`));
-    banner.append(more);
+    full.append(more);
     const attr = Array.isArray(m.attribution) ? m.attribution : (m.attribution ? [m.attribution] : []);
     if (attr.length) {
       const p = el('p', null, 'pilot-attr');
       p.append(el('span', 'Data: '));
       p.append(document.createTextNode(attr.map(asText).join(' ')));
-      banner.append(p);
+      full.append(p);
     } else {
-      banner.append(el('p', 'Attribution: not stated in the manifest.', 'pilot-attr'));
+      full.append(el('p', 'Attribution: not stated in the manifest.', 'pilot-attr'));
     }
     // The full citations, one per dataset, behind a disclosure so the banner stays short.
     if (Array.isArray(m.attribution_details) && m.attribution_details.length) {
@@ -180,7 +202,7 @@ export function createPilot(map, maplibregl) {
       const ul = el('ul');
       for (const line of m.attribution_details) ul.append(el('li', asText(line)));
       d.append(ul);
-      banner.append(d);
+      full.append(d);
     }
   }
 

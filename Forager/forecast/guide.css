@@ -30,3 +30,13 @@
 .pilot-more { font-weight: 400; font-size: .8rem; margin-top: 2px; }
 .pilot-more summary { cursor: pointer; text-decoration: underline; }
 .pilot-banner .pilot-attr { font-size: .75rem; }
+/* The pilot banner's one-line form (narrow screens only). */
+.pilot-compact { display: none; width: 100%; text-align: left; background: none; border: 0; padding: 0;
+  font: inherit; color: inherit; font-weight: 700; cursor: pointer; min-height: 32px; align-items: center; gap: 8px; }
+.pilot-compact-more { margin-left: auto; font-weight: 400; text-decoration: underline; white-space: nowrap; }
+@media (max-width: 760px) {
+  .pilot-banner { padding: 6px 10px; }
+  .pilot-compact { display: flex; }
+  .pilot-banner:not(.expanded) .pilot-full { display: none; }
+  .pilot-banner.expanded .pilot-full { margin-top: 4px; max-height: 45vh; overflow-y: auto; }
+}

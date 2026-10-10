@@ -205,7 +205,19 @@ map.on('click', async (e) => {
   else out.textContent = `${spec.fmt(spec.decode(v.grey))} (${where}).`;
 });
 
+// On a narrow map the attribution starts collapsed to its (i) button, one tap away, instead of
+// MapLibre's default of showing it open until the first drag (planner, after the pilot's mobile
+// screenshots: the Copernicus string covered the bottom third of the map). Wide maps keep the
+// default. Runs at load and on resize only, so a user's own tap to open it is left alone.
+function collapseAttributionIfNarrow() {
+  const box = document.querySelector('#map .maplibregl-ctrl-attrib');
+  if (!box || map.getCanvasContainer().offsetWidth > 640) return;
+  box.classList.remove('maplibregl-compact-show');
+  box.removeAttribute('open');
+}
+map.on('resize', collapseAttributionIfNarrow);
 map.on('load', () => {
+  collapseAttributionIfNarrow();
   pilot = createPilot(map, maplibregl);
   show(current);
   map.once('idle', () => { document.body.dataset.ready = '1'; });
