@@ -114,6 +114,12 @@ export function createPilot(map, maplibregl) {
   const banner = document.getElementById('pilot-banner');
   const readout = document.getElementById('readout');
 
+  // A model that reads no weather: the manifest says calendar, or names no weather source.
+  function readsNoWeather() {
+    const m = state.manifest;
+    return !!m && (m.model_kind === 'calendar' || m.weather_source === 'none');
+  }
+
   function groupName(key) {
     const g = (state.manifest && Array.isArray(state.manifest.groups))
       ? state.manifest.groups.find((x) => x.key === key) : null;
@@ -180,6 +186,8 @@ export function createPilot(map, maplibregl) {
     const t1 = asText(m.t1_result);
     more.append(el('p', t1 ? `Test result: ${t1}` : 'Test result against the calendar: none yet.'));
     if (m.weather_through) more.append(el('p', `Weather through ${longDate(m.weather_through)}.`));
+    else if (readsNoWeather()) more.append(el('p', 'Weather through: not applicable, no weather was read.'));
+    else more.append(el('p', 'Weather through: not stated in the manifest.'));
     const wb = asText(m.weather_bridge);
     if (wb) more.append(el('p', `Weather: ${wb}`));
     const versions = new Set(state.versions || []);
@@ -260,7 +268,9 @@ export function createPilot(map, maplibregl) {
     const lo = p.uncertainty_low, hi = p.uncertainty_high;
     if (typeof lo === 'number' && typeof hi === 'number') readout.append(el('p', `Uncertainty: ${pct(lo)} to ${pct(hi)}.`));
     else readout.append(el('p', 'Uncertainty: not given for this cell.'));
-    readout.append(el('p', p.weather_through ? `Weather through ${longDate(p.weather_through)}.` : 'Weather date: not given for this cell.'));
+    if (p.weather_through) readout.append(el('p', `Weather through ${longDate(p.weather_through)}.`));
+    else if (readsNoWeather()) readout.append(el('p', 'Weather: not applicable. This calendar-only model reads no weather.'));
+    else readout.append(el('p', 'Weather date: not given for this cell.'));
     if (Array.isArray(p.drivers) && p.drivers.length) {
       readout.append(el('p', 'What moved it most, largest first:'));
       const ul = el('ul');
