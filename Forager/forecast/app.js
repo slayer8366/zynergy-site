@@ -5,7 +5,10 @@
 // and coloured in the browser:
 //   soil:  grey = floor(pH * 10 + 0.5)
 //   trees: grey = floor(percent * 2 + 0.5), 0 to 200; grey 255 with alpha 255 = Canada, pending;
-//          grey 254 with alpha 255 = a US tile not computed yet (none today)
+//          grey 254 with alpha 255 = a US tile not computed yet. Neither occurs in today's tiles:
+//          Canada's cells were filled from SCANFI v2 (Forager RECORD -839), and hemlock, which
+//          SCANFI does not separate (forager-forecast D85), is alpha 0 there. Both codes stay
+//          decoded so a tile carrying them still reads correctly.
 // Alpha 0 is no data and stays transparent.
 import * as maplibregl from './vendor/maplibre-gl.mjs';
 import { createPilot, CLASSES } from './pilot.js';
@@ -16,17 +19,18 @@ const LAYERS = {
     about: 'Soil pH, the mean of SoilGrids 2.0 blended over the top 30 cm.' },
   'tree-cover': { dir: 'data/tree-cover', lo: 0, hi: 100, unit: '% cover', decode: (g) => g / 2,
     fmt: (v) => `${v.toFixed(1)}% tree canopy cover`, pending: true, thin: false,
-    about: 'Live tree canopy cover from TreeMap 2023 (US Forest Service).' },
+    about: 'Live tree canopy cover from TreeMap 2023 (US Forest Service) and, in Canada, SCANFI v2 (Natural Resources Canada).' },
   'douglas-fir': { dir: 'data/douglas-fir', lo: 0, hi: 100, unit: '% of canopy', decode: (g) => g / 2,
     fmt: (v) => `Douglas-fir: ${v.toFixed(1)}% of the canopy`, pending: true, thin: true,
     about: 'The share of the tree canopy that is Douglas-fir, one of the host trees the model uses.' },
   'hemlock': { dir: 'data/hemlock', lo: 0, hi: 100, unit: '% of canopy', decode: (g) => g / 2,
-    fmt: (v) => `Hemlock: ${v.toFixed(1)}% of the canopy`, pending: true, thin: true,
+    fmt: (v) => `Hemlock: ${v.toFixed(1)}% of the canopy`, pending: true, thin: true, canada: true,
+    noData: 'No hemlock value here: water, canopy cover under 10%, or Canada, where hemlock is not available',
     about: 'The share of the tree canopy that is hemlock, another of the host trees the model uses.' },
 };
 const VIRIDIS = [[68, 1, 84], [71, 44, 122], [59, 81, 139], [44, 113, 142], [33, 144, 141],
   [39, 173, 129], [92, 200, 99], [170, 220, 50], [253, 231, 37]];
-const PENDING = [190, 190, 190]; // grey 255: Canada, waits for SCANFI
+const PENDING = [190, 190, 190]; // grey 255: Canada, pending (none since RECORD -839)
 const MISSING = [120, 120, 120]; // grey 254: a US tile not computed yet (none today)
 const PLACES = [['Seattle', -122.332, 47.606], ['Portland', -122.679, 45.515], ['Spokane', -117.426, 47.659],
   ['Boise', -116.202, 43.615], ['Eugene', -123.087, 44.052], ['Bend', -121.315, 44.058],
@@ -98,7 +102,7 @@ const map = new maplibregl.Map({
   maxBounds: [[-131, 37], [-105, 52]],
   minZoom: 4.5,
   maxZoom: 12,
-  attributionControl: { compact: true, customAttribution: 'SoilGrids 2.0 (ISRIC), TreeMap 2023 (USFS), CEC; layers CC BY-NC 4.0' },
+  attributionControl: { compact: true, customAttribution: 'SoilGrids 2.0 (ISRIC), TreeMap 2023 (USFS), SCANFI v2 (NRCan, OGL-Canada), CEC; layers CC BY-NC 4.0' },
 });
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
 for (const [name, lon, lat] of PLACES) {
@@ -160,7 +164,7 @@ function show(name) {
   document.getElementById('lo').textContent = spec.lo;
   document.getElementById('hi').textContent = spec.hi;
   document.getElementById('unit').textContent = spec.unit;
-  document.getElementById('key-pending').hidden = !spec.pending;
+  document.getElementById('key-canada').hidden = !spec.canada;
   document.getElementById('key-thin').hidden = !spec.thin;
   document.getElementById('about').textContent = spec.about;
   orderGuide(name);
@@ -199,7 +203,7 @@ map.on('click', async (e) => {
   }
   window.pnwLastTap = { layer: current, lng: e.lngLat.lng, lat: e.lngLat.lat, grey: v ? v.grey : null, alpha: v ? v.alpha : null }; // for checks
   const where = `${e.lngLat.lat.toFixed(3)} N, ${(-e.lngLat.lng).toFixed(3)} W`;
-  if (!v || v.alpha === 0) out.textContent = `No data here (${where}).`;
+  if (!v || v.alpha === 0) out.textContent = `${spec.noData || 'No data here'} (${where}).`;
   else if (spec.pending && v.grey === 255) out.textContent = `Canada: not computed yet, waits for the Canadian tree data (${where}).`;
   else if (spec.pending && v.grey === 254) out.textContent = `Not computed yet (${where}).`;
   else out.textContent = `${spec.fmt(spec.decode(v.grey))} (${where}).`;
