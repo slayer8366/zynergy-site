@@ -1,0 +1,34 @@
+{
+  "published_at": "2026-10-10T19:00:00Z",
+  "groups": [
+    {
+      "key": "cantharellus",
+      "display_name": "Chanterelles",
+      "gbif_taxon_key": 8257011,
+      "inaturalist_taxon_id": 47347,
+      "rank": "genus"
+    }
+  ],
+  "week": "2026-10-12",
+  "regions_published": [],
+  "attribution": [
+    "SYNTHETIC SAMPLE: made-up numbers in the contract's shape, not model output.",
+    "Placeholder for the Copernicus (D53) and Open-Meteo attribution strings the real manifest carries."
+  ],
+  "layers": [
+    {
+      "kind": "cells-combined",
+      "path": "pnw-pilot/2026-10-12/cantharellus.geojson"
+    },
+    {
+      "kind": "cells-blocks",
+      "prefix": "pnw-pilot/2026-10-12/cantharellus/"
+    }
+  ],
+  "pilot": true,
+  "validated": false,
+  "reviewed": false,
+  "beats_calendar": null,
+  "t1_result": "Synthetic sample: no T1 result yet.",
+  "weather_bridge": "Synthetic sample: no weather was read."
+}
