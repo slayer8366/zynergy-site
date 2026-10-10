@@ -13,3 +13,30 @@
 .guide-entry dd { margin: 2px 0 0; }
 .guide-entry ul { margin: 2px 0 0; padding-left: 18px; }
 .guide-sources { margin: 0 12px 12px; font-size: .78rem; color: #555; }
+
+/* The sighting-chance pilot layer (Forager RECORD -814): its banner, legend and readout. */
+.pilot-banner p { margin: 2px 0; }
+.pilot-banner .pilot-head { font-weight: 700; }
+.pilot-banner .pilot-meta, .pilot-banner .pilot-attr { font-weight: 400; font-size: .82rem; }
+.pilot-legend-title { font-weight: 600; margin: 6px 0; }
+.sw-none { background: transparent; border-style: dashed; }
+#readout p { margin: 2px 0; }
+#readout ul { margin: 2px 0; padding-left: 18px; }
+#readout .pilot-chance { font-weight: 700; font-size: 1rem; }
+#readout .pilot-where { color: #555; font-size: .8rem; }
+.pilot-attr-details { font-weight: 400; font-size: .8rem; margin-top: 2px; }
+.pilot-attr-details summary { cursor: pointer; text-decoration: underline; }
+.pilot-attr-details ul { margin: 4px 0; padding-left: 18px; }
+.pilot-more { font-weight: 400; font-size: .8rem; margin-top: 2px; }
+.pilot-more summary { cursor: pointer; text-decoration: underline; }
+.pilot-banner .pilot-attr { font-size: .75rem; }
+/* The pilot banner's one-line form (narrow screens only). */
+.pilot-compact { display: none; width: 100%; text-align: left; background: none; border: 0; padding: 0;
+  font: inherit; color: inherit; font-weight: 700; cursor: pointer; min-height: 32px; align-items: center; gap: 8px; }
+.pilot-compact-more { margin-left: auto; font-weight: 400; text-decoration: underline; white-space: nowrap; }
+@media (max-width: 760px) {
+  .pilot-banner { padding: 6px 10px; }
+  .pilot-compact { display: flex; }
+  .pilot-banner:not(.expanded) .pilot-full { display: none; }
+  .pilot-banner.expanded .pilot-full { margin-top: 4px; max-height: 45vh; overflow-y: auto; }
+}
