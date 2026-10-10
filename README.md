@@ -178,6 +178,14 @@ a missing path here returns the home page with status 200. `_routes.json` keeps 
 these paths, so a tile is a plain static file; `_headers` gives them a one-hour cache. The owner
 chose this over PMTiles archives (Forager RECORD -786, "A: Pre-cut tiles, go live"): an archive
 needs HTTP Range requests, which the asset server behind this site's Function did not answer.
+The tiles are the output of forager-forecast's `scripts/pnw_build.py xyz`, run per layer, copied
+into `Forager/forecast/data/`. The first cut (2026-10-09) read the PNW mosaic of 05:39 PDT that day,
+with Canada's cells as grey 255 ("pending"). Since Forager RECORD -839 they read the completed
+mosaic (Canada filled from SCANFI v2; the drive keeps the old one as
+`forecast-data/pnw/mosaic-2026-10-09/`): the same stage on the old mosaic reproduces the first cut
+byte for byte, and on the new one changes 72 tiles (24 each in tree cover, Douglas-fir and hemlock)
+and only pixels that were grey 255. Hemlock is blank (alpha 0) in Canada, because SCANFI does not
+separate it (forager-forecast D85); the legend and the tap readout say so.
 
 **The forecast test area's "Sighting chance (pilot)" layer is two plain files**, not tiles
 (Forager RECORD -814): `Forager/forecast/data/pnw-pilot/current/manifest.json` and
