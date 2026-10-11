@@ -1,4 +1,4 @@
-// Sighting chance (pilot): one layer on the forecast test area (Forager RECORD -814, -817).
+// Sighting chance (pilot): one layer on the Pacific Northwest pilot demo (Forager RECORD -814, -817).
 //
 // Reads two static files, written by the forager-forecast pilot's scoring step and copied here
 // unchanged (the data contract from forager-forecast D55/D56):

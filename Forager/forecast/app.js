@@ -1,4 +1,4 @@
-// Forager forecast test area: PNW model inputs (forager-forecast, Forager RECORD -772 to -777).
+// Forager forecast, Pacific Northwest pilot demo: PNW model inputs (forager-forecast, Forager RECORD -772 to -777).
 // The sighting-chance pilot layer is GeoJSON, drawn by pilot.js.
 // Each raster layer is a folder of static z/x/y grey+alpha PNG tiles, zooms 5 to 9, every zoom taking
 // the 250 m cell under each pixel's centre (nothing blended). The grey byte is decoded here

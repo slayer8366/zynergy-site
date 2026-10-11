@@ -14,10 +14,11 @@ functions/_middleware.js    blocks /functions/* and /db/*, sets the shared respo
 functions/api/beta-signup.js  POST: records a signup, notifies support@
 functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
 db/schema.sql               D1 schema for the `zynergy-site-beta` database
-Forager/forecast/           forecast test area: index.html, app.js, data/ (static map tiles
+Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, data/ (static map tiles
                               data/<layer>/{z}/{x}/{y}.png, zooms 5 to 9, and lines.geojson),
                               vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
-                              allows scripts from 'self' only; SHA256SUMS.txt)
+                              allows scripts from 'self' only; basemap/, the street map's
+                              style code, fonts and icons; SHA256SUMS.txt)
 _redirects                  lowercase /forager/forecast to /Forager/forecast/
 _routes.json                keeps the Function off /Forager/forecast/data/*
 _headers                    cache headers for /Forager/forecast/data/*
@@ -32,7 +33,7 @@ _headers                    cache headers for /Forager/forecast/data/*
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
 | `/forager` | Intended for the app page. Does not exist yet. |
-| `/Forager/forecast/` | Test area for the forecast in progress: the Pacific Northwest model inputs (soil pH, host trees) as a browsable map. `noindex`. Not a forecast, not yet reviewed. The finished forecast will live at `/Forager/mushroom-forecast/`. Built from `slayer8366/forager-forecast` (Forager RECORD -772 to -777). |
+| `/Forager/forecast/` | Pacific Northwest pilot demo: the Sighting chance (pilot) layer for chanterelles and the model inputs (soil pH, host trees), over our own street map, as a browsable map. Opens on soil pH. The finished forecast will live at `/Forager/mushroom-forecast/`. Built from `slayer8366/forager-forecast` (Forager RECORD -772 to -777, -857 to -860). |
 | `/forager/forecast`, `/forager/forecast/` | 301 to `/Forager/forecast/`, from `_redirects` (owner, RECORD -776). Scoped to those two paths: `/forager` itself is unchanged. |
 
 The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
@@ -169,7 +170,7 @@ because it is coarse and "where is the interest coming from" is worth being able
 The failed-notification log line deliberately omits the address too. Which signup failed is
 answerable from the export, and a request log is the wrong place to accumulate addresses.
 
-**The forecast test area's map is static tiles.** Each layer is a folder of 256-pixel PNG tiles,
+**The pilot demo's input layers are static tiles.** Each layer is a folder of 256-pixel PNG tiles,
 `Forager/forecast/data/<layer>/{z}/{x}/{y}.png`, zooms 5 to 9, about 570 a layer and 2,280 in
 all (Pages allows 20,000 files a deployment and 25 MiB a file). Each pixel carries the layer's
 value as a grey byte with an alpha byte for no data, and `app.js` colours it and reads the tapped
@@ -187,19 +188,22 @@ byte for byte, and on the new one changes 72 tiles (24 each in tree cover, Dougl
 and only pixels that were grey 255. Hemlock is blank (alpha 0) in Canada, because SCANFI does not
 separate it (forager-forecast D85); the legend and the tap readout say so.
 
-**The forecast page's street map is ours** (Forager RECORD -857 to -859): vector tiles from our
+**The pilot demo's street map is ours** (Forager RECORD -857 to -860): vector tiles from our
 own tile server (`forager-pmtiles` Worker, `/us/{z}/{x}/{y}.mvt`), styled at load by the vendored
-`@protomaps/basemaps` 5.7.2 build (light flavour), with all three Noto Sans faces (768 glyph
-files, about 11 MB) and the light icon sheet under `Forager/forecast/vendor/basemap/`, their
+`@protomaps/basemaps` 5.7.2 build (light flavour), with all four Noto Sans faces the style uses
+(Regular, Medium, Italic and Devanagari Regular; 1,024 glyph files, about 11.5 MB) and the light icon sheet under `Forager/forecast/vendor/basemap/`, their
 BSD-3, OFL and MIT notices beside them and checksums in `vendor/SHA256SUMS.txt`. Nothing else is
 fetched from outside the site. The coloured layers sit above it, the borders and the street map's
 town names above them; the see-through slider sets the layers' opacity (70% at load, not
 stored), and the legend is drawn as the colours look over the street map's land colour. Panning
 stops at 49.6 N, where the tile server's coverage ends. The tile server is another origin, so
 `functions/_middleware.js` adds it to `connect-src` for `/Forager/forecast/` paths only; every
-other page keeps `connect-src 'self'`.
+other page keeps `connect-src 'self'`. Serving live browsing from the tile server depends on its
+account being on the paid plan (RECORD -860, lifting the 2026-08-22 rule that it serve offline
+downloads only): the free plan's 100,000 requests a day fail hard beyond the cap (Forager
+docs/plans/2026-10-03-own-tiles-survey.md:58, from the host's published pages on 2026-10-03).
 
-**The forecast test area's "Sighting chance (pilot)" layer is two plain files**, not tiles
+**The pilot demo's "Sighting chance (pilot)" layer is two plain files**, not tiles
 (Forager RECORD -814): `Forager/forecast/data/pnw-pilot/current/manifest.json` and
 `Forager/forecast/data/pnw-pilot/current/cantharellus.geojson`, in the shape forager-forecast
 D55/D56 fixes (one 0.1 degree weather cell per feature), drawn and read by `pilot.js`. About
