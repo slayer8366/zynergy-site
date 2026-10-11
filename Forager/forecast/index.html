@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>Forager forecast test area</title>
+<title>Forager mushroom forecast: Pacific Northwest pilot</title>
 <link rel="stylesheet" href="vendor/maplibre-gl.css">
 <link rel="stylesheet" href="guide.css">
 <style>
@@ -23,6 +22,10 @@
   fieldset { border: 0; padding: 0; margin: 0 0 12px; }
   legend { font-weight: 600; margin-bottom: 6px; }
   label.layer { display: block; padding: 6px 0; cursor: pointer; }
+  /* The see-through slider (owner, RECORD -859): a 44 px touch target on every screen. */
+  .see-through { margin: 0 0 12px; }
+  .see-through-head { display: flex; justify-content: space-between; font-weight: 600; }
+  .see-through input[type=range] { display: block; width: 100%; height: 44px; margin: 0; cursor: pointer; accent-color: #3b528b; }
   .bar { height: 14px; border: 1px solid #888; margin: 6px 0 2px; }
   .ends { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
   .key { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
@@ -30,8 +33,6 @@
   #readout { min-height: 2.6em; margin: 10px 0; padding: 6px 8px; background: #fff; border: 1px solid var(--line); border-radius: 4px; }
   details { margin-top: 12px; }
   details p, details li { font-size: .8rem; color: var(--muted); }
-  .place { font-size: 12px; font-weight: 600; color: #111; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; pointer-events: none; }
-  .place::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #111; margin-right: 4px; vertical-align: middle; }
   @media (max-width: 760px) {
     main { flex-direction: column; }
     #map { min-height: 55vh; }
@@ -41,9 +42,9 @@
 </head>
 <body>
 <header>
-  <h1>Forager forecast: test area</h1>
-  <p class="sub">A test area for the forecast in progress. The finished forecast will live at /Forager/mushroom-forecast/.</p>
-  <p class="label" id="inputs-label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast. Not yet reviewed.</p>
+  <h1>Mushroom forecast: Pacific Northwest pilot</h1>
+  <p class="sub">An early look at the weekly chance of chanterelles being found, cell by cell, from the Oregon–California border to the Canadian border. It's a pilot: the banner says how it did when tested on years it hadn't seen. It opens on the soil layer. Choose Sighting chance (pilot) in the layer list to see the forecast.</p>
+  <p class="label" id="inputs-label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast on their own.</p>
   <div class="label pilot-banner" id="pilot-banner" role="status" hidden></div>
 </header>
 <main>
@@ -57,6 +58,11 @@
       <label class="layer"><input type="radio" name="layer" value="hemlock"> Hemlock share of canopy</label>
       <label class="layer"><input type="radio" name="layer" value="pilot"> Sighting chance (pilot)</label>
     </fieldset>
+    <div class="see-through">
+      <div class="see-through-head"><label for="see-through">See-through</label><output id="see-through-value" for="see-through">70%</output></div>
+      <input type="range" id="see-through" min="0" max="100" step="1" value="70" aria-valuetext="Layer 70% solid">
+      <div class="ends"><span>Street map only</span><span>Solid</span></div>
+    </div>
     <div id="inputs-panel">
     <div id="scale">
       <div class="bar" id="bar"></div>
@@ -188,8 +194,7 @@
     <details>
       <summary>What this is, and what it is not</summary>
       <p>These are two of the inputs a forecast will use: the soil's acidity and the trees mushrooms grow with. Each square is 250 m. They are shown here so they can be looked at and questioned. They say nothing about this week, and nothing about whether mushrooms are there.</p>
-      <p>The forecast itself does not exist yet. It will be a weekly sighting chance per mushroom group and weather cell, shown for a region only once it beats a seasonal calendar on years it was not fitted to.</p>
-      <p>One layer, Sighting chance (pilot), is an early run of that number for chanterelles in the Pacific Northwest strip. It is shown before that test is passed or reviewed, labelled as such, so it can be looked at and questioned.</p>
+      <p>The forecast is a weekly sighting chance per mushroom group and weather cell. This pilot covers chanterelles only. It is shown together with the result of its test against a seasonal calendar on years it was not fitted to, whether or not it passed, so it can be looked at and questioned.</p>
       <p>Box: 40 to 49 N, 111 to 125 W. Tree data on the Canadian side comes from its own source, SCANFI v2, which maps Douglas-fir but not hemlock.</p>
     </details>
     <details>
@@ -203,6 +208,7 @@
         <li>Study area, borders and lines: CEC. 2022. North American Environmental Atlas - Political Boundaries. Ed. 3.0. CC BY 4.0. CEC. North American Environmental Atlas - Terrestrial Ecoregions, level III. Ed. 2.0. CC BY 4.0.</li>
         <li>The layers compiled by forager-forecast are published under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Each source keeps its own licence. Code: <a href="https://github.com/slayer8366/forager-forecast">forager-forecast</a>, AGPL-3.0.</li>
         <li>Sighting chance (pilot): computed by forager-forecast. Its sources and their attribution come with each week's data and are shown in the banner and the map's (i) while the layer is on.</li>
+        <li>Street map: our own tiles, built with the <a href="https://github.com/protomaps/basemaps">Protomaps</a> basemap (style BSD-3-Clause, design CC0) from OpenStreetMap data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ODbL; landcover from <a href="https://esa-worldcover.org/">ESA WorldCover</a>, CC BY 4.0; Natural Earth, public domain. Fonts: Noto Sans, SIL Open Font License 1.1. Icons derived from Mapzen's icon set, MIT. All served from this site.</li>
         <li>Map software: MapLibre GL JS 6.13.0 (BSD-3-Clause), served from this site.</li>
       </ul>
     </details>
