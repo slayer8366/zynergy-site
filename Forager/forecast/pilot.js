@@ -106,7 +106,9 @@ function asText(v) {
   return typeof v === 'string' ? v : JSON.stringify(v);
 }
 
-export function createPilot(map, maplibregl) {
+// opacity: a function returning the see-through slider's current value, read when the cells'
+// layer is added (the data may arrive after the slider has moved); app.js updates it live after.
+export function createPilot(map, maplibregl, { opacity }) {
   const state = { loaded: false, loading: null, error: null, manifest: null, featureCount: 0, drawnCount: 0,
     weekMismatch: 0, lastTap: null, selectedId: null, on: false };
   window.pnwPilot = state; // for checks
@@ -231,7 +233,7 @@ export function createPilot(map, maplibregl) {
         attribution: (Array.isArray(manifest.attribution) ? manifest.attribution.map(asText).join(' ') : asText(manifest.attribution)) || '' });
       map.addLayer({ id: 'pilot-fill', type: 'fill', source: 'pilot', filter: DRAWN,
         layout: { visibility: 'none' },
-        paint: { 'fill-color': fillColour(), 'fill-opacity': 0.85, 'fill-antialias': false } }, 'lines');
+        paint: { 'fill-color': fillColour(), 'fill-opacity': opacity(), 'fill-antialias': false } }, 'lines');
       map.addLayer({ id: 'pilot-selected', type: 'line', source: 'pilot', filter: DRAWN,
         layout: { visibility: 'none' },
         paint: { 'line-color': '#000', 'line-width': ['case', ['boolean', ['feature-state', 'selected'], false], 2.5, 0] } });

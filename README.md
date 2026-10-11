@@ -187,6 +187,18 @@ byte for byte, and on the new one changes 72 tiles (24 each in tree cover, Dougl
 and only pixels that were grey 255. Hemlock is blank (alpha 0) in Canada, because SCANFI does not
 separate it (forager-forecast D85); the legend and the tap readout say so.
 
+**The forecast page's street map is ours** (Forager RECORD -857 to -859): vector tiles from our
+own tile server (`forager-pmtiles` Worker, `/us/{z}/{x}/{y}.mvt`), styled at load by the vendored
+`@protomaps/basemaps` 5.7.2 build (light flavour), with all three Noto Sans faces (768 glyph
+files, about 11 MB) and the light icon sheet under `Forager/forecast/vendor/basemap/`, their
+BSD-3, OFL and MIT notices beside them and checksums in `vendor/SHA256SUMS.txt`. Nothing else is
+fetched from outside the site. The coloured layers sit above it, the borders and the street map's
+town names above them; the see-through slider sets the layers' opacity (70% at load, not
+stored), and the legend is drawn as the colours look over the street map's land colour. Panning
+stops at 49.6 N, where the tile server's coverage ends. The tile server is another origin, so
+`functions/_middleware.js` adds it to `connect-src` for `/Forager/forecast/` paths only; every
+other page keeps `connect-src 'self'`.
+
 **The forecast test area's "Sighting chance (pilot)" layer is two plain files**, not tiles
 (Forager RECORD -814): `Forager/forecast/data/pnw-pilot/current/manifest.json` and
 `Forager/forecast/data/pnw-pilot/current/cantharellus.geojson`, in the shape forager-forecast

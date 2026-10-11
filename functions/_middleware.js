@@ -18,18 +18,30 @@
 
 const BLOCKED_PREFIXES = ['/functions/', '/db/'];
 
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
-  "connect-src 'self'",
-  "frame-src https://challenges.cloudflare.com",
-  "frame-ancestors 'none'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join('; ');
+// The forecast page's street map is drawn from our own tile server, a separate origin
+// (Forager RECORD -857, -858). connect-src lets it through on the forecast page's paths only
+// (the page, and its vendored map worker, whose fetches are governed by its own response's
+// policy); every other page keeps connect-src 'self'. Rejected: opening it site-wide (pages
+// that never draw a map would gain an origin they do not use), and passing tiles through a
+// same-site function (a new function and request cost, for no gain the path rule lacks).
+const TILE_SERVER = 'https://forager-pmtiles.brandonlee1-894.workers.dev';
+const MAP_PATH_PREFIX = '/Forager/forecast/';
+
+function cspFor(path) {
+  const connect = path.startsWith(MAP_PATH_PREFIX) ? `connect-src 'self' ${TILE_SERVER}` : "connect-src 'self'";
+  return [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    connect,
+    "frame-src https://challenges.cloudflare.com",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; ');
+}
 
 export async function onRequest(context) {
   const path = new URL(context.request.url).pathname;
@@ -44,7 +56,7 @@ export async function onRequest(context) {
   const response = await context.next();
   const headers = new Headers(response.headers);
 
-  headers.set('content-security-policy', CSP);
+  headers.set('content-security-policy', cspFor(path));
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
   headers.set('permissions-policy', 'geolocation=(), camera=(), microphone=(), interest-cohort=()');
