@@ -101,6 +101,24 @@ function weekWords(week) {
   return week ? `the week of ${longDate(week)}` : 'the week the manifest does not state';
 }
 
+// Short credit names for the banner's one-line Data line (RECORD -895), by source key. Returns
+// null when the list is missing or holds a key with no short name here.
+const SHORT_CREDIT = [
+  [(k) => k === 'gbif_download', 'GBIF sighting records'],
+  [(k) => /^era5_/.test(k), 'Copernicus climate data'],
+];
+function shortCredits(sources) {
+  if (!Array.isArray(sources) || !sources.length) return null;
+  const names = [];
+  for (const k of sources) {
+    const hit = SHORT_CREDIT.find(([match]) => typeof k === 'string' && match(k));
+    if (!hit) return null;
+    if (!names.includes(hit[1])) names.push(hit[1]);
+  }
+  names.sort((a, b) => SHORT_CREDIT.findIndex(([, n]) => n === a) - SHORT_CREDIT.findIndex(([, n]) => n === b));
+  return names.join('; ');
+}
+
 function asText(v) {
   if (v == null) return null;
   return typeof v === 'string' ? v : JSON.stringify(v);
@@ -196,7 +214,26 @@ export function createPilot(map, maplibregl, { opacity }) {
     if (versions.size) more.append(el('p', `Model: ${[...versions].join(', ')}.`));
     if (m.published_at) more.append(el('p', `Published ${m.published_at}.`));
     full.append(more);
+    // Credits (owner, Forager RECORD -895): one short line naming each source by what it gave,
+    // "Data: GBIF sighting records; Copernicus climate data. Details", with every citation and
+    // notice in full one tap away under Details, so the banner stays a strip on a wide screen.
+    // The short names come from attribution_sources; a source this page has no short name for,
+    // or no source list at all, shows the manifest's full attribution string instead, so a
+    // credit is never shortened into something the page made up.
     const attr = Array.isArray(m.attribution) ? m.attribution : (m.attribution ? [m.attribution] : []);
+    const details = Array.isArray(m.attribution_details) ? m.attribution_details : [];
+    const short = shortCredits(m.attribution_sources);
+    if (short && details.length) {
+      const d = el('details', null, 'pilot-attr-details pilot-attr');
+      const s = el('summary');
+      s.append(el('span', `Data: ${short}. `), el('span', 'Details', 'pilot-attr-link'));
+      d.append(s);
+      const ul = el('ul');
+      for (const line of details) ul.append(el('li', asText(line)));
+      d.append(ul);
+      full.append(d);
+      return;
+    }
     if (attr.length) {
       const p = el('p', null, 'pilot-attr');
       p.append(el('span', 'Data: '));
@@ -206,11 +243,11 @@ export function createPilot(map, maplibregl, { opacity }) {
       full.append(el('p', 'Attribution: not stated in the manifest.', 'pilot-attr'));
     }
     // The full citations, one per dataset, behind a disclosure so the banner stays short.
-    if (Array.isArray(m.attribution_details) && m.attribution_details.length) {
+    if (details.length) {
       const d = el('details', null, 'pilot-attr-details');
       d.append(el('summary', 'Attribution details'));
       const ul = el('ul');
-      for (const line of m.attribution_details) ul.append(el('li', asText(line)));
+      for (const line of details) ul.append(el('li', asText(line)));
       d.append(ul);
       full.append(d);
     }

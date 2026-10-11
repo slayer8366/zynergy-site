@@ -1,5 +1,5 @@
 {
- "published_at": "2026-10-11T22:48:19+00:00",
+ "published_at": "2026-10-11T23:41:25+00:00",
  "pilot": true,
  "validated": false,
  "reviewed": true,
@@ -124,7 +124,7 @@
   "open_meteo_batches": null,
   "api_calls_by_pricing_rule": null
  },
- "weather_bridge": "This week's weather comes from the Copernicus climate archive, the same sources the model was trained on. A second weather service was checked for the same days but isn't used for scoring.",
+ "weather_bridge": "This forecast's weather comes from the Copernicus climate archive, the same sources the model was trained on. A second weather service was checked for the same days but isn't used for scoring.",
  "model": {
   "version": "pnw-pilot-t1-full-cd0c66a65752",
   "model_txt_sha256": "cd0c66a6575258df065f2e65d2a7ac2d4c85d6dc07fc57aabcaaa7db2f617ed2",
