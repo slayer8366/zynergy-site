@@ -186,6 +186,11 @@ export function createPilot(map, maplibregl, { opacity }) {
       'Not the forecast.',
     ].join(' ');
     full.append(el('p', head, 'pilot-head'));
+    // The run's status in the scoring step's own words (owner, Forager RECORD -899), directly
+    // under the short heading in the opened banner; the collapsed phone line is unchanged.
+    // Nothing extra when the manifest has none.
+    const status = asText(m.status_label);
+    if (status) full.append(el('p', status, 'pilot-status'));
     full.append(el('p', calendarLine(m.beats_calendar)));
     // What kind of model made the numbers. A calendar-only model reads no weather at all.
     if (m.model_kind === 'calendar') full.append(el('p', 'Calendar only, no weather.', 'pilot-head'));
