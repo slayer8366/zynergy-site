@@ -33,23 +33,36 @@
   #readout { min-height: 2.6em; margin: 10px 0; padding: 6px 8px; background: #fff; border: 1px solid var(--line); border-radius: 4px; }
   details { margin-top: 12px; }
   details p, details li { font-size: .8rem; color: var(--muted); }
+  /* Wide layout: the map is never taller than it is wide (owner, RECORD -912: "Desktop mode, the
+     map is very tall, should be cut to 1x1"). Its width is the window less the 320 px side column,
+     so this binds only on a window taller than wide (a phone's desktop mode); landscape screens
+     keep the full height. */
+  @media (min-width: 761px) { #map { max-height: calc(100vw - 320px); } }
   .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   /* Phones (760 px wide or less, the page's existing phone breakpoint, also the banner's one-line
      form): the map fills the screen under a compact header, and the controls sit in a panel that
      peeks up from the bottom (owner, Forager RECORD -908). phone.js drives it. Desktop unchanged. */
   @media (max-width: 760px) {
-    body { height: 100dvh; overflow: hidden; }
+    /* Height: the full window, from the newest unit back to the oldest. A browser without dynamic
+       viewport units keeps the line before (RECORD -912). */
+    body { height: 100%; height: var(--app-h, 100%); height: 100dvh; overflow: hidden; }
     header { flex: none; padding: 8px 12px 6px; }
     #intro { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
     #intro.open { white-space: normal; }
-    main { position: relative; flex-direction: column; }
+    /* The map area clips what it holds: whatever a browser does with the panel's height, nothing
+       in it draws over the header (owner, RECORD -912). */
+    main { position: relative; flex-direction: column; overflow: hidden; }
     #map { flex: 1; min-height: 0; }
     /* The panel is positioned by its own height: nothing above its drawn top covers the map. */
     #panel { position: absolute; left: 0; right: 0; bottom: 0; width: auto; display: flex; flex-direction: column;
       padding: 0 12px 10px; border: 0; border-top: 1px solid var(--line); border-radius: 12px 12px 0 0;
       background: rgba(251, 251, 247, 0.8); box-shadow: 0 -2px 8px rgba(0, 0, 0, .15); overflow-y: auto; overscroll-behavior: contain; }
+    /* Bounded in every state, not only by the state classes: at most 85% of the map area even
+       if a class is missing. Open is set by its top edge (top and bottom fix the box), not by a
+       percentage height, so it cannot grow past the map area's top. */
+    #panel { top: auto; max-height: 85%; }
     #panel.peek { max-height: 45%; }
-    #panel.open { height: 85%; }
+    #panel.open { top: 15%; height: auto; max-height: none; }
     #panel.open > .panel-handle { position: sticky; top: 0; z-index: 1; background: var(--paper); }
     .panel-handle { display: flex; flex: none; align-items: center; gap: 8px; width: 100%; min-height: 48px; margin: 0; padding: 14px 0 6px;
       position: relative; background: none; border: 0; font: inherit; font-weight: 600; color: inherit; text-align: left; cursor: grab; touch-action: none; }

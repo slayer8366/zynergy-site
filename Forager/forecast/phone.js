@@ -14,11 +14,15 @@
 // (Forager CLAUDE.md's rule on full-width layers that catch touches, applied here in spirit).
 
 const PHONE = window.matchMedia('(max-width: 760px)');
+// Whether the phone layout is on is read from the CSS itself (the panel is positioned over the map
+// only there), not from a separate media test that a browser could answer differently from its
+// own stylesheet (RECORD -912). The media test only tells us when to look again.
 const DRAG_SLOP = 8;      // px of movement before a press on the handle counts as a drag
 const DRAG_DECIDE = 30;   // px of drag that decides open or close on release
 
 export function setUpPhonePanel(map) {
   const panel = document.getElementById('panel');
+  const isPhone = () => getComputedStyle(panel).position === 'absolute';
   const handle = document.getElementById('panel-handle');
   const verb = document.getElementById('panel-handle-verb');
   const more = document.getElementById('panel-more');
@@ -41,7 +45,7 @@ export function setUpPhonePanel(map) {
   // The panel's drawn height, for the map's bottom controls (the (i) credit button) to sit above it.
   // --map-free-h is the map's height left above the panel, which caps the opened credit box.
   function publishHeight() {
-    const h = PHONE.matches ? panel.offsetHeight : 0;
+    const h = isPhone() ? panel.offsetHeight : 0;
     document.documentElement.style.setProperty('--panel-h', `${h}px`);
     document.documentElement.style.setProperty('--map-free-h', `${Math.max(0, panel.parentElement.clientHeight - h)}px`);
   }
@@ -63,7 +67,7 @@ export function setUpPhonePanel(map) {
 
   let drag = null;
   handle.addEventListener('pointerdown', (e) => {
-    if (!PHONE.matches || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if (!isPhone() || (e.pointerType === 'mouse' && e.button !== 0)) return;
     drag = { id: e.pointerId, y0: e.clientY, h0: panel.offsetHeight, moved: false };
     handle.setPointerCapture(e.pointerId);
   });
@@ -74,6 +78,7 @@ export function setUpPhonePanel(map) {
     drag.moved = true;
     // Follow the finger between the peek and the open height.
     const max = panel.parentElement.clientHeight * 0.85;
+    panel.style.top = 'auto';
     panel.style.maxHeight = 'none';
     panel.style.height = `${Math.max(48, Math.min(max, drag.h0 - dy))}px`;
   });
@@ -82,6 +87,7 @@ export function setUpPhonePanel(map) {
     const dy = e.clientY - drag.y0;
     const moved = drag.moved;
     drag = null;
+    panel.style.top = '';
     panel.style.maxHeight = '';
     panel.style.height = '';
     if (!moved) return; // a tap: the click that follows toggles
@@ -102,12 +108,12 @@ export function setUpPhonePanel(map) {
   document.getElementById('layers').addEventListener('change', () => {
     panel.classList.remove('has-readout');
     name.textContent = layerName();
-    if (PHONE.matches && state.open) setOpen(false);
+    if (isPhone() && state.open) setOpen(false);
   });
 
   // The intro: one line on a phone, opened and closed by a tap, Enter or Space.
   function introToggle() {
-    if (!PHONE.matches) return;
+    if (!isPhone()) return;
     const open = intro.classList.toggle('open');
     intro.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
@@ -117,7 +123,7 @@ export function setUpPhonePanel(map) {
   });
 
   function applyBreakpoint() {
-    const phone = PHONE.matches;
+    const phone = isPhone();
     handle.hidden = !phone;
     if (phone) {
       intro.setAttribute('role', 'button');
@@ -132,6 +138,16 @@ export function setUpPhonePanel(map) {
     }
   }
   PHONE.addEventListener('change', applyBreakpoint);
+  // The window's height in px, the fallback for browsers without dynamic viewport units.
+  function publishAppHeight() {
+    document.documentElement.style.setProperty('--app-h', `${window.innerHeight}px`);
+  }
+  let wasPhone = isPhone();
+  window.addEventListener('resize', () => {
+    publishAppHeight();
+    if (isPhone() !== wasPhone) { wasPhone = isPhone(); applyBreakpoint(); }
+  });
+  publishAppHeight();
   name.textContent = layerName();
   applyBreakpoint();
   return state;
