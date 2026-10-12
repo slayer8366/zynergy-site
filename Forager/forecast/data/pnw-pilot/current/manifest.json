@@ -1,13 +1,13 @@
 {
- "published_at": "2026-10-10T18:51:46+00:00",
+ "published_at": "2026-10-11T23:41:25+00:00",
  "pilot": true,
  "validated": false,
- "reviewed": false,
- "status_label": "Unvalidated pilot. Unreviewed. Shown whether or not it beats the calendar.",
- "model_kind": "calendar",
- "model_kind_note": "Calendar model: day of year and place only. It knows nothing about this year's weather.",
- "beats_calendar": null,
- "t1_result": null,
+ "reviewed": true,
+ "status_label": "Pilot, not yet validated. Its figures were checked by an independent review. Shown whether or not it beats the seasonal calendar.",
+ "model_kind": "full",
+ "model_kind_note": "Weather model: day of year, place and T1's 32 weather windows.",
+ "beats_calendar": false,
+ "t1_result": "Tested on years it wasn't trained on (2015 to 2025, one year left out at a time), it did very slightly worse than the seasonal calendar alone. Brier skill −0.0035 (95% range −0.0066 to −0.0001). An independent review reproduced these figures.",
  "sighting_chance_meaning": "Sighting chance: the chance chanterelles are reported in this weather cell this week, given at least one fungal observation of any kind there that week (D12). It is not the chance mushrooms are present, and not the chance you will find them.",
  "groups": [
   {
@@ -22,13 +22,22 @@
  "iso_week": "2026-W41",
  "regions_published": [],
  "regions_note": "No ecoregion is published under D5 (published only after beating the calendar on held-out years). The owner asked for this pilot to be shown regardless (Forager RECORD -814).",
- "attribution": "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb.",
+ "attribution": "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Generated using or contains modified Copernicus Climate Change Service information 2025. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains.",
  "attribution_details": [
-  "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Occurrence records from 26 datasets, under CC0 1.0, CC BY 4.0 and CC BY-NC 4.0 (D29, D61); each dataset with its licence is listed in docs/pulls/gbif-fungi-us-canada-2015-2025.datasets.json of slayer8366/forager-forecast. The download is provisional (test account) and will be superseded by the business account's identical request (docs/pulls/gbif-fungi-us-canada-2015-2025.doi.json)."
+  "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Occurrence records from 26 datasets, under CC0 1.0, CC BY 4.0 and CC BY-NC 4.0 (D29, D61); each dataset with its licence is listed in docs/pulls/gbif-fungi-us-canada-2015-2025.datasets.json of slayer8366/forager-forecast. The download is provisional (test account) and will be superseded by the business account's identical request (docs/pulls/gbif-fungi-us-canada-2015-2025.doi.json).",
+  "Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47 (Accessed on 10-Oct-2026 to 11-Oct-2026)",
+  "Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J. (2019): ERA5-Land hourly data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/cds.e2161bac (Accessed on 10-Oct-2026 to 11-Oct-2026)",
+  "Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Comyn-Platt, E., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2023): ERA5 post-processed daily-statistics on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.4991cf48 (Accessed on 10-Oct-2026)",
+  "Generated using or contains modified Copernicus Climate Change Service information 2025. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Copernicus Climate Change Service, Climate Data Store, (2025): ERA5 Land hourly time-series data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/ee82e357 (Accessed on 11-Oct-2026)"
  ],
  "attribution_sources": [
+  "era5_daily_sum",
+  "era5_hourly_precipitation",
+  "era5_land_hourly",
+  "era5_land_timeseries",
   "gbif_download"
  ],
+ "gate_record_attribution": "Weather data by Open-Meteo.com (https://open-meteo.com/), CC BY 4.0. Its values appear only in model.model_json.land_route_gate, the record of the check the training weather was compared against; they are not scoring or training inputs.",
  "layers": [
   {
    "kind": "cells_combined",
@@ -59,10 +68,12 @@
     "n45w122",
     "n45w123",
     "n45w124",
+    "n45w125",
     "n46w121",
     "n46w122",
     "n46w123",
     "n46w124",
+    "n46w125",
     "n47w121",
     "n47w122",
     "n47w123",
@@ -88,22 +99,24 @@
  "applicable_note": "Cells are listed only when scored. A cell is left out when the weather source has no ERA5-Land value for it (sea), or, for the weather model, any of its 90 days is missing. No area-of-applicability or training-range check (R7) has been run.",
  "cells": {
   "in_box": 3116,
-  "scored": 2387,
+  "scored": 2618,
+  "scored_from_a_land_neighbour": 231,
+  "land_rule": "a cell with no ERA5-Land value of its own reads its nearest land neighbour (owner, Forager RECORD -822; forager_forecast.coastal.land_point), as in training",
   "omitted": {
-   "no_era5_land_value_(sea)": 729,
+   "no_era5_land_value_at_cell_or_neighbour_(sea)": 498,
    "incomplete_weather_window": 0
   },
-  "chance_min": 0.0107,
-  "chance_median": 0.0384,
-  "chance_max": 0.1677
+  "chance_min": 0.0067,
+  "chance_median": 0.0411,
+  "chance_max": 0.1571
  },
- "weather_through": null,
- "weather_through_note": "null: the calendar model reads no weather.",
- "weather_source": "none",
+ "weather_through": "2026-10-04",
+ "weather_through_note": "the last day the windows read: the day before the week's Monday.",
+ "weather_source": "copernicus",
  "weather": {
-  "source": "none: calendar model, land cells from the store's ERA5-Land grid",
-  "npz_sha256": null,
-  "land_mask_from": "hourly-era5land-2019-01.daily.h5",
+  "source": "Copernicus Climate Data Store (owner, Forager RECORD -819). Scoring window read: reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day). Training read: derived-era5-single-levels-daily-statistics (daily_sum of total_precipitation; time_zone utc+00:00, frequency 1_hourly); reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day); reanalysis-era5-land-timeseries (point series of the same three ERA5-Land variables, averaged over the 24 UTC hours of each day). Window days 2026-07-07 to 2026-07-31 are the store's final data (expver 0001); 2026-08-01 to 2026-10-04 are its preliminary data (expver 0005), which can be revised.",
+  "npz_sha256": "0c49371a290d1aaf0d3eeaa8b807d74db0844aecd3b230836fae8f037d597396",
+  "land_mask_from": null,
   "days": [
    "2026-07-07",
    "2026-10-04"
@@ -111,49 +124,81 @@
   "open_meteo_batches": null,
   "api_calls_by_pricing_rule": null
  },
- "weather_bridge": null,
+ "weather_bridge": "This forecast's weather comes from the Copernicus climate archive, the same sources the model was trained on. A second weather service was checked for the same days but isn't used for scoring.",
  "model": {
-  "version": "pnw-pilot-t1-calendar-e2c272b7acfa",
-  "model_txt_sha256": "e2c272b7acfa4505d06f5f7da118b7e3f4ed044fad20ca6da993b68af30ffb3f",
+  "version": "pnw-pilot-t1-full-cd0c66a65752",
+  "model_txt_sha256": "cd0c66a6575258df065f2e65d2a7ac2d4c85d6dc07fc57aabcaaa7db2f617ed2",
   "model_json": {
-   "tag": "primary_t1_1000m_calendar",
+   "tag": "primary_t1_1000m_full",
    "purpose": "scoring for the prototype map (Forager RECORD -814); NOT an evaluation result",
    "feature_names": [
     "doy_sin",
     "doy_cos",
     "latitude",
-    "longitude"
+    "longitude",
+    "temperature_mean_3d",
+    "precipitation_sum_3d",
+    "soil_temperature_mean_3d",
+    "soil_moisture_mean_3d",
+    "temperature_mean_7d",
+    "precipitation_sum_7d",
+    "soil_temperature_mean_7d",
+    "soil_moisture_mean_7d",
+    "temperature_mean_14d",
+    "precipitation_sum_14d",
+    "soil_temperature_mean_14d",
+    "soil_moisture_mean_14d",
+    "temperature_mean_21d",
+    "precipitation_sum_21d",
+    "soil_temperature_mean_21d",
+    "soil_moisture_mean_21d",
+    "temperature_mean_28d",
+    "precipitation_sum_28d",
+    "soil_temperature_mean_28d",
+    "soil_moisture_mean_28d",
+    "temperature_mean_42d",
+    "precipitation_sum_42d",
+    "soil_temperature_mean_42d",
+    "soil_moisture_mean_42d",
+    "temperature_mean_56d",
+    "precipitation_sum_56d",
+    "soil_temperature_mean_56d",
+    "soil_moisture_mean_56d",
+    "temperature_mean_90d",
+    "precipitation_sum_90d",
+    "soil_temperature_mean_90d",
+    "soil_moisture_mean_90d"
    ],
    "chosen_config": {
-    "id": "c11",
-    "num_leaves": 31,
+    "id": "c10",
+    "num_leaves": 15,
     "learning_rate": 0.05,
-    "num_boost_round": 100,
+    "num_boost_round": 200,
     "min_data_in_leaf": 20,
     "feature_fraction": 1.0,
     "lambda_l2": 10.0
    },
    "inner_scores_all_years": {
-    "c00": 0.020435230980650677,
-    "c01": 0.021249071516293617,
-    "c02": 0.020408377763262594,
-    "c03": 0.02097393969490713,
-    "c04": 0.02054143206209484,
-    "c05": 0.02069863344104391,
-    "c06": 0.020882048151209257,
-    "c07": 0.02078418286445584,
-    "c08": 0.020389275314482928,
-    "c09": 0.020409553871408956,
-    "c10": 0.02037832527061719,
-    "c11": 0.02037715909190789,
-    "c12": 0.020534274226912588,
-    "c13": 0.020557307323164867,
-    "c14": 0.02038136387450311,
-    "c15": 0.020581860814990915,
-    "c16": 0.02048751077942132,
-    "c17": 0.020469076040906614,
-    "c18": 0.02040121933540694,
-    "c19": 0.02067634034941995
+    "c00": 0.020646180468489896,
+    "c01": 0.021227845625649607,
+    "c02": 0.020639032945982558,
+    "c03": 0.02115023182533465,
+    "c04": 0.02071494552069999,
+    "c05": 0.021003980528848987,
+    "c06": 0.021186177607505963,
+    "c07": 0.021082675045443953,
+    "c08": 0.020644076021303377,
+    "c09": 0.02067112779215688,
+    "c10": 0.02061049053874936,
+    "c11": 0.02063933828665948,
+    "c12": 0.020861196425122578,
+    "c13": 0.020838703886780947,
+    "c14": 0.020634478833283947,
+    "c15": 0.02085400132542628,
+    "c16": 0.020659414065526373,
+    "c17": 0.02066482420273433,
+    "c18": 0.02064083360385416,
+    "c19": 0.020909264293006193
    },
    "years": [
     2015,
@@ -168,13 +213,105 @@
     2024,
     2025
    ],
-   "units": 53186,
-   "positives": 1139,
-   "weather_npz": null,
-   "commit": "1742544d7f0d95381e8091b668a7805e345ead83",
+   "units": 52718,
+   "positives": 1138,
+   "weather_npz": "/home/zynergy-labs/Zynergy/forecast-data-pnw-pilot/weather/t1_pnw.npz",
+   "copernicus_sources": [
+    "era5_daily_sum",
+    "era5_hourly_precipitation",
+    "era5_land_hourly",
+    "era5_land_timeseries"
+   ],
+   "land_route_gate": {
+    "gate_pass": false,
+    "land_route_pass": false,
+    "spans_complete": null,
+    "hourly_by_variable": {
+     "t2m": {
+      "matched_compared_by_offset_hours": {
+       "-1": [
+        762,
+        6912
+       ],
+       "0": [
+        6911,
+        6912
+       ],
+       "1": [
+        675,
+        6912
+       ]
+      },
+      "best_offset_hours": 0
+     },
+     "stl1": {
+      "matched_compared_by_offset_hours": {
+       "-1": [
+        2356,
+        6912
+       ],
+       "0": [
+        6912,
+        6912
+       ],
+       "1": [
+        2218,
+        6912
+       ]
+      },
+      "best_offset_hours": 0
+     },
+     "swvl1": {
+      "matched_compared_by_offset_hours": {
+       "-1": [
+        4149,
+        6912
+       ],
+       "0": [
+        6912,
+        6912
+       ],
+       "1": [
+        4133,
+        6912
+       ]
+      },
+      "best_offset_hours": 0
+     }
+    },
+    "equivalence_written_utc": "2026-10-11T15:44:37+00:00",
+    "override_given": "Forager RECORD -854",
+    "failing_hours": [
+     {
+      "variable": "t2m",
+      "cell": "493_-1250",
+      "land_point": [
+       493,
+       -1250
+      ],
+      "land_point_kind": "own",
+      "span_start": "2025-12-06",
+      "body": "493_-1250_2025-12-06.json",
+      "hour_utc": "2025-12-12T11:00",
+      "store": 5.424951171875023,
+      "store_direct": 5.424951171875023,
+      "store_raw_file_value": 278.574951171875,
+      "store_source": "hourly-era5land-2025-12.hourly.nc",
+      "time_series_route": 5.425012207031273,
+      "open_meteo": 5.5,
+      "open_meteo_body_raw": 5.5,
+      "abs_diff": 0.07504882812497726,
+      "bound": 0.075001
+     }
+    ],
+    "override": "used: Forager RECORD -854 (owner, 2026-10-11, 'fit anyway, failure on the record'); the gate failed and its result stands as written",
+    "proceed": true
+   },
+   "commit": "7d19c6657637a727cf33ec09e8da10de80946d3b",
    "working_tree_dirty": false,
-   "written_utc": "2026-10-10T18:28:20+00:00",
-   "label": "unvalidated pilot, unreviewed; sighting chance (D12)"
+   "written_utc": "2026-10-11T15:58:06+00:00",
+   "label": "unvalidated pilot, unreviewed; sighting chance (D12)",
+   "partial_years": false
   }
  },
  "box": {

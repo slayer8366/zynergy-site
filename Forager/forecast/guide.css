@@ -26,6 +26,8 @@
 #readout .pilot-where { color: #555; font-size: .8rem; }
 .pilot-attr-details { font-weight: 400; font-size: .8rem; margin-top: 2px; }
 .pilot-attr-details summary { cursor: pointer; text-decoration: underline; }
+.pilot-attr-details.pilot-attr summary { text-decoration: none; }
+.pilot-attr-details .pilot-attr-link { text-decoration: underline; }
 .pilot-attr-details ul { margin: 4px 0; padding-left: 18px; }
 .pilot-more { font-weight: 400; font-size: .8rem; margin-top: 2px; }
 .pilot-more summary { cursor: pointer; text-decoration: underline; }

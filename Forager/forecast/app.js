@@ -270,19 +270,22 @@ map.on('click', async (e) => {
   else out.textContent = `${spec.fmt(spec.decode(v.grey))} (${where}).`;
 });
 
-// On a narrow map the attribution starts collapsed to its (i) button, one tap away, instead of
-// MapLibre's default of showing it open until the first drag (planner, after the pilot's mobile
-// screenshots: the Copernicus string covered the bottom third of the map). Wide maps keep the
-// default. Runs at load and on resize only, so a user's own tap to open it is left alone.
-function collapseAttributionIfNarrow() {
+// The map's attribution starts collapsed to its (i) button, one tap away, on every width,
+// instead of MapLibre's default of showing it open until the first drag. First on narrow maps
+// (planner, after the pilot's mobile screenshots: the Copernicus string covered the bottom third
+// of the map), then on wide ones too (owner, Forager RECORD -895: "the map's credit box starts
+// collapsed on desktop as on phones, opened by its (i)"), after the weather model's four
+// Copernicus notices covered the lower part of the desktop map. Runs at load and on resize only,
+// so a user's own tap to open it is left alone between resizes.
+function collapseAttribution() {
   const box = document.querySelector('#map .maplibregl-ctrl-attrib');
-  if (!box || map.getCanvasContainer().offsetWidth > 640) return;
+  if (!box) return;
   box.classList.remove('maplibregl-compact-show');
   box.removeAttribute('open');
 }
-map.on('resize', collapseAttributionIfNarrow);
+map.on('resize', collapseAttribution);
 map.on('load', () => {
-  collapseAttributionIfNarrow();
+  collapseAttribution();
   pilot = createPilot(map, maplibregl, { opacity: () => layerOpacity });
   show(current);
   map.once('idle', () => { document.body.dataset.ready = '1'; });

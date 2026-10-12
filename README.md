@@ -212,15 +212,20 @@ scoring step also writes are for the app and are not copied here. The scoring st
 week folder, `pnw-pilot/<week>/`; its two files are copied into `current/` so the page never
 needs to know the week, and the week it shows comes from the manifest. The banner over the
 map is built from the manifest alone and says "not stated" for a missing field rather than
-assuming one. On a screen 760 px wide or less the banner is one line ("Pilot model. Not validated. Not
-reviewed. Week of ...") that expands on a tap, with the calendar line first in the expansion. The
-attribution string D55 asks for "on the map" is in MapLibre's attribution control, which on a
-map 640 px wide or less starts collapsed to its (i) button: one tap away on the map, so it does
-not cover the map before the first pan. It is also in the banner, with the full citations under
-"Attribution details". Both follow the owner's rule that nothing fully obstructs the map. The page fetches both files with `cache: 'no-cache'`, so a new week is not
-hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring coder's calendar-only output (forager-forecast
-`pnw-pilot-scoring` 9e24e67, `samples/pnw-pilot/2026-10-05/`: 2,387 cells, no weather read;
-combined file sha256 c74ee7f0..., manifest 4debbc8b...; credited to the GBIF download only). To drop in a week (from the root of this repo):
+assuming one. On a screen 760 px wide or less the banner is one line (for example "Pilot model. Not
+validated. Reviewed. Week of ...") that expands on a tap, with the calendar line first in the expansion. The
+attribution string D55 asks for "on the map" is in MapLibre's attribution control, which starts
+collapsed to its (i) button on every width (on narrow maps first; on wide ones too since Forager
+RECORD -895): one tap away on the map, so it does not cover the map before the first pan. The
+banner credits the sources in one short line built from the manifest's `attribution_sources`
+("Data: GBIF sighting records; Copernicus climate data. Details", RECORD -895), with every
+citation and notice in full under Details; a source key the page has no short name for brings
+back the manifest's full attribution string instead. Both follow the owner's rule that nothing fully obstructs the map. The page fetches both files with `cache: 'no-cache'`, so a new week is not
+hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring step's weather-model output for the week of
+5 October 2026, 2026-W41 (forager-forecast `pnw-pilot-scoring` 9090a59, republished at 92cd265 with the
+weather line of Forager RECORD -893 and -895: 2,618 of 3,116 cells scored; combined file sha256 ac6038d3...,
+manifest aae1e57b...; credited to the GBIF download and the Copernicus products read). It replaced
+the calendar-only output (9e24e67: 2,387 cells, no weather read; c74ee7f0..., 4debbc8b...). To drop in a week (from the root of this repo):
 
 ```bash
 W=<path to the scoring output>/pnw-pilot/<week>
