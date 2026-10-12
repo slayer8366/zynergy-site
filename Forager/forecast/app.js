@@ -19,6 +19,7 @@
 import * as maplibregl from './vendor/maplibre-gl.mjs';
 import * as basemaps from './vendor/basemap/basemaps.mjs';
 import { createPilot, CLASSES } from './pilot.js';
+import { setUpPhonePanel } from './phone.js';
 
 const LAYERS = {
   'soil-ph': { dir: 'data/soil-ph', lo: 4.5, hi: 8.0, unit: 'pH', decode: (g) => g / 10,
@@ -293,6 +294,9 @@ function collapseAttribution() {
   box.removeAttribute('open');
 }
 map.on('resize', collapseAttribution);
+// The phone panel (RECORD -908) is set up at once, not on load, so the page never shows the
+// unarranged column on a phone while the map loads.
+setUpPhonePanel(map);
 map.on('load', () => {
   collapseAttribution();
   pilot = createPilot(map, maplibregl, { opacity: () => layerOpacity, onClasses: setPilotClasses });

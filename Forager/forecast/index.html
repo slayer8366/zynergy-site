@@ -33,23 +33,55 @@
   #readout { min-height: 2.6em; margin: 10px 0; padding: 6px 8px; background: #fff; border: 1px solid var(--line); border-radius: 4px; }
   details { margin-top: 12px; }
   details p, details li { font-size: .8rem; color: var(--muted); }
+  .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* Phones (760 px wide or less, the page's existing phone breakpoint, also the banner's one-line
+     form): the map fills the screen under a compact header, and the controls sit in a panel that
+     peeks up from the bottom (owner, Forager RECORD -908). phone.js drives it. Desktop unchanged. */
   @media (max-width: 760px) {
-    main { flex-direction: column; }
-    #map { min-height: 55vh; }
-    aside { width: auto; border-left: 0; border-top: 1px solid var(--line); }
+    body { height: 100dvh; overflow: hidden; }
+    header { flex: none; padding: 8px 12px 6px; }
+    #intro { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+    #intro.open { white-space: normal; }
+    main { position: relative; flex-direction: column; }
+    #map { flex: 1; min-height: 0; }
+    /* The panel is positioned by its own height: nothing above its drawn top covers the map. */
+    #panel { position: absolute; left: 0; right: 0; bottom: 0; width: auto; display: flex; flex-direction: column;
+      padding: 0 12px 10px; border: 0; border-top: 1px solid var(--line); border-radius: 12px 12px 0 0;
+      background: rgba(251, 251, 247, 0.8); box-shadow: 0 -2px 8px rgba(0, 0, 0, .15); overflow-y: auto; overscroll-behavior: contain; }
+    #panel.peek { max-height: 45%; }
+    #panel.open { height: 85%; }
+    #panel.open > .panel-handle { position: sticky; top: 0; z-index: 1; background: var(--paper); }
+    .panel-handle { display: flex; flex: none; align-items: center; gap: 8px; width: 100%; min-height: 48px; margin: 0; padding: 14px 0 6px;
+      position: relative; background: none; border: 0; font: inherit; font-weight: 600; color: inherit; text-align: left; cursor: grab; touch-action: none; }
+    .panel-handle .grab { position: absolute; top: 5px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: #999; }
+    .panel-more { margin-left: auto; font-weight: 400; text-decoration: underline; }
+    #panel.peek > #layers, #panel.peek > #about, #panel.peek > details { display: none; }
+    #panel.peek:not(.has-readout) > #readout { display: none; }
+    #panel.peek > #inputs-panel, #panel.peek > #pilot-legend { order: 1; }
+    #panel.peek > .see-through { order: 2; margin-bottom: 4px; }
+    #panel.peek > #readout { order: 3; }
+    #panel.peek #pilot-classes { display: flex; flex-wrap: wrap; column-gap: 14px; }
+    #panel.peek .key { margin: 3px 0; font-size: .82rem; }
+    #panel.peek .pilot-legend-title { margin: 2px 0 4px; }
+    #panel.peek .bar { margin-top: 2px; }
+    .maplibregl-ctrl-bottom-right, .maplibregl-ctrl-bottom-left { bottom: var(--panel-h, 0px); }
+    /* The opened credit box stays inside the map above the panel, its text scrolling, so its (i)
+       close button is never pushed under the header (found by check.py on this change). */
+    .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner { display: block; max-height: calc(var(--map-free-h, 300px) - 24px); overflow-y: auto; }
   }
 </style>
 </head>
 <body>
 <header>
   <h1>Mushroom forecast: Pacific Northwest pilot</h1>
-  <p class="sub">An early look at the weekly chance of chanterelles being reported, cell by cell, from the Oregon–California border to the Canadian border. It's a pilot: the banner says how it did when tested on years it hadn't seen. It opens on the soil layer. Choose Sighting chance (pilot) in the layer list to see the forecast.</p>
+  <p class="sub" id="intro">An early look at the weekly chance of chanterelles being reported, cell by cell, from the Oregon–California border to the Canadian border. It's a pilot: the banner says how it did when tested on years it hadn't seen. It opens on the soil layer. Choose Sighting chance (pilot) in the layer list to see the forecast.</p>
   <p class="label" id="inputs-label">Model inputs (soil, host trees) for the Pacific Northwest. Not a forecast on their own.</p>
   <div class="label pilot-banner" id="pilot-banner" role="status" hidden></div>
 </header>
 <main>
   <div id="map" role="img" aria-label="Map of the Pacific Northwest showing the chosen layer"></div>
-  <aside>
+  <aside id="panel">
+    <button type="button" class="panel-handle" id="panel-handle" aria-controls="panel" aria-expanded="false" hidden><span class="grab" aria-hidden="true"></span><span class="vh" id="panel-handle-verb">Open the layer panel: </span><span id="panel-layer-name">Soil pH, top 30 cm</span><span class="panel-more" id="panel-more" aria-hidden="true">More</span></button>
     <fieldset id="layers">
       <legend>Show</legend>
       <label class="layer"><input type="radio" name="layer" value="soil-ph" checked> Soil pH, top 30 cm</label>
