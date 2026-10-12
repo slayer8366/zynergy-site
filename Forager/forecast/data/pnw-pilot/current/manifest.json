@@ -1,5 +1,5 @@
 {
- "published_at": "2026-10-11T23:41:25+00:00",
+ "published_at": "2026-10-12T00:48:38+00:00",
  "pilot": true,
  "validated": false,
  "reviewed": true,
@@ -37,6 +37,12 @@
   "era5_land_timeseries",
   "gbif_download"
  ],
+ "base_rate": {
+  "positives": 1138,
+  "units": 52718,
+  "rate": 0.021586554876892143,
+  "source": "model.json positives and units (primary_t1_1000m_full, 2015 to 2025): every cell-week of the design, each held out once in the leave-one-year-out test"
+ },
  "gate_record_attribution": "Weather data by Open-Meteo.com (https://open-meteo.com/), CC BY 4.0. Its values appear only in model.model_json.land_route_gate, the record of the check the training weather was compared against; they are not scoring or training inputs.",
  "layers": [
   {

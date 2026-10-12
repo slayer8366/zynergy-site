@@ -19,10 +19,12 @@
 .pilot-banner .pilot-head { font-weight: 700; }
 .pilot-banner .pilot-meta, .pilot-banner .pilot-attr { font-weight: 400; font-size: .82rem; }
 .pilot-legend-title { font-weight: 600; margin: 6px 0; }
+.pilot-base-rate { margin-top: 6px; font-size: .82rem; }
 .sw-none { background: transparent; border-style: dashed; }
 #readout p { margin: 2px 0; }
 #readout ul { margin: 2px 0; padding-left: 18px; }
 #readout .pilot-chance { font-weight: 700; font-size: 1rem; }
+#readout .pilot-small { font-size: .82rem; color: #444; }
 #readout .pilot-where { color: #555; font-size: .8rem; }
 .pilot-attr-details { font-weight: 400; font-size: .8rem; margin-top: 2px; }
 .pilot-attr-details summary { cursor: pointer; text-decoration: underline; }

@@ -154,17 +154,26 @@ map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
 const ALL_LAYERS = [...Object.keys(LAYERS), 'pilot'];
 let pilot = null;
 
-// The pilot layer's legend: its fixed classes, built once from pilot.js's table. Their colours
-// are set by paintLegend, so they follow the slider.
-const classSwatches = CLASSES.map((c) => {
-  const row = document.createElement('div');
-  row.className = 'key';
-  const sw = document.createElement('span');
-  sw.className = 'sw';
-  row.append(sw, document.createTextNode(c.label));
-  document.getElementById('pilot-classes').append(row);
-  return [sw, parseRgb(c.rgb)];
-});
+// The pilot layer's legend: its fixed classes, from pilot.js's tables. pilot.js picks the table
+// once the manifest is read (the five ratings with a base_rate, RECORD -902; the percent classes
+// without one); the percent classes stand until then. Their colours are set by paintLegend, so
+// they follow the slider.
+let classSwatches = [];
+function setPilotClasses(classes) {
+  const box = document.getElementById('pilot-classes');
+  box.replaceChildren();
+  classSwatches = classes.map((c) => {
+    const row = document.createElement('div');
+    row.className = 'key';
+    const sw = document.createElement('span');
+    sw.className = 'sw';
+    row.append(sw, document.createTextNode(c.label));
+    box.append(row);
+    return [sw, parseRgb(c.rgb)];
+  });
+  if (typeof paintLegend === 'function') paintLegend();
+}
+setPilotClasses(CLASSES);
 
 // The colour bar and the pilot swatches, as the colours look on the map at the current opacity.
 function paintLegend() {
@@ -286,7 +295,7 @@ function collapseAttribution() {
 map.on('resize', collapseAttribution);
 map.on('load', () => {
   collapseAttribution();
-  pilot = createPilot(map, maplibregl, { opacity: () => layerOpacity });
+  pilot = createPilot(map, maplibregl, { opacity: () => layerOpacity, onClasses: setPilotClasses });
   show(current);
   map.once('idle', () => { document.body.dataset.ready = '1'; });
 });

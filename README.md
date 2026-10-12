@@ -222,10 +222,14 @@ banner credits the sources in one short line built from the manifest's `attribut
 citation and notice in full under Details; a source key the page has no short name for brings
 back the manifest's full attribution string instead. Both follow the owner's rule that nothing fully obstructs the map. The page fetches both files with `cache: 'no-cache'`, so a new week is not
 hidden behind `_headers`' hour-long cache. The files in `current/` today are the scoring step's weather-model output for the week of
-5 October 2026, 2026-W41 (forager-forecast `pnw-pilot-scoring` 9090a59, republished at 92cd265 with the
-weather line of Forager RECORD -893 and -895: 2,618 of 3,116 cells scored; combined file sha256 ac6038d3...,
-manifest aae1e57b...; credited to the GBIF download and the Copernicus products read). It replaced
-the calendar-only output (9e24e67: 2,387 cells, no weather read; c74ee7f0..., 4debbc8b...). To drop in a week (from the root of this repo):
+5 October 2026, 2026-W41 (forager-forecast `pnw-pilot-scoring` 9090a59, republished at 949a5cf with the
+weather line of Forager RECORD -893 and -895 and the base_rate of -901: 2,618 of 3,116 cells scored; combined
+file sha256 ac6038d3..., manifest 074879ff...; credited to the GBIF download and the Copernicus products read). It replaced
+the calendar-only output (9e24e67: 2,387 cells, no weather read; c74ee7f0..., 4debbc8b...). With a `base_rate` in the manifest
+(the share of tested cell-weeks with a report, -901), cells are coloured and the readout leads with one of five
+ratings by chance ÷ base rate, cut-offs fixed by the owner (RECORD -902): Below average under 0.67, About average
+to 1.5, Above average to 3, High to 5, Very high from 5; the legend adds "Average week across the year". Without
+one, the percent classes and readout stand as before. To drop in a week (from the root of this repo):
 
 ```bash
 W=<path to the scoring output>/pnw-pilot/<week>
