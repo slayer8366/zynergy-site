@@ -158,11 +158,16 @@ function ratePct(rate) {
   const r = Math.round(rate * 100);
   return r >= 1 ? `about ${r}%` : 'under 1%';
 }
-// The tapped cell's lead line (RECORD -902's wording).
+// The ratio to one decimal, truncated rather than rounded (owner, RECORD -903; truncation a
+// planner call), so the number shown never crosses into the next band: 4.96 reads 4.9.
+export function timesText(ratio) {
+  return (Math.floor(ratio * 10) / 10).toFixed(1);
+}
+// The tapped cell's lead line (RECORD -902's wording, -903's one decimal).
 export function ratingLine(chance, rate) {
   const ratio = chance / rate;
   const r = ratingFor(ratio);
-  if (ratio >= 1.5) return `${r.label}: about ${Math.round(ratio)} times the average week across the year.`;
+  if (ratio >= 1.5) return `${r.label}: about ${timesText(ratio)} times the average week across the year.`;
   if (ratio >= 0.67) return `${r.label}: about the same as the average week across the year.`;
   return `${r.label}: below the average week across the year.`;
 }
