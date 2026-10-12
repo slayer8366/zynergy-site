@@ -38,9 +38,32 @@ const DRAWN = ['all',
   ['<=', ['get', 'chance'], 1],
 ];
 
-function fillColour() {
-  const expr = ['step', ['get', 'chance'], CLASSES[0].rgb];
-  for (const c of CLASSES.slice(1)) expr.push(c.from, c.rgb);
+// Ratings against the average week (owner, Forager RECORD -902), used whenever the manifest has
+// a usable base_rate: ratio = chance / base_rate.rate, cut-offs fixed by the owner before the map
+// was seen with them. Colours: five even steps of the same viridis ramp, dark for low, bright
+// for high. With no base_rate the page keeps the percent classes above, exactly as before.
+export const RATINGS = [
+  { from: 0, label: 'Below average', rgb: 'rgb(68,1,84)' },
+  { from: 0.67, label: 'About average', rgb: 'rgb(59,82,139)' },
+  { from: 1.5, label: 'Above average', rgb: 'rgb(33,145,140)' },
+  { from: 3, label: 'High', rgb: 'rgb(94,201,98)' },
+  { from: 5, label: 'Very high', rgb: 'rgb(253,231,37)' },
+];
+
+export function ratingFor(ratio) {
+  let r = RATINGS[0];
+  for (const c of RATINGS) if (ratio >= c.from) r = c;
+  return r;
+}
+
+function fillColour(rate) {
+  if (rate == null) {
+    const expr = ['step', ['get', 'chance'], CLASSES[0].rgb];
+    for (const c of CLASSES.slice(1)) expr.push(c.from, c.rgb);
+    return expr;
+  }
+  const expr = ['step', ['/', ['get', 'chance'], rate], RATINGS[0].rgb];
+  for (const c of RATINGS.slice(1)) expr.push(c.from, c.rgb);
   return expr;
 }
 
@@ -124,9 +147,29 @@ function asText(v) {
   return typeof v === 'string' ? v : JSON.stringify(v);
 }
 
+// The average week (owner, Forager RECORD -901, -902): the manifest's base_rate, the share of
+// tested cell-weeks with a report over the model's all-years test (positives / units). With no
+// usable base_rate the page shows no rating and no average line.
+export function baseRate(m) {
+  const b = m && m.base_rate;
+  return b && typeof b.rate === 'number' && b.rate > 0 && b.rate <= 1 ? b.rate : null;
+}
+function ratePct(rate) {
+  const r = Math.round(rate * 100);
+  return r >= 1 ? `about ${r}%` : 'under 1%';
+}
+// The tapped cell's lead line (RECORD -902's wording).
+export function ratingLine(chance, rate) {
+  const ratio = chance / rate;
+  const r = ratingFor(ratio);
+  if (ratio >= 1.5) return `${r.label}: about ${Math.round(ratio)} times the average week across the year.`;
+  if (ratio >= 0.67) return `${r.label}: about the same as the average week across the year.`;
+  return `${r.label}: below the average week across the year.`;
+}
+
 // opacity: a function returning the see-through slider's current value, read when the cells'
 // layer is added (the data may arrive after the slider has moved); app.js updates it live after.
-export function createPilot(map, maplibregl, { opacity }) {
+export function createPilot(map, maplibregl, { opacity, onClasses }) {
   const state = { loaded: false, loading: null, error: null, manifest: null, featureCount: 0, drawnCount: 0,
     weekMismatch: 0, lastTap: null, selectedId: null, on: false };
   window.pnwPilot = state; // for checks
@@ -275,7 +318,7 @@ export function createPilot(map, maplibregl, { opacity }) {
         attribution: (Array.isArray(manifest.attribution) ? manifest.attribution.map(asText).join(' ') : asText(manifest.attribution)) || '' });
       map.addLayer({ id: 'pilot-fill', type: 'fill', source: 'pilot', filter: DRAWN,
         layout: { visibility: 'none' },
-        paint: { 'fill-color': fillColour(), 'fill-opacity': opacity(), 'fill-antialias': false } }, 'lines');
+        paint: { 'fill-color': fillColour(baseRate(manifest)), 'fill-opacity': opacity(), 'fill-antialias': false } }, 'lines');
       map.addLayer({ id: 'pilot-selected', type: 'line', source: 'pilot', filter: DRAWN,
         layout: { visibility: 'none' },
         paint: { 'line-color': '#000', 'line-width': ['case', ['boolean', ['feature-state', 'selected'], false], 2.5, 0] } });
@@ -289,6 +332,14 @@ export function createPilot(map, maplibregl, { opacity }) {
     if (state.manifest && state.manifest.week) {
       document.getElementById('pilot-legend-title').textContent = `Chanterelle sighting chance, week of ${longDate(state.manifest.week)}`;
     }
+    // The legend: the five ratings and the average line with a base_rate, the percent classes
+    // without one. app.js builds the swatches, so they keep following the slider.
+    const rate = baseRate(state.manifest);
+    state.rated = rate != null;
+    if (onClasses) onClasses(rate != null ? RATINGS : CLASSES);
+    const avgLine = document.getElementById('pilot-base-rate');
+    avgLine.textContent = rate != null ? `Average week across the year: ${ratePct(rate)}.` : '';
+    avgLine.hidden = rate == null;
     if (state.on) setVisible(true);
   }
 
@@ -307,7 +358,14 @@ export function createPilot(map, maplibregl, { opacity }) {
   function describe(p) {
     readout.replaceChildren();
     const name = groupName(p.group);
-    readout.append(el('p', `Sighting chance: ${pct(p.chance)}`, 'pilot-chance'));
+    const rate = baseRate(state.manifest);
+    if (rate != null) {
+      // Leads with the rating; the percent and its definition underneath, smaller (RECORD -902).
+      readout.append(el('p', ratingLine(p.chance, rate), 'pilot-chance pilot-rating'));
+      readout.append(el('p', `Sighting chance ${pct(p.chance)}`, 'pilot-small'));
+    } else {
+      readout.append(el('p', `Sighting chance: ${pct(p.chance)}`, 'pilot-chance'));
+    }
     readout.append(el('p', `The chance ${name.toLowerCase()} are reported in this cell in ${weekWords(p.week)}, given someone reported any fungus here that week.`));
     const lo = p.uncertainty_low, hi = p.uncertainty_high;
     if (typeof lo === 'number' && typeof hi === 'number') readout.append(el('p', `Uncertainty: ${pct(lo)} to ${pct(hi)}.`));
