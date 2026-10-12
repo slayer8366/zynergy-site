@@ -57,6 +57,13 @@
     #panel { position: absolute; left: 0; right: 0; bottom: 0; width: auto; display: flex; flex-direction: column;
       padding: 0 12px 10px; border: 0; border-top: 1px solid var(--line); border-radius: 12px 12px 0 0;
       background: rgba(251, 251, 247, 0.8); box-shadow: 0 -2px 8px rgba(0, 0, 0, .15); overflow-y: auto; overscroll-behavior: contain; }
+    /* No child of the panel is ever smaller than its content: the panel scrolls instead (Forager
+       RECORD -920). As flex items they would shrink when the panel is shorter than its content,
+       and a child with an explicit min-height (the readout's 2.6em) loses the automatic
+       content-sized minimum that otherwise stops it, so its text spilled over its neighbours.
+       A rule on every child rather than on the readout alone, so a min-height added to any other
+       child later cannot bring this back. */
+    #panel > * { flex-shrink: 0; }
     /* Bounded in every state, not only by the state classes: at most 85% of the map area even
        if a class is missing. Open is set by its top edge (top and bottom fix the box), not by a
        percentage height, so it cannot grow past the map area's top. */
