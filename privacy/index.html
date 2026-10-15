@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 7 October 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
+  <p class="updated">Last updated: 15 October 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>), including its Google Play closed test.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -81,11 +81,7 @@
 
 <p>The app sets <code>android:allowBackup="false"</code>, which turns off both Android Auto Backup and the device-to-device transfer that runs during a new phone's setup. Your phone therefore does not copy Forager's data to your Google account, and does not hand it to another device on your behalf.</p>
 
-<p>This is a permanent decision rather than a setting for the closed test. Moving your data belongs to the app, not to the operating system.</p>
-
-<div class="note">
-  <p><strong>There is no export or import feature yet.</strong> As of the date at the top of this document, data recorded in Forager stays on the device that recorded it until you have an app version that can export it. This policy will not describe that feature as if it already existed.</p>
-</div>
+<p>Moving your data belongs to the app rather than to the operating system, so Forager has its own <strong>Backup</strong>, in Tools, then Settings. &ldquo;Back up now&rdquo; writes a single file, containing your tracks, journal entries, waypoints and photos, to a place you choose with Android&rsquo;s own file picker. &ldquo;Automatic backup&rdquo; can repeat this daily, weekly or monthly into a folder you choose. The file is not encrypted and goes only where you put it: if you choose a cloud folder, that service&rsquo;s own terms apply to it. &ldquo;Restore from backup&rdquo; reads a file you pick and either replaces what is on the phone or merges it in. Forager never sends a backup anywhere on its own.</p>
 
 <h2>What is transmitted, to whom, and why</h2>
 
@@ -153,6 +149,7 @@
 
 <ul>
   <li>For a <strong>photo taken inside Forager</strong>, the app's own camera writes it into Forager's private storage and attaches no location to it. Before the photo is stored, Forager removes its embedded metadata, including GPS tags, timestamps, camera make and model, and thumbnails, keeping only its orientation, its colour profile and what is needed to display it. If that step cannot complete, the photo is stored as it was, with its metadata, rather than lost.</li>
+  <li>When the camera is set to <strong>RAW</strong>, Forager also stores the sensor&rsquo;s raw image as a DNG file beside the photo. Forager writes that file itself, and writes no location, time, or camera make or model into it. It keeps the sensor&rsquo;s calibration data, which describes how the sensor records colour. If Forager cannot confirm the file is clean of those details, the RAW file is deleted and the photo is kept as a JPG. RAW files are included in backup, restore, export and delete, like the photo they belong to.</li>
   <li>For a <strong>gallery import</strong>, Forager does <strong>not</strong> run a metadata-stripping step over the copy it stores. On Android 10 and later, the platform itself redacts GPS tags from the copy the app reads. On Android 9 and earlier, which the app still supports, there is no such redaction, and an imported photo's copy can keep its embedded GPS tags.</li>
 </ul>
 
