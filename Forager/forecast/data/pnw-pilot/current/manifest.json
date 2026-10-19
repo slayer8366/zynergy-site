@@ -1,5 +1,5 @@
 {
- "published_at": "2026-10-12T00:48:38+00:00",
+ "published_at": "2026-10-19T05:13:35+00:00",
  "pilot": true,
  "validated": false,
  "reviewed": true,
@@ -18,15 +18,15 @@
    "rank": "genus"
   }
  ],
- "week": "2026-10-05",
- "iso_week": "2026-W41",
+ "week": "2026-10-12",
+ "iso_week": "2026-W42",
  "regions_published": [],
  "regions_note": "No ecoregion is published under D5 (published only after beating the calendar on held-out years). The owner asked for this pilot to be shown regardless (Forager RECORD -814).",
  "attribution": "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Generated using or contains modified Copernicus Climate Change Service information 2025. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains.",
  "attribution_details": [
   "GBIF.org (6 October 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.8jxmeb. Occurrence records from 26 datasets, under CC0 1.0, CC BY 4.0 and CC BY-NC 4.0 (D29, D61); each dataset with its licence is listed in docs/pulls/gbif-fungi-us-canada-2015-2025.datasets.json of slayer8366/forager-forecast. The download is provisional (test account) and will be superseded by the business account's identical request (docs/pulls/gbif-fungi-us-canada-2015-2025.doi.json).",
-  "Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47 (Accessed on 10-Oct-2026 to 11-Oct-2026)",
-  "Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J. (2019): ERA5-Land hourly data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/cds.e2161bac (Accessed on 10-Oct-2026 to 11-Oct-2026)",
+  "Generated using or contains modified Copernicus Climate Change Service information 2023. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N. (2023): ERA5 hourly data on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.adbb2d47 (Accessed on 10-Oct-2026 to 19-Oct-2026)",
+  "Generated using or contains modified Copernicus Climate Change Service information <2019>. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Muñoz Sabater, J. (2019): ERA5-Land hourly data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/cds.e2161bac (Accessed on 10-Oct-2026 to 19-Oct-2026)",
   "Contains modified Copernicus Climate Change Service information 2024. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Hersbach, H., Comyn-Platt, E., Bell, B., Berrisford, P., Biavati, G., Horányi, A., Muñoz Sabater, J., Nicolas, J., Peubey, C., Radu, R., Rozum, I., Schepers, D., Simmons, A., Soci, C., Dee, D., Thépaut, J-N., Cagnazo, C., Cucchi, M. (2023): ERA5 post-processed daily-statistics on single levels from 1940 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.4991cf48 (Accessed on 10-Oct-2026)",
   "Generated using or contains modified Copernicus Climate Change Service information 2025. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. Copernicus Climate Change Service, Climate Data Store, (2025): ERA5 Land hourly time-series data from 1950 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS). DOI: 10.24381/ee82e357 (Accessed on 11-Oct-2026)"
  ],
@@ -48,12 +48,12 @@
   {
    "kind": "cells_combined",
    "group": "cantharellus",
-   "path": "pnw-pilot/2026-10-05/cantharellus.geojson"
+   "path": "pnw-pilot/2026-10-12/cantharellus.geojson"
   },
   {
    "kind": "cell_blocks",
    "group": "cantharellus",
-   "prefix": "pnw-pilot/2026-10-05/cantharellus/",
+   "prefix": "pnw-pilot/2026-10-12/cantharellus/",
    "blocks": [
     "n42w121",
     "n42w122",
@@ -112,20 +112,20 @@
    "no_era5_land_value_at_cell_or_neighbour_(sea)": 498,
    "incomplete_weather_window": 0
   },
-  "chance_min": 0.0067,
-  "chance_median": 0.0411,
-  "chance_max": 0.1571
+  "chance_min": 0.0072,
+  "chance_median": 0.042550000000000004,
+  "chance_max": 0.1598
  },
- "weather_through": "2026-10-04",
+ "weather_through": "2026-10-11",
  "weather_through_note": "the last day the windows read: the day before the week's Monday.",
  "weather_source": "copernicus",
  "weather": {
-  "source": "Copernicus Climate Data Store (owner, Forager RECORD -819). Scoring window read: reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day). Training read: derived-era5-single-levels-daily-statistics (daily_sum of total_precipitation; time_zone utc+00:00, frequency 1_hourly); reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day); reanalysis-era5-land-timeseries (point series of the same three ERA5-Land variables, averaged over the 24 UTC hours of each day). Window days 2026-07-07 to 2026-07-31 are the store's final data (expver 0001); 2026-08-01 to 2026-10-04 are its preliminary data (expver 0005), which can be revised.",
-  "npz_sha256": "0c49371a290d1aaf0d3eeaa8b807d74db0844aecd3b230836fae8f037d597396",
+  "source": "Copernicus Climate Data Store (owner, Forager RECORD -819). Scoring window read: reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day). Training read: derived-era5-single-levels-daily-statistics (daily_sum of total_precipitation; time_zone utc+00:00, frequency 1_hourly); reanalysis-era5-single-levels (hourly total_precipitation, summed per UTC day from the 01:00 stamp to the next day's 00:00 stamp); reanalysis-era5-land (hourly 2m_temperature, soil_temperature_level_1, volumetric_soil_water_layer_1, averaged over the 24 UTC hours of each day); reanalysis-era5-land-timeseries (point series of the same three ERA5-Land variables, averaged over the 24 UTC hours of each day). Window days 2026-07-14 to 2026-07-31 are the store's final data (expver 0001); 2026-08-01 to 2026-10-11 are its preliminary data (expver 0005), which can be revised.",
+  "npz_sha256": "14553fd147b7bb6d4825027a717c490d3cc3082c238fdea01999e99fd2c67427",
   "land_mask_from": null,
   "days": [
-   "2026-07-07",
-   "2026-10-04"
+   "2026-07-14",
+   "2026-10-11"
   ],
   "open_meteo_batches": null,
   "api_calls_by_pricing_rule": null
