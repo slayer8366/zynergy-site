@@ -13,8 +13,9 @@
 <meta property="og:type" content="website">
 <!--
   Holding page for the business splash. Kept deliberately small so replacing it is a
-  rewrite of one file and not an unpicking: the signup page lives at /beta-signup/ and
-  the app page is intended for /forager, so neither depends on anything here.
+  rewrite of one file and not an unpicking: the app page is intended for /forager, so it does
+  not depend on anything here. The button goes straight to the Google Play listing; the old
+  /beta-signup/ page is redirected there too (_redirects), now that the app is on Play.
 
   It matters that this file is small for a second reason. Cloudflare serves this page for
   every unmatched path on the site, so whatever is here is also what a mistyped URL shows.
@@ -106,9 +107,9 @@
       </div>
     </div>
 
-    <p>Forager is in a closed test and we are looking for people who actually go out looking for things.</p>
+    <p>Forager is available on Google Play.</p>
 
-    <p><a class="cta" href="/beta-signup/">Join the beta</a></p>
+    <p><a class="cta" href="https://play.google.com/store/apps/details?id=com.zynergylabs.forager.app">Get it on Google Play</a></p>
 
     <footer>
       <a href="/privacy/">Privacy policy</a> ·

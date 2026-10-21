@@ -1,17 +1,20 @@
 # zynergy-labs.com
 
-Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions that
-run the Forager beta list.
+Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions for the
+Forager beta list. The sign-up is closed now that Forager is on Google Play (owner, 2026-10-21):
+`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list already
+collected is kept as it is, and the export still serves it.
 
 ```
 index.html                  holding page for the business splash, and what every
                               unmatched path on the site resolves to
-beta-signup/index.html      the beta signup page
+beta-signup/index.html      the old beta signup page, kept in the repo but no longer served:
+                              _redirects sends /beta-signup/ to Google Play
 welcome/index.html          what testers see once they are in: things to try, known issues
 privacy/index.html          Forager privacy policy, the URL Play's Data safety points at
 assets/                     app icon and feature graphic
 functions/_middleware.js    blocks /functions/* and /db/*, sets the shared response headers
-functions/api/beta-signup.js  POST: records a signup, notifies support@
+functions/api/beta-signup.js  POST: closed, answers 410 Gone and stores nothing
 functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
 db/schema.sql               D1 schema for the `zynergy-site-beta` database
 Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, data/ (static map tiles
@@ -19,7 +22,8 @@ Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, da
                               vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
                               allows scripts from 'self' only; basemap/, the street map's
                               style code, fonts and icons; SHA256SUMS.txt)
-_redirects                  lowercase /forager/forecast to /Forager/forecast/
+_redirects                  lowercase /forager/forecast to /Forager/forecast/; /beta-signup
+                              to the Google Play listing (302)
 _routes.json                keeps the Function off /Forager/forecast/data/*
 _headers                    cache headers for /Forager/forecast/data/*
 ```
@@ -29,7 +33,7 @@ _headers                    cache headers for /Forager/forecast/data/*
 | URL | What it is |
 |-----|------------|
 | `/` | Holding page. Becomes the business splash. |
-| `/beta-signup/` | The signup form. |
+| `/beta-signup`, `/beta-signup/` | 302 to the Forager Google Play listing, from `_redirects` (owner, 2026-10-21). 302 rather than 301 so browsers do not cache it for good, in case a page returns here. The form's page stays in the repo, unserved. |
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
 | `/forager` | Intended for the app page. Does not exist yet. |
@@ -45,7 +49,13 @@ whatever sits at `/` is also the site's de facto not-found page, and any check a
 site has to read the body or a header, never the status alone. A real 404 would need a
 `404.html`; it is a deliberate open item, not an oversight.
 
-## How a signup travels
+## How a signup travelled (closed since 2026-10-21)
+
+`POST /api/beta-signup` now answers **410 Gone** with
+`{"ok":false,"error":"signup_closed","message":...,"play_url":...}` and touches nothing: no row,
+no rate-limit entry, no mail. A copy of the old form still open in a browser shows its generic
+fallback on submit ("That did not go through (error 410)..."). The handler described below is in
+git history at df15222.
 
 1. The form at `/beta-signup/` POSTs JSON to `/api/beta-signup`.
 2. The function validates, checks the honeypot, optionally checks Turnstile, and applies a
@@ -93,6 +103,11 @@ wrangler d1 execute zynergy-site-beta --remote --command "SELECT count(*) FROM b
 The binding above is done. The secrets are not, deliberately: a signup records without them,
 the row carries `notified: false` and `notify_error: "mailer_not_configured"`, and
 `/api/beta-export` returns 503 until `EXPORT_TOKEN` exists rather than serving the list.
+
+> **Since the sign-up closed (2026-10-21)** only `EXPORT_TOKEN` is read by any code.
+> `RESEND_API_KEY`, `RATE_LIMIT_SALT` and `TURNSTILE_SECRET` were read only by the sign-up
+> handler, which is now in git history at df15222. Whatever is set in the dashboard was left
+> untouched; the table below describes that handler.
 
 **Set the secrets** on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
 environment variables:
@@ -157,7 +172,8 @@ with no third party involved, and it does not apply: it requires Email Routing t
 on the zone, which requires Cloudflare to hold the MX records. zynergy-labs.com's MX points
 at Microsoft 365. Sending therefore needs an outside API, and Resend was picked for a free
 tier that covers a beta list and an API small enough to swap out. `sendNotification()` in
-`beta-signup.js` is the only function that knows which provider it is.
+`beta-signup.js` was the only function that knew which provider it is (removed with the
+sign-up's closing; git history at df15222).
 
 **D1 rather than KV.** The list gets queried, not just looked up: dedupe on a normalised
 address, order by date, count, export. KV is a key-value store for flat values and would
