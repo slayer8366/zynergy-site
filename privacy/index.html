@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 21 October 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>) on Google Play.</p>
+  <p class="updated">Last updated: &lt;DATE&gt; &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>) on Google Play.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -182,22 +182,23 @@
 
 <h2 id="beta-signup-list">The beta signup list</h2>
 
-<p>Separate from the app, and the one place Zynergy Labs holds personal data about you: if you filled
-in the beta signup form that was at zynergy-labs.com/beta-signup, what you typed is stored.
-This is website data, not app data. The app never sees it, and it is outside the scope of the Play
+<p>Separate from the app, and the one place Zynergy Labs held personal data about you: if you filled
+in the beta signup form that was at zynergy-labs.com/beta-signup, what you typed was stored.
+This was website data, not app data. The app never saw it, and it was outside the scope of the Play
 Data safety declaration, which covers the app.</p>
 
-<p><strong>The signup is closed.</strong> Now that Forager is on Google Play, the form no longer
-takes entries and that address leads to the Play listing. Nothing new is added to the list. The
-signups already made are still held, as described below, and can still be removed on request.</p>
+<p><strong>The signup is closed and the list was deleted on &lt;DATE&gt;.</strong> Now that Forager is
+on Google Play, the form no longer takes entries and that address leads to the Play listing. The
+signups that had been made were deleted from our database on &lt;DATE&gt;, together with the
+rate-limit table described below. We no longer hold the list.</p>
 
-<p>What is stored:</p>
+<p>What the list held:</p>
 
 <ul>
   <li>Your <strong>email address</strong>, both as you typed it and lower-cased, the second so that
       one person signing up twice is recognised as one person.</li>
   <li>Optionally, a <strong>name</strong>, a <strong>device type</strong>, an <strong>Android
-      version</strong>, and whatever you write in the free-text box. All four can be left empty.</li>
+      version</strong>, and whatever you wrote in the free-text box. All four can be left empty.</li>
   <li>A two-letter <strong>country code</strong>, derived from your connection by Cloudflare rather
       than asked for, and the <strong>date and time</strong> you signed up.</li>
   <li>Whether the notification to us about your signup succeeded, and the error if it did not.</li>
@@ -205,25 +206,23 @@ signups already made are still held, as described below, and can still be remove
 
 <div class="note">
   <p><strong>Your IP address is not stored.</strong> To stop the form being flooded, a separate table
-  keeps a salted SHA-256 hash of the connecting address with a counter and a timestamp. That is
+  kept a salted SHA-256 hash of the connecting address with a counter and a timestamp. That was
   enough to recognise a repeat submission within the hour and not enough to recover the address it
-  came from.</p>
+  came from. It was deleted with the list.</p>
 </div>
 
-<p>The list lives in a Cloudflare D1 database we operate, on Cloudflare's infrastructure and under
+<p>The list lived in a Cloudflare D1 database we operate, on Cloudflare's infrastructure and under
 its privacy policy as our processor. When you signed up, a notification carrying what you entered was
 emailed to Zynergy Labs support through Resend, our mail provider, which processed it in order to
-deliver it. Nobody else received it. It is not sold, not shared and not used for any mailing beyond
+deliver it. Nobody else received it. It was not sold, not shared and not used for any mailing beyond
 the beta.</p>
 
-<p><strong>How long it is kept:</strong> until the beta ends or you ask for it to be removed,
-whichever comes first. We publish no figure beyond that because there is no automatic expiry that
-would produce one, and we will not state a retention period we cannot verify.</p>
+<p><strong>How long it was kept:</strong> from when you signed up until &lt;DATE&gt;, when the whole
+list was deleted, unless you had asked for your entry to be removed sooner.</p>
 
-<p><strong>To have your signup removed</strong>, email
-<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
-Removing it deletes the record; it does not delete anything on your phone, which was never ours to
-begin with.</p>
+<p><strong>Questions about it</strong> go to
+<a href="mailto:privacy@zynergy-labs.com?subject=Beta%20signup%20list">privacy@zynergy-labs.com</a>.
+Its deletion did not touch anything on your phone, which was never ours to begin with.</p>
 
 <h2>Children</h2>
 
@@ -242,11 +241,11 @@ begin with.</p>
 <p>We hold no copy of your journal, and no logs of your map tile requests, so for the app's own
 data there is nothing for us to produce or delete on your behalf.</p>
 
-<p>The exception, and the only one, is the beta signup list. If you joined it, we hold the record
-described in <a href="#beta-signup-list">The beta signup list</a> and can delete it on request:
-<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
-Before the signup form existed this paragraph said we held nothing at all about you; that stopped
-being true the day the form went up, and this is the correction.</p>
+<p>The one exception was the beta signup list, described in
+<a href="#beta-signup-list">The beta signup list</a>. It was deleted on &lt;DATE&gt;, so there is no
+longer a signup record for us to delete on your behalf. While the form was open this paragraph
+said we held that record and would delete it on request; before the form existed it said we held
+nothing at all about you.</p>
 
 <p>Step-by-step detail on deleting everything is at
 <a href="/delete-data/">zynergy-labs.com/delete-data</a>, the page named in the Play Data safety
