@@ -2,8 +2,9 @@
 
 Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions for the
 Forager beta list. The sign-up is closed now that Forager is on Google Play (owner, 2026-10-21):
-`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list already
-collected is kept as it is, and the export still serves it.
+`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The owner deleted
+the collected list (the `beta_signups` and `beta_rate_limit` rows) on <DATE>, in the Cloudflare
+dashboard; the tables and the export endpoint remain, so the export now returns an empty list.
 
 ```
 index.html                  holding page for the business splash, and what every
@@ -144,7 +145,7 @@ honeypot, with the site key to fill in. Add both together or neither.
 ## The tester welcome page
 
 `https://zynergy-labs.com/welcome/` carries the greeting: what to try in this build and what
-is known to be broken. It is `noindex` and is not linked from the signup page or the holding
+has been fixed since earlier builds. It is `noindex` and is not linked from the signup page or the holding
 page, because it is
 for people who are already in the test, not people deciding whether to join. Paste the URL
 into the Play closed-test instructions, or into the invite mail.
@@ -153,6 +154,15 @@ The wording is the owner's, kept verbatim; the page only adds structure. Both kn
 were checked against the app before publishing: soil temperature is a hardcoded `°C` at
 `AvailabilityResultsUi.kt:585` and elevation a hardcoded `m` at `AvailabilityScreen.kt:4322`,
 with `UnitSystem.kt` naming both as the conversions still queued, and no import path exists.
+
+Both were fixed in the app later, and the page now lists them under "Fixed since earlier builds"
+(owner, 2026-10-21: "Yes, fix them"). Checked against Forager main `381515c61`: elevation and
+soil temperature go through `formatWholeLength` and `formatSoilTemperature`
+(`domain/model/UnitSystem.kt:82`, `:105`), called with the Units setting at, for example,
+`AvailabilityMapControlsUi.kt:343` and `AvailabilityTripWindowsUi.kt:124`; Settings has a Backup
+section with "Back up now" and "Restore from backup" (`ui/backup/BackupSection.kt:93`, `:146`),
+placed in Settings at `AvailabilitySettingsPages.kt:197`. The heading also no longer says "first
+closed beta".
 
 ## Getting the list back out
 
