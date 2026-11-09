@@ -45,7 +45,7 @@
 <header>
   <p class="eyebrow"><a href="/">Zynergy Labs</a></p>
   <h1>Privacy Policy for Forager</h1>
-  <p class="updated">Last updated: 21 October 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>) on Google Play.</p>
+  <p class="updated">Last updated: 9 November 2026 &nbsp;·&nbsp; Applies to the Forager Android app (<code>com.zynergylabs.forager.app</code>) on Google Play.</p>
 </header>
 
 <p class="lead">This is the document Google Play's Data safety declaration points at. It is written to match what the app's code actually does.</p>
@@ -54,9 +54,9 @@
 
 <h2>The short version</h2>
 
-<p>Forager has no account, no sign-in, no sync and no analytics. Nothing you record, meaning tracks, journal entries, photos, offline map regions and settings, is uploaded to us or to anyone else.</p>
+<p>Forager has no account, no sign-in, no sync and no analytics. Nothing you record, meaning tracks, journal entries, photos, waypoints, planned trips and their routes, offline map regions and settings, is uploaded to us or to anyone else.</p>
 
-<p>What is transmitted, while your phone is online, is <strong>where you are looking</strong>: the coordinates a search runs on, and the map tiles for the area on screen. Those go to iNaturalist, Open-Meteo, the map tile providers, and a Cloudflare Worker we operate. They carry a location and your IP address, and they are logged by the services that receive them.</p>
+<p>What is transmitted, while your phone is online, is <strong>where you are looking</strong>: the coordinates a search runs on, the map tiles for the area on screen, the map tiles for an area you are choosing to download, and the edges of any area you download for offline use. Those go to iNaturalist, Open-Meteo, the map tile providers, and our map server on Cloudflare. They carry a location and your IP address, and they are logged by the services that receive them.</p>
 
 <div class="note">
   <p>Because location leaves the device and reaches third parties, the Play Data safety declaration for this app states that location is <strong>collected and shared</strong>. That is the accurate description, not a conservative one.</p>
@@ -67,10 +67,11 @@
 <p>Stored in the app's own private storage, readable by no other app:</p>
 
 <ul>
-  <li>Recorded tracks and their individual GPS points: latitude, longitude, timestamp, elevation, accuracy, speed.</li>
+  <li>Recorded tracks and their individual GPS points: latitude, longitude, timestamp, elevation, accuracy, speed, speed accuracy, and air pressure from the phone&rsquo;s barometer where it has one.</li>
   <li>Journal and log entries, including any coordinate attached to a find.</li>
   <li>Photos taken in the app or imported from your gallery.</li>
-  <li>Downloaded offline map regions.</li>
+  <li>Waypoints, and planned trips. A trip can carry a route you plot: each stop&rsquo;s name and position, the waypoint or trip a stop came from, and the path between the stops. The route is worked out on the phone, from trail route data already downloaded; plotting it sends nothing.</li>
+  <li>Downloaded offline map regions, with the trail routes and the extra map detail stored for each region.</li>
   <li>Preferences such as units and map mode.</li>
 </ul>
 
@@ -80,7 +81,9 @@
 
 <p>The app sets <code>android:allowBackup="false"</code>, which turns off both Android Auto Backup and the device-to-device transfer that runs during a new phone's setup. Your phone therefore does not copy Forager's data to your Google account, and does not hand it to another device on your behalf.</p>
 
-<p>Moving your data belongs to the app rather than to the operating system, so Forager has its own <strong>Backup</strong>, in Tools, then Settings. &ldquo;Back up now&rdquo; writes a single file, containing your tracks, journal entries, waypoints and photos, to a place you choose with Android&rsquo;s own file picker. &ldquo;Automatic backup&rdquo; can repeat this daily, weekly or monthly into a folder you choose. The file is not encrypted and goes only where you put it: if you choose a cloud folder, that service&rsquo;s own terms apply to it. &ldquo;Restore from backup&rdquo; reads a file you pick and either replaces what is on the phone or merges it in. Forager never sends a backup anywhere on its own.</p>
+<p>Moving your data belongs to the app rather than to the operating system, so Forager has its own <strong>Backup</strong>, in Tools, then Settings. &ldquo;Back up now&rdquo; writes a single file, containing your tracks, journal entries, waypoints, planned trips with their routes, and photos, to a place you choose with Android&rsquo;s own file picker. &ldquo;Automatic backup&rdquo; can repeat this daily, weekly or monthly into a folder you choose. The file is not encrypted and goes only where you put it: if you choose a cloud folder, that service&rsquo;s own terms apply to it. &ldquo;Restore from backup&rdquo; reads a file you pick and either replaces what is on the phone or merges it in. Forager never sends a backup anywhere on its own.</p>
+
+<p>You can also share a recorded track as a GPX file. The file holds the track&rsquo;s points and its waypoints, and goes only to the app or place you choose in Android&rsquo;s share sheet. Forager does not send it anywhere itself.</p>
 
 <h2>What is transmitted, to whom, and why</h2>
 
@@ -110,12 +113,12 @@
     <tr>
       <td>OpenStreetMap, OpenTopoMap<br><code>tile.openstreetmap.org</code>, <code>a.tile.opentopomap.org</code></td>
       <td>Map tile coordinates, meaning the map area being viewed</td>
-      <td>Drawing the map</td>
+      <td>Drawing the map when you choose Street or Topo under &ldquo;Map type&rdquo; in Layers (the default is Trail, Forager Trail Map, below); OpenStreetMap&rsquo;s map beneath Topo at low zoom when the map&rsquo;s night mode is on; and OpenStreetMap&rsquo;s map in place of Forager Trail Map if Trail Map&rsquo;s style fails to load</td>
     </tr>
     <tr>
-      <td>Our map tile service<br><code>forager-pmtiles.brandonlee1-894.workers.dev</code></td>
-      <td>The offline map style, and vector map tiles by coordinate</td>
-      <td>The offline basemap, and downloading an offline region</td>
+      <td>Our map server on Cloudflare</td>
+      <td>Forager Trail Map&rsquo;s style, its map tiles by coordinate, its hill-shading images and its official-trails overlay tiles by coordinate, and its fonts and icons. For Offline maps: map tiles that cover the area under the pin, at a coarse zoom, and, after a download, detailed map tiles the download didn&rsquo;t include. For trail routes: the four edges of an area you download (south, west, north and east, to six decimal places), and a key that is the same in every copy of the app, so it identifies the app, not you</td>
+      <td>Drawing the map, which is Forager Trail Map unless you choose another, online and offline; checking whether Forager Trail Map has full detail across an area before you download it; downloading an offline region; and the trail routes and map detail stored with each downloaded region</td>
     </tr>
   </tbody>
 </table>
@@ -125,15 +128,25 @@
 
 <p>One thing the app does not request itself: tapping an observation to open it on iNaturalist hands a link to your browser or to the iNaturalist app. From that point it is an ordinary web visit made by that other app, under its own terms, not a request Forager makes.</p>
 
-<p>Downloading an offline region issues a large number of tile requests in a short time, covering the whole region. That is the download. Once a region is downloaded, viewing the map inside it makes no tile requests at all. Searching still does.</p>
+<p>While you choose an area in Offline maps, and the phone has signal, the app asks our map server for the map tiles that cover the area under the pin, at a coarse zoom, to check whether Forager Trail Map has full detail across it. It asks again each time the pin stops or the radius changes, and when the signal returns. This happens before you download anything, including when a trip&rsquo;s Download Maps opens the page with the trip&rsquo;s pin already set. The answers are kept in the app&rsquo;s memory until it closes, and are not stored.</p>
 
-<h2>The map tile service we operate</h2>
+<p>Downloading an offline region issues a large number of tile requests to our map server in a short time, covering the whole region. That is the download. The app then asks our map server for that region&rsquo;s trail routes: one request carrying the region&rsquo;s edges, then one request per route file, each carrying the same edges. Every one of these route requests carries the app key. If the route data on the server is replaced between the first request and the files, the app asks once more, the same way. It also asks, once each, for detailed map tiles the download didn&rsquo;t include, which the way to a waypoint reads offline; these carry tile coordinates only, with no key. It asks again for a region whose routes or map detail are missing when you open Offline maps with signal, when the signal returns while Offline maps is on screen, or when you tap &ldquo;Try again&rdquo;. Once a region is downloaded, the map inside it can be drawn with no connection at all. Searching still makes requests.</p>
 
-<p>The <code>forager-pmtiles.brandonlee1-894.workers.dev</code> endpoint is operated by us on Cloudflare's platform, serving tiles out of a Cloudflare R2 bucket. Because we run it ourselves, no third-party tile vendor sees the requests your device makes to it.</p>
+<h2>Our map server on Cloudflare</h2>
 
-<p><strong>We keep no logs of these requests.</strong> The Worker's own code writes no log lines, and request logging is explicitly disabled in its configuration rather than left to a platform default. We also hold no plan that would let us export or retrieve per-request logs from Cloudflare.</p>
+<p>Our map server, named above, is a Cloudflare Worker that we operate on Cloudflare's platform, serving the map and the trail route data out of a Cloudflare R2 bucket. Because we run it ourselves, no third-party map vendor sees the requests your device makes to it.</p>
 
-<p>Cloudflare operates the infrastructure and, as the host, processes these requests on our behalf under its own privacy policy. We state no retention period here because there is no setting of ours that produces one, and we will not publish a figure we cannot verify.</p>
+<p><strong>We keep no request logs.</strong> Request logging is explicitly disabled in the server&rsquo;s configuration rather than left to a platform default, and we confirmed in Cloudflare&rsquo;s dashboard that it reports logging off.</p>
+
+<p>The server&rsquo;s own code writes a few warning and error lines when its own data is missing, damaged or misconfigured. What they can carry is about the server&rsquo;s own data: the names of its data files, their sizes and positions inside them, the build of the route data, and route squares of five degrees, with, for a damaged route file, the one-degree cell inside it. None of them carries an IP address, the app key, a tile or an area&rsquo;s edges. With logging off, these lines are not stored anywhere. Only we can see them, live, in a viewing session while one is open; Cloudflare documents that such a session also shows each request as it arrives. Nothing from a viewing session is kept.</p>
+
+<p>No per-request log is kept by any other route either. We have not set up any export of the server&rsquo;s request events, and the request records Cloudflare keeps for our website&rsquo;s own domain do not cover the map server&rsquo;s address. Cloudflare&rsquo;s metrics for the server show aggregate request counts, not individual requests.</p>
+
+<p>To limit route requests, the server counts them in Cloudflare&rsquo;s rate-limiting counters, over a one-minute period: 30 a minute from one IP address, and 600 a minute in all on the one app key that every copy of the app shares, which counts the app&rsquo;s traffic, not any person&rsquo;s. The counts are how the limits work; they are not a list of requests.</p>
+
+<p>Cloudflare operates the infrastructure and, as the host, processes these requests on our behalf under its own privacy policy. We state no retention period for request records here because there is no setting of ours that produces one, and we will not publish a figure we cannot verify.</p>
+
+<p>What our settings do keep for a set time is content, not records of requests. The server keeps copies of what it serves in Cloudflare&rsquo;s cache, at the location that served them, so the same thing asked for again is not read or cut again: map tiles and the map&rsquo;s tile descriptions for up to a day, under their tile address; the map&rsquo;s fonts and icons for up to seven days; and a trail-route file cut for an area for up to 30 days, under an address that includes the area&rsquo;s edges. Each copy is kept under its own address, and none records who asked for it or when.</p>
 
 <p>Nothing about these requests is linked to an account, because the app has none. Nothing is sold, shared for advertising, or used for profiling.</p>
 
@@ -168,62 +181,13 @@
   <p>Outside those two states, app open or a recording running, Forager receives no location at all.</p>
 </div>
 
-<p>You can revoke location permission at any time in Android Settings. Recording will not work without it, but the rest of the app will.</p>
+<p>You can revoke location permission at any time in Android Settings. Recording will not work without it, but the rest of the app will. Turning it off stops the app using your position; the map still loads tiles for the area on screen while you are online.</p>
 
 <h2>No analytics, no ads, no tracking</h2>
 
 <p>The app bundles no analytics, crash-reporting or advertising SDK. There is no telemetry of any kind: no usage events, no session data, no device fingerprint, no third-party identifier. Nothing about your use of the app is reported to us unless you write it in a message and send it yourself.</p>
 
-<h2>Beta testing</h2>
-
-<p>If you are using Forager as a closed beta tester, everything above applies to you unchanged. We may ask you questions about how the app behaved on your device.</p>
-
-<p><strong>Anything you send us is voluntary and specific.</strong> Our beta templates deliberately do not ask where you were. Foragers mark spots they do not want found. They ask about terrain and sky instead. Declining any question costs you nothing.</p>
-
-<h2 id="beta-signup-list">The beta signup list</h2>
-
-<p>Separate from the app, and the one place Zynergy Labs holds personal data about you: if you filled
-in the beta signup form that was at zynergy-labs.com/beta-signup, what you typed is stored.
-This is website data, not app data. The app never sees it, and it is outside the scope of the Play
-Data safety declaration, which covers the app.</p>
-
-<p><strong>The signup is closed.</strong> Now that Forager is on Google Play, the form no longer
-takes entries and that address leads to the Play listing. Nothing new is added to the list. The
-signups already made are still held, as described below, and can still be removed on request.</p>
-
-<p>What is stored:</p>
-
-<ul>
-  <li>Your <strong>email address</strong>, both as you typed it and lower-cased, the second so that
-      one person signing up twice is recognised as one person.</li>
-  <li>Optionally, a <strong>name</strong>, a <strong>device type</strong>, an <strong>Android
-      version</strong>, and whatever you write in the free-text box. All four can be left empty.</li>
-  <li>A two-letter <strong>country code</strong>, derived from your connection by Cloudflare rather
-      than asked for, and the <strong>date and time</strong> you signed up.</li>
-  <li>Whether the notification to us about your signup succeeded, and the error if it did not.</li>
-</ul>
-
-<div class="note">
-  <p><strong>Your IP address is not stored.</strong> To stop the form being flooded, a separate table
-  keeps a salted SHA-256 hash of the connecting address with a counter and a timestamp. That is
-  enough to recognise a repeat submission within the hour and not enough to recover the address it
-  came from.</p>
-</div>
-
-<p>The list lives in a Cloudflare D1 database we operate, on Cloudflare's infrastructure and under
-its privacy policy as our processor. When you signed up, a notification carrying what you entered was
-emailed to Zynergy Labs support through Resend, our mail provider, which processed it in order to
-deliver it. Nobody else received it. It is not sold, not shared and not used for any mailing beyond
-the beta.</p>
-
-<p><strong>How long it is kept:</strong> until the beta ends or you ask for it to be removed,
-whichever comes first. We publish no figure beyond that because there is no automatic expiry that
-would produce one, and we will not state a retention period we cannot verify.</p>
-
-<p><strong>To have your signup removed</strong>, email
-<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
-Removing it deletes the record; it does not delete anything on your phone, which was never ours to
-begin with.</p>
+<p>The app writes diagnostic lines to the phone&rsquo;s own system log, some with a coarse map position; they stay on the phone.</p>
 
 <h2>Children</h2>
 
@@ -231,22 +195,17 @@ begin with.</p>
 
 <h2>Your control over your data</h2>
 
-<p>Your journal is stored locally, so you control it directly:</p>
+<p>Everything Forager stores is on your device, so you control it directly:</p>
 
 <ul>
-  <li><strong>Delete individual entries</strong> in the app.</li>
-  <li><strong>Clear all data</strong> through Android Settings → Apps → Forager → Storage → Clear data.</li>
-  <li><strong>Uninstall</strong> to remove everything. Because Android backup is switched off for this app, there is no copy in your Google account.</li>
+  <li><strong>Delete individual items</strong> in the app: journal entries, photos, recorded tracks, waypoints, offline map regions and planned trips. A trip&rsquo;s route goes with it.</li>
+  <li><strong>Clear all data</strong> through Android Settings &rarr; Apps &rarr; Forager &rarr; Storage &rarr; Clear data.</li>
+  <li><strong>Uninstall</strong> to remove everything, including the database and the photo files. Because Android backup is switched off for this app, there is no copy in your Google account to survive and reappear.</li>
 </ul>
 
-<p>We hold no copy of your journal, and no logs of your map tile requests, so for the app's own
-data there is nothing for us to produce or delete on your behalf.</p>
+<p>A backup file you made with Forager&rsquo;s Backup is yours: it stays wherever you saved it, and you delete it there.</p>
 
-<p>The exception, and the only one, is the beta signup list. If you joined it, we hold the record
-described in <a href="#beta-signup-list">The beta signup list</a> and can delete it on request:
-<a href="mailto:privacy@zynergy-labs.com?subject=Remove%20my%20beta%20signup">privacy@zynergy-labs.com</a>.
-Before the signup form existed this paragraph said we held nothing at all about you; that stopped
-being true the day the form went up, and this is the correction.</p>
+<p>We hold no copy of your data, and no logs of your map requests, so there is nothing for us to produce or delete on your behalf, and no deletion request to make.</p>
 
 <p>Step-by-step detail on deleting everything is at
 <a href="/delete-data/">zynergy-labs.com/delete-data</a>, the page named in the Play Data safety
