@@ -2,8 +2,8 @@
 
 Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions for the
 Forager beta list. The sign-up is closed now that Forager is on Google Play (owner, 2026-10-21):
-`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list already
-collected is kept as it is, and the export still serves it.
+`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list and its
+database were deleted on 2026-11-09 (Forager RECORD -2193), so the export answers 503.
 
 ```
 index.html                  holding page for the business splash; links to /Forager/
@@ -20,8 +20,9 @@ privacy/index.html          Forager privacy policy, the URL Play's Data safety p
 assets/                     app icon and feature graphic
 functions/_middleware.js    blocks /functions/* and /db/*, sets the shared response headers
 functions/api/beta-signup.js  POST: closed, answers 410 Gone and stores nothing
-functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
-db/schema.sql               D1 schema for the `zynergy-site-beta` database
+functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token; answers 503 now
+                              that no database is bound
+db/schema.sql               D1 schema for the `zynergy-site-beta` database (deleted 2026-11-09)
 Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, data/ (static map tiles
                               data/<layer>/{z}/{x}/{y}.png, zooms 5 to 9, and lines.geojson),
                               vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
@@ -84,9 +85,16 @@ list because at that point they are, and nothing tells them a mail was sent when
 ## The database
 
 `BETA_DB` → **`zynergy-site-beta`**, UUID **`9cb6b148-62d3-402e-8527-5ddab4c0c1be`**, in
-Cloudflare account `aac482d6710c493a811ce9335792f145`. Bound on both Production and Preview,
-and confirmed working at runtime: a preview deployment accepted a POST, wrote the row,
+Cloudflare account `aac482d6710c493a811ce9335792f145`. It was bound on both Production and
+Preview, and confirmed working at runtime: a preview deployment accepted a POST, wrote the row,
 derived the country server-side, and honoured the `email_norm` UNIQUE constraint.
+
+**The database no longer exists, and no environment binds it.** The sign-up list was deleted and
+then the database, on 2026-11-09 (Forager RECORD -2193; the owner: "Yes, deleted", of the list,
+and "Database is deleted"). Production's binding was removed the same day ("Deleted and
+deployed", -2193), and Preview's on 2026-11-10 (RECORD -2198). Until then every preview deploy
+failed with "D1 binding 'BETA_DB' references database '9cb6b148-62d3-402e-8527-5ddab4c0c1be'
+which was not found" (RECORD -2197). What follows in this section is the database's history.
 
 Identify it by UUID, not by name. Two accounts are in play for this project, and D1's list
 endpoint reports `num_tables: 0` for databases that are in fact populated, so its failure mode
@@ -102,25 +110,29 @@ reads as "empty database". Use the detail endpoint or query `sqlite_master` inst
 > port, a database ID: any globally-unique claim made twice merges without conflict and
 > still produces a broken result.
 
-To reapply or check the schema, against the bound database:
+Before it was deleted, the schema was applied and checked against it with:
 
 ```bash
 wrangler d1 execute zynergy-site-beta --remote --file=db/schema.sql
 wrangler d1 execute zynergy-site-beta --remote --command "SELECT count(*) FROM beta_signups"
 ```
 
-## What still needs doing in the Cloudflare dashboard
+## What is set in the Cloudflare dashboard
 
-The binding above is done. The secrets are not, deliberately: a signup records without them,
-the row carries `notified: false` and `notify_error: "mailer_not_configured"`, and
-`/api/beta-export` returns 503 until `EXPORT_TOKEN` exists rather than serving the list.
+No binding is set (above). The project's settings, read on 2026-11-10 (Forager RECORD -2198),
+have `EXPORT_TOKEN` and `RESEND_API_KEY` set as secrets on both Production and Preview.
+`/api/beta-export` answers 503 because no database is bound (`functions/api/beta-export.js:27-29`),
+not for want of the token. When this section was first written the binding was set and the
+secrets deliberately were not: a signup recorded without them, the row carried `notified: false`
+and `notify_error: "mailer_not_configured"`, and the export returned 503 until `EXPORT_TOKEN`
+existed.
 
 > **Since the sign-up closed (2026-10-21)** only `EXPORT_TOKEN` is read by any code.
 > `RESEND_API_KEY`, `RATE_LIMIT_SALT` and `TURNSTILE_SECRET` were read only by the sign-up
 > handler, which is now in git history at df15222. Whatever is set in the dashboard was left
 > untouched; the table below describes that handler.
 
-**Set the secrets** on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
+**The secrets** live on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
 environment variables:
 
 | Name              | Required | What it is |
@@ -167,12 +179,15 @@ with `UnitSystem.kt` naming both as the conversions still queued, and no import 
 
 ## Getting the list back out
 
+The list and its database were deleted on 2026-11-09 (above), so these now answer 503. They
+were:
+
 ```bash
 curl -H "authorization: Bearer $EXPORT_TOKEN" https://zynergy-labs.com/api/beta-export
 curl -H "authorization: Bearer $EXPORT_TOKEN" 'https://zynergy-labs.com/api/beta-export?format=json'
 ```
 
-This is the reason the database exists rather than the mail alone. Notifications get lost, whether to
+This is the reason the database existed rather than the mail alone. Notifications get lost, whether to
 an outage, a spam filter, or a forwarding rule that was never quite right, and the list should
 not be recoverable only from an inbox.
 
@@ -281,9 +296,11 @@ wrangler d1 execute zynergy-site-beta --local --file=db/schema.sql
 wrangler pages dev
 ```
 
-`wrangler pages dev` needs a `wrangler.toml` supplying the bindings that production gets from
-the dashboard; it is deliberately not committed, because adding one to the repository changes
-how Pages builds this project.
+To run the beta functions against a local database, `wrangler pages dev` needs a `wrangler.toml`
+supplying a `BETA_DB` binding, which neither Production nor Preview has any longer (above);
+without one the site runs as deployed, and `/api/beta-export` answers 503. The file is
+deliberately not committed, because adding one to the repository changes how Pages builds this
+project.
 
 ```toml
 name = "zynergy-site-local"
