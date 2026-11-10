@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /api/
-
-Sitemap: https://zynergy-labs.com/sitemap.xml
