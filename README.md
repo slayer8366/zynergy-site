@@ -1,13 +1,21 @@
 # zynergy-labs.com
 
-Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions for the
+Static site on Cloudflare Pages (project `zynergy-site`), plus two Pages Functions left from the
 Forager beta list. The sign-up is closed now that Forager is on Google Play (owner, 2026-10-21):
-`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list already
-collected is kept as it is, and the export still serves it.
+`/beta-signup/` redirects to the Play listing and the sign-up API answers 410. The list is gone
+too: the owner, asked whether the sign-up list was deleted, "Yes, deleted", and of the beta
+database, "Database is deleted" (2026-11-09, Forager RECORD -2193). No environment binds
+`BETA_DB` any more, so the export answers 503 (see "The database" below).
 
 ```
-index.html                  holding page for the business splash, and what every
-                              unmatched path on the site resolves to
+index.html                  holding page for the business splash; links to the Forager page
+Forager/index.html          the Forager page: what it is, the problem it solves, features, FAQ,
+                              with its search markup (JSON-LD) in the page
+404.html                    the not-found page, served with status 404 for any unmatched path
+robots.txt                  allows everything except /api/, and names the sitemap
+sitemap.xml                 /, /Forager/, /privacy/ and /delete-data/
+llms.txt                    a short plain-text summary of the site for AI tools, drawn from the
+                              Forager page's own text
 beta-signup/index.html      the old beta signup page, kept in the repo but no longer served:
                               _redirects sends /beta-signup/ to Google Play
 welcome/index.html          what testers see once they are in: things to try, known issues
@@ -15,15 +23,16 @@ privacy/index.html          Forager privacy policy, the URL Play's Data safety p
 assets/                     app icon and feature graphic
 functions/_middleware.js    blocks /functions/* and /db/*, sets the shared response headers
 functions/api/beta-signup.js  POST: closed, answers 410 Gone and stores nothing
-functions/api/beta-export.js  GET:  the list as CSV, behind a bearer token
-db/schema.sql               D1 schema for the `zynergy-site-beta` database
+functions/api/beta-export.js  GET:  answers 503, because no database is bound; it served the
+                              list as CSV, behind a bearer token
+db/schema.sql               D1 schema of the `zynergy-site-beta` database, which is deleted
 Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, data/ (static map tiles
                               data/<layer>/{z}/{x}/{y}.png, zooms 5 to 9, and lines.geojson),
                               vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
                               allows scripts from 'self' only; basemap/, the street map's
                               style code, fonts and icons; SHA256SUMS.txt)
-_redirects                  lowercase /forager/forecast to /Forager/forecast/; /beta-signup
-                              to the Google Play listing (302)
+_redirects                  lowercase /forager/forecast to /Forager/forecast/; lowercase
+                              /forager to /Forager/; /beta-signup to the Google Play listing (302)
 _routes.json                keeps the Function off /Forager/forecast/data/*
 _headers                    cache headers for /Forager/forecast/data/*
 ```
@@ -36,18 +45,22 @@ _headers                    cache headers for /Forager/forecast/data/*
 | `/beta-signup`, `/beta-signup/` | 302 to the Forager Google Play listing, from `_redirects` (owner, 2026-10-21). 302 rather than 301 so browsers do not cache it for good, in case a page returns here. The form's page stays in the repo, unserved. |
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
-| `/forager` | Intended for the app page. Does not exist yet. |
+| `/Forager/` | The Forager page: what it is, the problem it solves, its features and an FAQ, with the Google Play link. Its JSON-LD (the app, the FAQ, the breadcrumb and the organisation) carries the FAQ's words exactly as the page shows them; change one, change the other. |
+| `/forager`, `/forager/` | 301 to `/Forager/`, from `_redirects` (owner, "Lowercase address", RECORD -2194). |
+| `/robots.txt`, `/sitemap.xml`, `/llms.txt` | Real files (owner, RECORD -2194). The sitemap lists `/`, `/Forager/`, `/privacy/` and `/delete-data/`; the pilot demo and the tester page are left out on purpose. On production Cloudflare puts its own managed rules in front of `robots.txt`; those are a dashboard setting, not in this file. |
 | `/Forager/forecast/` | Pacific Northwest pilot demo: the Sighting chance (pilot) layer for chanterelles and the model inputs (soil pH, host trees), over our own street map, as a browsable map. Opens on soil pH. The finished forecast will live at `/Forager/mushroom-forecast/`. Built from `slayer8366/forager-forecast` (Forager RECORD -772 to -777, -857 to -860). |
-| `/forager/forecast`, `/forager/forecast/` | 301 to `/Forager/forecast/`, from `_redirects` (owner, RECORD -776). Scoped to those two paths: `/forager` itself is unchanged. |
+| `/forager/forecast`, `/forager/forecast/` | 301 to `/Forager/forecast/`, from `_redirects` (owner, RECORD -776). Scoped to those two paths; `/forager` and `/forager/` have their own two lines, to the Forager page. |
 
 The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
 form is served from, so moving a page never breaks a submission.
 
-Cloudflare serves the root `index.html` for **every unmatched path**, with status 200 rather
-than 404. So `/anything/made/up` shows the holding page and looks like a hit. Two consequences:
-whatever sits at `/` is also the site's de facto not-found page, and any check against this
-site has to read the body or a header, never the status alone. A real 404 would need a
-`404.html`; it is a deliberate open item, not an oversight.
+An address that no file, redirect or function answers gets `404.html`, with status 404. A
+`404.html` at the root is what switches that on for the whole site: without one, Pages treats the
+project as a single-page app and answered every unmatched path with the root `index.html` and
+status 200, which is how this site behaved until the file was added. Checks against this site
+should still read the body, not the status alone: `/404` itself is a real address and answers
+200 (the page carries `noindex`), and anything under `/Forager/forecast/data/` is served without
+the middleware, so the not-found page shows there without its style, under `_headers`' policy.
 
 ## How a signup travelled (closed since 2026-10-21)
 
@@ -72,9 +85,16 @@ list because at that point they are, and nothing tells them a mail was sent when
 
 ## The database
 
+**Deleted, and no longer bound anywhere.** The owner, 2026-11-09: "Database is deleted"
+(Forager RECORD -2193). Production's `BETA_DB` binding was removed the same day, after the first
+deploy without the database failed on it (the owner: "Deleted and deployed", RECORD -2193), and
+Preview's on 2026-11-10, after every preview deploy had failed on it since (RECORD -2198). With
+no binding, `/api/beta-export` answers 503 "export is not configured"
+(`functions/api/beta-export.js:27-30`). What follows is the database's history.
+
 `BETA_DB` → **`zynergy-site-beta`**, UUID **`9cb6b148-62d3-402e-8527-5ddab4c0c1be`**, in
-Cloudflare account `aac482d6710c493a811ce9335792f145`. Bound on both Production and Preview,
-and confirmed working at runtime: a preview deployment accepted a POST, wrote the row,
+Cloudflare account `aac482d6710c493a811ce9335792f145`. It was bound on both Production and
+Preview, and confirmed working at runtime: a preview deployment accepted a POST, wrote the row,
 derived the country server-side, and honoured the `email_norm` UNIQUE constraint.
 
 Identify it by UUID, not by name. Two accounts are in play for this project, and D1's list
@@ -91,25 +111,32 @@ reads as "empty database". Use the detail endpoint or query `sqlite_master` inst
 > port, a database ID: any globally-unique claim made twice merges without conflict and
 > still produces a broken result.
 
-To reapply or check the schema, against the bound database:
+While the database existed, the schema was applied and checked with these. They have nothing to
+run against now:
 
 ```bash
 wrangler d1 execute zynergy-site-beta --remote --file=db/schema.sql
 wrangler d1 execute zynergy-site-beta --remote --command "SELECT count(*) FROM beta_signups"
 ```
 
-## What still needs doing in the Cloudflare dashboard
+## The secrets, and the sign-up's setup
 
-The binding above is done. The secrets are not, deliberately: a signup records without them,
-the row carries `notified: false` and `notify_error: "mailer_not_configured"`, and
-`/api/beta-export` returns 503 until `EXPORT_TOKEN` exists rather than serving the list.
+**Nothing here needs doing now.** `EXPORT_TOKEN` and `RESEND_API_KEY` are set as secrets on
+both Production and Preview (read from the project's settings on 2026-11-10, Forager RECORD
+-2198). The export still answers 503, because the database binding is gone, not the token.
+The rest of this section is how the sign-up was set up, kept as history.
+
+When this section was written, the binding was done and the secrets deliberately were not: a
+signup recorded without them, the row carried `notified: false` and
+`notify_error: "mailer_not_configured"`, and `/api/beta-export` returned 503 until
+`EXPORT_TOKEN` existed rather than serving the list.
 
 > **Since the sign-up closed (2026-10-21)** only `EXPORT_TOKEN` is read by any code.
 > `RESEND_API_KEY`, `RATE_LIMIT_SALT` and `TURNSTILE_SECRET` were read only by the sign-up
 > handler, which is now in git history at df15222. Whatever is set in the dashboard was left
 > untouched; the table below describes that handler.
 
-**Set the secrets** on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
+The secrets were set on Workers &amp; Pages → `zynergy-site` → Settings, as encrypted
 environment variables:
 
 | Name              | Required | What it is |
@@ -154,16 +181,19 @@ were checked against the app before publishing: soil temperature is a hardcoded 
 `AvailabilityResultsUi.kt:585` and elevation a hardcoded `m` at `AvailabilityScreen.kt:4322`,
 with `UnitSystem.kt` naming both as the conversions still queued, and no import path exists.
 
-## Getting the list back out
+## Getting the list back out (no longer possible)
+
+The list and its database are deleted, and no database is bound, so both of these now answer
+503 "export is not configured", token or not:
 
 ```bash
 curl -H "authorization: Bearer $EXPORT_TOKEN" https://zynergy-labs.com/api/beta-export
 curl -H "authorization: Bearer $EXPORT_TOKEN" 'https://zynergy-labs.com/api/beta-export?format=json'
 ```
 
-This is the reason the database exists rather than the mail alone. Notifications get lost, whether to
+This was the reason the database existed rather than the mail alone. Notifications get lost, whether to
 an outage, a spam filter, or a forwarding rule that was never quite right, and the list should
-not be recoverable only from an inbox.
+not have been recoverable only from an inbox.
 
 ## Decisions, and what was rejected
 
@@ -191,7 +221,9 @@ answerable from the export, and a request log is the wrong place to accumulate a
 all (Pages allows 20,000 files a deployment and 25 MiB a file). Each pixel carries the layer's
 value as a grey byte with an alpha byte for no data, and `app.js` colours it and reads the tapped
 pixel from the same tile. Every tile inside the layer's bounds exists, even an empty one, because
-a missing path here returns the home page with status 200. `_routes.json` keeps the Function off
+`app.js` reads a missing tile as an error, not as no data: a missing path here returns the
+not-found page with status 404 (the home page with status 200 before `404.html` was added), and
+`tileBytes` rejects both. `_routes.json` keeps the Function off
 these paths, so a tile is a plain static file; `_headers` gives them a one-hour cache. The owner
 chose this over PMTiles archives (Forager RECORD -786, "A: Pre-cut tiles, go live"): an archive
 needs HTTP Range requests, which the asset server behind this site's Function did not answer.
@@ -265,13 +297,16 @@ disagreed, so it is not done here.
 
 ```bash
 npm install wrangler@4
-wrangler d1 execute zynergy-site-beta --local --file=db/schema.sql
-wrangler pages dev
+wrangler pages dev . --compatibility-date 2026-09-01 --binding EXPORT_TOKEN=local-test-token
 ```
 
-`wrangler pages dev` needs a `wrangler.toml` supplying the bindings that production gets from
-the dashboard; it is deliberately not committed, because adding one to the repository changes
-how Pages builds this project.
+That matches production as it is now: the export token set and no database bound, so
+`/api/beta-export` answers 503 locally too, and no `wrangler.toml` is needed.
+
+While the database existed, a local copy of its schema was made with
+`wrangler d1 execute zynergy-site-beta --local --file=db/schema.sql`, and `wrangler pages dev`
+was given a `wrangler.toml` supplying the binding production then had. It was deliberately not
+committed, because adding one to the repository changes how Pages builds this project:
 
 ```toml
 name = "zynergy-site-local"

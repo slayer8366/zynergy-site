@@ -13,12 +13,13 @@
 <meta property="og:type" content="website">
 <!--
   Holding page for the business splash. Kept deliberately small so replacing it is a
-  rewrite of one file and not an unpicking: the app page is intended for /forager, so it does
-  not depend on anything here. The button goes straight to the Google Play listing; the old
-  /beta-signup/ page is redirected there too (_redirects), now that the app is on Play.
+  rewrite of one file and not an unpicking: the app has its own page at /Forager/, which does
+  not depend on anything here, and this page only links to it ("About Forager"). The button
+  goes straight to the Google Play listing; the old /beta-signup/ page is redirected there
+  too (_redirects), now that the app is on Play.
 
-  It matters that this file is small for a second reason. Cloudflare serves this page for
-  every unmatched path on the site, so whatever is here is also what a mistyped URL shows.
+  A mistyped address no longer shows this page: 404.html at the site root answers those, with
+  status 404.
 -->
 <style>
   :root {
@@ -70,6 +71,8 @@
   .product img { width: 58px; height: 58px; border-radius: 13px; flex: none; }
   .product h2 { margin: 0 0 .15rem; font-size: 1.05rem; font-weight: 600; color: var(--fg); }
   .product p { margin: 0; font-size: .93rem; }
+  .product .about { margin-top: .3rem; }
+  .product a { color: var(--accent); }
 
   .cta {
     display: inline-block;
@@ -104,6 +107,7 @@
       <div>
         <h2>Forager</h2>
         <p>A private foraging companion for Android. Record your walks, log your finds, works offline.</p>
+        <p class="about"><a href="/Forager/">About Forager</a></p>
       </div>
     </div>
 
