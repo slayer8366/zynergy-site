@@ -1,0 +1,6 @@
+# zynergy-labs.com. Everything may be crawled except the site's API.
+# No rules for particular crawlers here: which crawlers are allowed is set at the host.
+User-agent: *
+Disallow: /api/
+
+Sitemap: https://zynergy-labs.com/sitemap.xml

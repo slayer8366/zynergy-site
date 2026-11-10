@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · Zynergy Labs</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/forager-icon.png" sizes="512x512" type="image/png">
+<!--
+  The site's not-found page. The host serves it, with status 404, for any address that no file,
+  redirect or function answers. Its presence is what turns that on: without a 404.html at the
+  root, the host answered every unknown address with the home page and status 200.
+
+  Every link and the icon are written from the site root, because this page is served at whatever
+  depth the mistyped address had. noindex because /404 itself is a real address and answers 200.
+-->
+<style>
+  :root{--bg:#fbfbf9;--fg:#1a1a18;--muted:#6b6b64;--rule:#e3e3dd;--accent:#2e5339}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121412;--fg:#ecece6;--muted:#9a9a92;--rule:#2a2c2a;--accent:#6fb69f}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:48px 24px;background:var(--bg);color:var(--fg);
+    font:17px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  main{max-width:32rem;margin:10vh auto 0}
+  h1{margin:0 0 .6rem;font-size:clamp(1.7rem,5vw,2.2rem);font-weight:600;letter-spacing:-.02em}
+  p{margin:0 0 1.1rem;color:var(--muted)}
+  ul{margin:0;padding-left:1.3rem}
+  li{margin-bottom:.4rem}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Page not here</h1>
+  <p>There is nothing at this address. It may have moved, or the link may be mistyped.</p>
+  <ul>
+    <li><a href="/">Zynergy Labs home</a></li>
+    <li><a href="/Forager/">About Forager</a></li>
+  </ul>
+</main>
+</body>
+</html>

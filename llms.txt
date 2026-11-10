@@ -1,0 +1,16 @@
+# Zynergy Labs
+
+> Zynergy Labs makes Forager, an app for Android. A private foraging companion. Record your walks, log your finds, works offline.
+
+Forager is free for Android. What you record stays on your phone, there is no account, and maps you download work with no signal. Your finds, tracks, photos and waypoints stay on your device unless you share them yourself. Forager does not identify species, and it cannot tell you whether anything is safe to eat.
+
+## Pages
+
+- [Forager](https://zynergy-labs.com/Forager/): the problem it solves, its features, and frequently asked questions
+- [Privacy policy](https://zynergy-labs.com/privacy/): what stays on your phone, what is sent while online, and to whom
+- [Deleting your Forager data](https://zynergy-labs.com/delete-data/): delete items in the app, or everything by uninstalling
+- [Home](https://zynergy-labs.com/): Zynergy Labs
+
+## Get the app
+
+- [Forager on Google Play](https://play.google.com/store/apps/details?id=com.zynergylabs.forager.app): free, for Android 8.0 or later

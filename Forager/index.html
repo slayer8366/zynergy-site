@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forager for Android: foraging walks, finds and offline maps · Zynergy Labs</title>
+<meta name="description" content="Forager is a free, private foraging companion for Android. Record your walks, log your finds, download maps for places with no signal. No account.">
+<link rel="canonical" href="https://zynergy-labs.com/Forager/">
+<link rel="icon" href="/assets/forager-icon.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="/assets/forager-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zynergy Labs">
+<meta property="og:url" content="https://zynergy-labs.com/Forager/">
+<meta property="og:title" content="Forager for Android">
+<meta property="og:description" content="A private foraging companion. Record your walks, log your finds, works offline.">
+<meta property="og:image" content="https://zynergy-labs.com/assets/forager-banner.jpg">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta property="og:image:alt" content="Forager">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forager for Android">
+<meta name="twitter:description" content="A private foraging companion. Record your walks, log your finds, works offline.">
+<meta name="twitter:image" content="https://zynergy-labs.com/assets/forager-banner.jpg">
+<!--
+  The Forager page. Every claim on it was traced to the app as it ships on Google Play, or to the
+  Play listing, before it was written; a feature that is only partly true is left off rather than
+  hedged. The FAQ's words appear twice, on the page and in the FAQPage block below, and the two
+  must stay identical: change one, change the other.
+
+  Self-contained on purpose: the site's security headers (functions/_middleware.js) allow styles,
+  scripts and images from this site only, so there are no outside fonts, scripts or images.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://zynergy-labs.com/#organization",
+      "name": "Zynergy Labs",
+      "url": "https://zynergy-labs.com/",
+      "email": "support@zynergy-labs.com"
+    },
+    {
+      "@type": "MobileApplication",
+      "@id": "https://zynergy-labs.com/Forager/#app",
+      "name": "Forager",
+      "description": "A private foraging companion. Record your walks, log your finds, works offline.",
+      "url": "https://zynergy-labs.com/Forager/",
+      "installUrl": "https://play.google.com/store/apps/details?id=com.zynergylabs.forager.app",
+      "image": "https://zynergy-labs.com/assets/forager-icon.png",
+      "operatingSystem": "Android",
+      "applicationCategory": "MAPS_AND_NAVIGATION",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": { "@id": "https://zynergy-labs.com/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://zynergy-labs.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Forager", "item": "https://zynergy-labs.com/Forager/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://zynergy-labs.com/Forager/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Forager free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Forager is free on Google Play, with no ads and no in-app purchases." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which phones can run Forager?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Android phones with Android 8.0 or later. Forager is for Android only." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Forager work without signal?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, if you prepare. Recording a walk, logging finds and the way back to your start all work with no signal. Download the maps for an area before you go, and the map and trail navigation work there too. Searching for observations needs signal, and so do the Topo and Street maps." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an account?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. There is no account and no sign-in. Forager opens straight to the map." }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is my data kept?",
+          "acceptedAnswer": { "@type": "Answer", "text": "On your phone. Nothing you record is uploaded. While you are online, Forager sends the area you are looking at, to fetch maps, observations and rain and soil readings for it. The privacy policy lists what is sent and to whom." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I delete my data?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Delete any item in the app, or uninstall Forager to remove everything. Backup files you saved stay where you saved them. The steps are on Deleting your Forager data." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I move my data to a new phone?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use Backup, in Tools, then Settings, to save one file where you choose, then restore it on the new phone. Android's own backup is off for Forager, so this file is how your data moves." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use GPX files?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Share any track as a GPX file. To import one, open the file with Forager, or use Import GPX in the Journal, under Records, then Tracks." }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do the maps work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Offline maps cover the continental United States. Elsewhere, the Topo and Street maps work while you have signal." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Forager identify what I find?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Forager does not identify species, and it cannot tell you whether anything is safe to eat. A find's name is the one you give it, and names on the map come from other people's public records." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  :root{--bg:#fbfbf9;--fg:#1a1a18;--muted:#6b6b64;--rule:#e3e3dd;--accent:#2e5339;--accent-fg:#ede3d0;--note-bg:#f3f2ec}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121412;--fg:#ecece6;--muted:#9a9a92;--rule:#2a2c2a;--accent:#6fb69f;--accent-fg:#0e1a14;--note-bg:#1a1d1a}}
+  *{box-sizing:border-box}
+  body{margin:0;padding:0 20px 80px;background:var(--bg);color:var(--fg);
+    font:17px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:42rem;margin:0 auto}
+  header{padding:56px 0 0}
+  .eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 1.4rem}
+  .eyebrow a{color:var(--muted);text-decoration:none}
+  .eyebrow a:hover{color:var(--accent)}
+  .app{display:flex;align-items:center;gap:1rem;margin:0 0 1.2rem}
+  .app img{width:72px;height:72px;border-radius:16px;flex:none}
+  h1{margin:0;font-size:clamp(1.9rem,6vw,2.5rem);font-weight:600;letter-spacing:-.02em;line-height:1.15}
+  .tagline{margin:.2rem 0 0;color:var(--muted)}
+  h2{margin:2.8rem 0 .8rem;font-size:1.2rem;font-weight:600;letter-spacing:-.01em;padding-top:1.4rem;border-top:1px solid var(--rule)}
+  h3{margin:1.8rem 0 .6rem;font-size:1rem;font-weight:600}
+  p{margin:0 0 1.1rem}
+  ul{margin:0 0 1.1rem;padding-left:1.3rem}
+  li{margin-bottom:.5rem}
+  a{color:var(--accent)}
+  .lead{font-size:1.05rem}
+  .cta{display:inline-block;font-weight:600;padding:.7rem 1.4rem;color:var(--accent-fg);background:var(--accent);border-radius:6px;text-decoration:none}
+  .cta:hover{opacity:.9}
+  .cta:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .faq h3{margin-top:1.6rem}
+  footer{margin-top:3rem;padding-top:1.4rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.92rem}
+  footer a{color:var(--muted)}
+  footer a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <nav class="eyebrow" aria-label="Breadcrumb"><a href="/">Home</a> › Forager</nav>
+  <div class="app">
+    <img src="/assets/forager-icon.png" width="512" height="512" alt="Forager app icon">
+    <div>
+      <h1>Forager</h1>
+      <p class="tagline">A private foraging companion. Record your walks, log your finds, works offline.</p>
+    </div>
+  </div>
+  <p class="lead">Forager is free for Android. What you record stays on your phone, there is no account, and maps you download work with no signal.</p>
+  <p><a class="cta" href="https://play.google.com/store/apps/details?id=com.zynergylabs.forager.app">Get it on Google Play</a></p>
+</header>
+
+<section>
+<h2>The problem it solves</h2>
+
+<p>A good foraging spot is worth keeping to yourself. That is hard with an app that needs an account or uploads what you record. And the best spots are often where the phone has no signal.</p>
+
+<p>Forager is built around that. Privacy is the reason this project began. Your finds aren't part of a community map and are never uploaded, and there is no account to make. Download the maps for an area before you go: once downloaded, they work out of signal range.</p>
+</section>
+
+<section>
+<h2>Features</h2>
+
+<h3>Maps</h3>
+<ul>
+  <li>The Trail Map is Forager's own map. It shows trails, including official trails on public land, with relief shading.</li>
+  <li>You can switch to a Topo or Street map.</li>
+  <li>Download maps for an area before you go: pick a spot on the map and how far around it. The download includes the area's trails for navigation.</li>
+  <li>Night Maps darkens the map for use at night, and the app has a dark theme.</li>
+</ul>
+
+<h3>Walks and the way back</h3>
+<ul>
+  <li>Record your walk as a track, even with the screen off. Each track shows its distance, time, climb, descent and a height profile.</li>
+  <li>Forager marks where you started. The way back takes you to your start along the trails, and if trail data isn't available it follows the path you walked.</li>
+  <li>Drop waypoints and navigate to any of them, along trails inside an area you have downloaded.</li>
+  <li>Navigation shows the distance and direction of your next turn as you go.</li>
+  <li>While you record, Forager can warn you before sunset with how long the walk back is, remind you at the time you planned to be back, and alert you on the way back if you stray far from the trail and your track.</li>
+</ul>
+
+<h3>Finds and the journal</h3>
+<ul>
+  <li>Log a find with photos, notes and the date. Saving its location is optional.</li>
+  <li>Take photos with Forager's own camera, or add them from your gallery.</li>
+  <li>Journal entries gather a trip's finds, photos, tracks and waypoints onto one map, so you can look back over a whole outing.</li>
+</ul>
+
+<h3>Planning</h3>
+<ul>
+  <li>Plan a trip to a spot, with a date.</li>
+  <li>From a trip, download its maps, plot a route, or navigate there.</li>
+  <li>Plot a route through waypoints to see the distance and elevation change for every leg, and save it to a trip.</li>
+</ul>
+
+<h3>Search and conditions</h3>
+<ul>
+  <li>Search public observation records around an area to see what has been found there, alongside recent rain, soil moisture and the forecast.</li>
+  <li>Results show as dots on the map. Tap one to see its name, date and location accuracy.</li>
+  <li>The Seasonal tab tests a well-known rule of thumb against real records: whether sightings follow a soaking rain.</li>
+</ul>
+
+<h3>Your data</h3>
+<ul>
+  <li>No account, no sign-in.</li>
+  <li>Your finds, tracks, photos and waypoints stay on your device unless you share them yourself.</li>
+  <li>Back up to a file you choose, by hand or daily, weekly or monthly. A restore can replace what is on the phone or merge with it.</li>
+  <li>Share a track as a GPX file, and import GPX tracks.</li>
+  <li>Choose metric or US units.</li>
+</ul>
+</section>
+
+<section class="faq" id="faq">
+<h2>Frequently asked questions</h2>
+
+<h3>Is Forager free?</h3>
+<p>Yes. Forager is free on Google Play, with no ads and no in-app purchases.</p>
+
+<h3>Which phones can run Forager?</h3>
+<p>Android phones with Android 8.0 or later. Forager is for Android only.</p>
+
+<h3>Does Forager work without signal?</h3>
+<p>Yes, if you prepare. Recording a walk, logging finds and the way back to your start all work with no signal. Download the maps for an area before you go, and the map and trail navigation work there too. Searching for observations needs signal, and so do the Topo and Street maps.</p>
+
+<h3>Do I need an account?</h3>
+<p>No. There is no account and no sign-in. Forager opens straight to the map.</p>
+
+<h3>Where is my data kept?</h3>
+<p>On your phone. Nothing you record is uploaded. While you are online, Forager sends the area you are looking at, to fetch maps, observations and rain and soil readings for it. The <a href="/privacy/">privacy policy</a> lists what is sent and to whom.</p>
+
+<h3>How do I delete my data?</h3>
+<p>Delete any item in the app, or uninstall Forager to remove everything. Backup files you saved stay where you saved them. The steps are on <a href="/delete-data/">Deleting your Forager data</a>.</p>
+
+<h3>Can I move my data to a new phone?</h3>
+<p>Yes. Use Backup, in Tools, then Settings, to save one file where you choose, then restore it on the new phone. Android's own backup is off for Forager, so this file is how your data moves.</p>
+
+<h3>Can I use GPX files?</h3>
+<p>Yes. Share any track as a GPX file. To import one, open the file with Forager, or use Import GPX in the Journal, under Records, then Tracks.</p>
+
+<h3>Where do the maps work?</h3>
+<p>Offline maps cover the continental United States. Elsewhere, the Topo and Street maps work while you have signal.</p>
+
+<h3>Does Forager identify what I find?</h3>
+<p>No. Forager does not identify species, and it cannot tell you whether anything is safe to eat. A find's name is the one you give it, and names on the map come from other people's public records.</p>
+</section>
+
+<p><a class="cta" href="https://play.google.com/store/apps/details?id=com.zynergylabs.forager.app">Get it on Google Play</a></p>
+
+<footer>
+  <p>Zynergy Labs · <a href="/">Home</a> · <a href="/privacy/">Privacy policy</a> · <a href="/delete-data/">Deleting your data</a> · <a href="mailto:support@zynergy-labs.com">support@zynergy-labs.com</a></p>
+</footer>
+
+</div>
+</body>
+</html>
