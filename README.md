@@ -6,13 +6,8 @@ Forager beta list. The sign-up is closed now that Forager is on Google Play (own
 collected is kept as it is, and the export still serves it.
 
 ```
-index.html                  holding page for the business splash; links to /Forager/
-Forager/index.html          the Forager page: what it is, the problem it solves, features, FAQ,
-                              with its own search and share tags and JSON-LD
-404.html                    the not-found page, served with status 404 for every unmatched path
-robots.txt                  allows everything but /api/, and names the sitemap
-sitemap.xml                 /, /Forager/, /privacy/ and /delete-data/, with dates
-llms.txt                    a short plain-text summary of Zynergy Labs and Forager, with those links
+index.html                  holding page for the business splash, and what every
+                              unmatched path on the site resolves to
 beta-signup/index.html      the old beta signup page, kept in the repo but no longer served:
                               _redirects sends /beta-signup/ to Google Play
 welcome/index.html          what testers see once they are in: things to try, known issues
@@ -27,8 +22,8 @@ Forager/forecast/           Pacific Northwest pilot demo: index.html, app.js, da
                               vendor/ (MapLibre GL JS 6.13.0, self-hosted because the CSP
                               allows scripts from 'self' only; basemap/, the street map's
                               style code, fonts and icons; SHA256SUMS.txt)
-_redirects                  lowercase /forager/forecast to /Forager/forecast/ and /forager to
-                              /Forager/ (301); /beta-signup to the Google Play listing (302)
+_redirects                  lowercase /forager/forecast to /Forager/forecast/; /beta-signup
+                              to the Google Play listing (302)
 _routes.json                keeps the Function off /Forager/forecast/data/*
 _headers                    cache headers for /Forager/forecast/data/*
 ```
@@ -41,24 +36,18 @@ _headers                    cache headers for /Forager/forecast/data/*
 | `/beta-signup`, `/beta-signup/` | 302 to the Forager Google Play listing, from `_redirects` (owner, 2026-10-21). 302 rather than 301 so browsers do not cache it for good, in case a page returns here. The form's page stays in the repo, unserved. |
 | `/welcome/` | Tester greeting, `noindex`, for people already in the test. |
 | `/privacy/` | Forager privacy policy. |
-| `/Forager/` | The Forager page: what it is, the problem it solves, its features and an FAQ, with the Google Play link (Forager RECORD -2194). Every claim on it was traced to the app's code or the live Play listing in that dispatch's report; change the page when the app changes. Its FAQPage JSON-LD repeats the visible FAQ word for word, so edit both together. |
-| `/forager`, `/forager/` | 301 to `/Forager/`, from `_redirects` (owner, "Lowercase address", RECORD -2194). Exact paths only. |
+| `/forager` | Intended for the app page. Does not exist yet. |
 | `/Forager/forecast/` | Pacific Northwest pilot demo: the Sighting chance (pilot) layer for chanterelles and the model inputs (soil pH, host trees), over our own street map, as a browsable map. Opens on soil pH. The finished forecast will live at `/Forager/mushroom-forecast/`. Built from `slayer8366/forager-forecast` (Forager RECORD -772 to -777, -857 to -860). |
-| `/forager/forecast`, `/forager/forecast/` | 301 to `/Forager/forecast/`, from `_redirects` (owner, RECORD -776). Scoped to those two paths. |
-| `/robots.txt`, `/sitemap.xml`, `/llms.txt` | Real files (RECORD -2194). The sitemap and llms.txt list Home, Forager, Privacy and Delete data, and leave out the forecast demo and the tester page (owner: "Add all three, no forecast"). Update a page's `lastmod` in `sitemap.xml` when that page changes. robots.txt has no rules for AI crawlers: those are set in Cloudflare's dashboard, which also puts its own managed rules in front of this file while any crawler policy blocks. `/welcome/` is kept out of search by its own `noindex`, not by robots.txt, which would stop crawlers reading that tag. |
-| anything else | `404.html`, with status 404. |
+| `/forager/forecast`, `/forager/forecast/` | 301 to `/Forager/forecast/`, from `_redirects` (owner, RECORD -776). Scoped to those two paths: `/forager` itself is unchanged. |
 
 The API paths (`/api/beta-signup`, `/api/beta-export`) are fixed and independent of where the
 form is served from, so moving a page never breaks a submission.
 
-An unmatched path gets **`404.html` with status 404** (since Forager RECORD -2194). Cloudflare
-Pages decides this from the file's presence alone: with a top-level `404.html` it serves the
-nearest `404.html` for any path that matches no file, no `_redirects` rule and no Function route;
-without one it assumes a single-page app and serves the root `index.html` with status 200, which
-is what this site did until then. The middleware passes the 404 status through. Under
-`/Forager/forecast/data/*`, which the Function does not run on, the not-found page gets
-`_headers`' `default-src 'none'` and shows unstyled; only a mistyped tile address reaches it.
-Checks against this site should still read the body as well as the status.
+Cloudflare serves the root `index.html` for **every unmatched path**, with status 200 rather
+than 404. So `/anything/made/up` shows the holding page and looks like a hit. Two consequences:
+whatever sits at `/` is also the site's de facto not-found page, and any check against this
+site has to read the body or a header, never the status alone. A real 404 would need a
+`404.html`; it is a deliberate open item, not an oversight.
 
 ## How a signup travelled (closed since 2026-10-21)
 
@@ -201,9 +190,8 @@ answerable from the export, and a request log is the wrong place to accumulate a
 `Forager/forecast/data/<layer>/{z}/{x}/{y}.png`, zooms 5 to 9, about 570 a layer and 2,280 in
 all (Pages allows 20,000 files a deployment and 25 MiB a file). Each pixel carries the layer's
 value as a grey byte with an alpha byte for no data, and `app.js` colours it and reads the tapped
-pixel from the same tile. Every tile inside the layer's bounds exists, even an empty one, so the
-page never asks for a missing tile: `app.js` treats a missing one as an error, not as no data (a
-404 since RECORD -2194; before that, the home page with status 200). `_routes.json` keeps the Function off
+pixel from the same tile. Every tile inside the layer's bounds exists, even an empty one, because
+a missing path here returns the home page with status 200. `_routes.json` keeps the Function off
 these paths, so a tile is a plain static file; `_headers` gives them a one-hour cache. The owner
 chose this over PMTiles archives (Forager RECORD -786, "A: Pre-cut tiles, go live"): an archive
 needs HTTP Range requests, which the asset server behind this site's Function did not answer.
