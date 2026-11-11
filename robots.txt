@@ -1,0 +1,6 @@
+# zynergy-labs.com: search engines and AI tools may read every page.
+# Content signals (https://contentsignals.org/): building a search index (search),
+# using pages in AI answers (ai-input) and training AI models (ai-train) are all allowed.
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
